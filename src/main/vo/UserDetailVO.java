@@ -1,17 +1,18 @@
 package main.vo;
 
+import main.constants.AuthorConstants;
 import main.info.user.Gender;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserDetailVO {
     private String userName;
     private String password;
-    private String fullName;
-    private Date birthDay;
-    private String idCard;
-    private String address;
-    private Gender gender;
+    private String fullName = AuthorConstants.INIT_STRING;
+    private LocalDate birthDay = AuthorConstants.INIT_DATE;
+    private String idCard = AuthorConstants.INIT_STRING;
+    private String address = AuthorConstants.INIT_STRING;
+    private Gender gender = Gender.OTHER;
 
     public String getUserName() {
         return userName;
@@ -37,11 +38,11 @@ public class UserDetailVO {
         this.fullName = fullName;
     }
 
-    public Date getBirthDay() {
+    public LocalDate getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
     }
 

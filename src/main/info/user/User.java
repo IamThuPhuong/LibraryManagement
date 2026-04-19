@@ -1,5 +1,6 @@
 package main.info.user;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class User {
@@ -7,7 +8,7 @@ public class User {
     private String userName;
     private String password;
     private String fullName;
-    private Date birthDay;
+    private LocalDate birthDay;
     private String idCard;
     private String address;
     private Gender gender;
@@ -16,7 +17,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, String userName, String password, String fullName, Date birthDay, String idCard, String address, Gender gender, Status status) {
+    public User(String userId, String userName, String password, String fullName, LocalDate birthDay, String idCard, String address, Gender gender, Status status) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -71,11 +72,11 @@ public class User {
         this.idCard = idCard;
     }
 
-    public Date getBirthDay() {
+    public LocalDate getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
     }
 

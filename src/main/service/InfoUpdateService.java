@@ -1,6 +1,7 @@
 package main.service;
 
 import main.constants.AuthorConstants;
+import main.info.user.Gender;
 import main.info.user.User;
 import main.vo.UserDetailVO;
 
@@ -50,25 +51,51 @@ public class InfoUpdateService {
             newUser.setUserId(String.valueOf(randomNumber));
         } while (userIDList.contains(newUser.getUserId()));
 
-        // new Username
-        if (!userNameList.contains(vo.getUserName())){
+        // new Username: không nằm trong List đã có && không chứa ký tự đặc biệt
+        if (! (userNameList.contains(vo.getUserName()) && isSpecialChar(vo.getPassword())) ){
             newUser.setUserName(vo.getUserName());
         }
 
-        // new Password
-        boolean isSpecialChar = false;
-        for (String eachChar : AuthorConstants.SPECIAL_CHAR_LIST){
-            if (vo.getUserName().contains(eachChar)){
-                isSpecialChar = true;
-                break; // ->reviewed
-            }
-        }
-        if (!(vo.getUserName().isEmpty() && vo.getUserName().isBlank() && isSpecialChar)){
+        // new Password: không trống && không chứa ký tự đặc biệt
+        if (!(vo.getPassword().isEmpty() && vo.getPassword().isBlank() && isSpecialChar(vo.getPassword()))){
             newUser.setPassword(vo.getPassword());
         }
 
-        // TODO: Làm tiếp khúc này nhe
+        // new FullName
+        if (!vo.getFullName().isEmpty()){
+            newUser.setFullName(vo.getFullName());
+        }
+        // new BirthDay
+        if (!vo.getBirthDay().equals(AuthorConstants.INIT_DATE)){
+            newUser.setBirthDay(vo.getBirthDay());
+        }
+        
+        //new IdCard
+        if(!vo.getIdCard().equals(AuthorConstants.INIT_STRING)){
+            newUser.setIdCard(vo.getIdCard());
+        }
+        
+        // new Address
+        if(!vo.getAddress().equals(AuthorConstants.INIT_STRING)){
+            newUser.setAddress(vo.getAddress());
+        }
+        // new Gender
+        if(!vo.getGender().equals(Gender.OTHER)){
+            newUser.setGender(vo.getGender());
+        }
 
         return newUser;
+    }
+
+    private static boolean isSpecialChar(String wordToCheckSpecial) {
+        boolean isSpecialChar = false;
+        for (String eachChar : AuthorConstants.SPECIAL_CHAR_LIST){
+            if (wordToCheckSpecial.contains(eachChar)){
+                isSpecialChar = true;
+                System.out.println("Nội dung nhập không đươc bao gồm các ký tự đặc biệt  {\"!\",\"@\",\"#\",\"$\",\"%\",\"&\",\"*\",\"?\"}");
+                break;
+            }
+        }
+        return isSpecialChar;
     }
 }
