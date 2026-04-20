@@ -3,10 +3,12 @@ package main.service;
 import main.constants.AuthorConstants;
 import main.info.user.Gender;
 import main.info.user.User;
+import main.validate.InfoValidator;
 import main.vo.UserDetailVO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class InfoUpdateService {
     public User updateUser(User user, UserDetailVO vo){
@@ -32,32 +34,29 @@ public class InfoUpdateService {
 
     public User createUser(List<User> userList, UserDetailVO vo) throws ExceptionInInitializerError{
         // Thay the SQL
-        List<String> userIDList = new ArrayList<>();
         List<String> userNameList = new ArrayList<>();
         for (User user : userList){
-            userIDList.add(user.getUserId());
             userNameList.add(user.getUserName());
         }
 
-        // Create new user
-        // new UserID
-        User newUser = new User();
-        do {
-            int length = 6; // Số 6 chữ số
-            int min = (int) Math.pow(10, length - 1);
-            int max = (int) Math.pow(10, length) - 1;
-            int randomNumber = (int)(Math.random() * ((max - min) + 1)) + min;
+        // validate input
+        InfoValidator validator = new InfoValidator(userList);
+        validator.validate(vo);
 
-            newUser.setUserId(String.valueOf(randomNumber));
-        } while (userIDList.contains(newUser.getUserId()));
+
+        // Create new user
+        // new UserID: Sử dụng UUID (không cần kiểm tra trùng lặp vì xác suất trùng gần như 0)
+        User newUser = new User();
+        String userId = UUID.randomUUID().toString(); // Format: 550e8400-e29b-41d4-a716-446655440000
+        newUser.setUserId(userId);
 
         // new Username: không nằm trong List đã có && không chứa ký tự đặc biệt
-        if (! (userNameList.contains(vo.getUserName()) && isSpecialChar(vo.getPassword())) ){
+        if (!userNameList.contains(vo.getUserName())){
             newUser.setUserName(vo.getUserName());
         }
 
         // new Password: không trống && không chứa ký tự đặc biệt
-        if (!(vo.getPassword().isEmpty() && vo.getPassword().isBlank() && isSpecialChar(vo.getPassword()))){
+        if (!vo.getPassword().isEmpty()){
             newUser.setPassword(vo.getPassword());
         }
 
@@ -87,15 +86,5 @@ public class InfoUpdateService {
         return newUser;
     }
 
-    private static boolean isSpecialChar(String wordToCheckSpecial) {
-        boolean isSpecialChar = false;
-        for (String eachChar : AuthorConstants.SPECIAL_CHAR_LIST){
-            if (wordToCheckSpecial.contains(eachChar)){
-                isSpecialChar = true;
-                System.out.println("Nội dung nhập không đươc bao gồm các ký tự đặc biệt  {\"!\",\"@\",\"#\",\"$\",\"%\",\"&\",\"*\",\"?\"}");
-                break;
-            }
-        }
-        return isSpecialChar;
-    }
+
 }

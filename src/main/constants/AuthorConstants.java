@@ -7,6 +7,7 @@ public class AuthorConstants {
     public static final String DEFAULT_USER = "0";
     public static final String INIT_STRING = " ";
     public static final String[] SPECIAL_CHAR_LIST = {"!","@","#","$","%","&","*","?"};
-    public static final LocalDate INIT_DATE = LocalDate.ofEpochDay(0);
+    public static final LocalDate INIT_DATE = LocalDate.MIN;
+    public static final int USER_MAX_LENGTH = 15;
 
 }

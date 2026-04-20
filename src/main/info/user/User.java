@@ -28,10 +28,6 @@ public class User {
         this.gender = gender;
         this.status = status;
     }
-
-    public User(String user10, String number, String ngoThiK, Date time, String number1, String la, Gender gender, Status status) {
-    }
-
     public String getUserId() {
         return userId;
     }
