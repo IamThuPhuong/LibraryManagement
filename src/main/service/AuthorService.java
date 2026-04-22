@@ -1,66 +1,56 @@
 package main.service;
 
-import main.constants.AuthorConstants;
+import main.enums.UserPermission;
+import main.enums.UserRole;
 import main.info.user.User;
 
-import java.util.List;
-import java.util.Scanner;
+import javax.management.relation.Role;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class AuthorService {
-    public String USER_ID = "0";
-    Scanner input = new Scanner(System.in);
+    public void determineRolesAndPermission(){
 
+        // Set quyen cho admin
+        Set<UserPermission> adminPermission = new HashSet<>();
+        adminPermission.add(UserPermission.DELETEBOOK);
+        adminPermission.add(UserPermission.ADDBOOK);
+        adminPermission.add(UserPermission.MANAGEUSER);
+        adminPermission.add(UserPermission.READBOOK);
 
-    public void loginService(List<User> users){
-        boolean checkLogin = false;
-        do{
-            System.out.println("Username:");
-            String userName = input.nextLine();
-            System.out.println("Password:");
-            String password = input.nextLine();
+        mapRolePermission(UserRole.ADMIN,adminPermission);
 
-            AuthorService authorService = new AuthorService();
-            User foundedUser = authorService.findUser(users, userName);
-            checkLogin = checkLogin(foundedUser, userName, password);
-        } while (!checkLogin);
+        // Set quyen cho Manager
+        Set<UserPermission> managerPermission = new HashSet<>();
+        managerPermission.add(UserPermission.MANAGEUSER);
+        managerPermission.add(UserPermission.READBOOK);
+        managerPermission.add(UserPermission.DELETEBOOK);
+        managerPermission.add(UserPermission.ADDBOOK);
+
+        mapRolePermission(UserRole.MANAGER, managerPermission);
+
+        // Set quyen cho Officer
+        Set<UserPermission> officerPermission = new HashSet<>();
+        officerPermission.add(UserPermission.READBOOK);
+        officerPermission.add(UserPermission.ADDBOOK);
+        officerPermission.add(UserPermission.DELETEBOOK);
+
+        mapRolePermission(UserRole.OFFICER, officerPermission);
+
+        // Set quyen cho Reader
+        Set<UserPermission> readerPermission = new HashSet<>();
+        readerPermission.add(UserPermission.READBOOK);
+
+        mapRolePermission(UserRole.READER, readerPermission);
+
     }
 
-
-
-    public User findUser(List<User> listUser, String userNameInput){
-        for(User user : listUser) {
-            if (user.getUserName().equals(userNameInput)) {
-                return user;
-            }
-        }
-        System.out.println("Không tồn tại người dùng này!");
-        return null;
+    public Map<UserRole, Set<UserPermission>> mapRolePermission(UserRole role, Set<UserPermission> permission){
+        Map<UserRole, Set<UserPermission>> mapRolePermission = new HashMap<>();
+        mapRolePermission.put(role, permission);
+        return mapRolePermission;
     }
-
-    public boolean checkLogin(User user, String userNameInput, String passwordInput){
-        if(user.getUserName().equals(userNameInput) && user.getPassword().equals(passwordInput)){
-            System.out.println("Đăng nhập thành công!");
-            USER_ID = user.getUserId();
-            return true;
-        } else {
-            System.out.println("Tên người dùng hoặc mật khẩu sai!");
-            return false;
-        }
-    }
-
-    public boolean logoutService(User user){
-        System.out.println("Ban co chac muon dang xuat?:");
-        System.out.println("\t1. Co");
-        System.out.println("\t2. Khong.");
-        Boolean answer = false;
-        int userAnswer = input.nextInt();
-        input.nextLine();
-        if(AuthorConstants.LOUGOUT_FLAG == userAnswer){
-            USER_ID = AuthorConstants.DEFAULT_USER;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 }
+

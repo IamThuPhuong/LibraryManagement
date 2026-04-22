@@ -1,7 +1,7 @@
 package main.service;
 
 import main.constants.AuthorConstants;
-import main.info.user.Gender;
+import main.enums.Gender;
 import main.info.user.User;
 import main.validate.InfoValidator;
 import main.vo.UserDetailVO;

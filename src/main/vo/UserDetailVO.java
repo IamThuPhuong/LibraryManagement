@@ -1,7 +1,7 @@
 package main.vo;
 
 import main.constants.AuthorConstants;
-import main.info.user.Gender;
+import main.enums.Gender;
 
 import java.time.LocalDate;
 

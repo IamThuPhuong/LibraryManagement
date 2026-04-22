@@ -1,7 +1,10 @@
 package main.info.user;
 
+import main.enums.Gender;
+import main.enums.Status;
+import main.enums.UserRole;
+
 import java.time.LocalDate;
-import java.util.Date;
 
 public class User {
     private String userId;
@@ -13,11 +16,12 @@ public class User {
     private String address;
     private Gender gender;
     private Status status;
+    private UserRole userRole;
 
     public User() {
     }
 
-    public User(String userId, String userName, String password, String fullName, LocalDate birthDay, String idCard, String address, Gender gender, Status status) {
+    public User(String userId, String userName, String password, String fullName, LocalDate birthDay, String idCard, String address, Gender gender, Status status, UserRole role) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -27,6 +31,7 @@ public class User {
         this.address = address;
         this.gender = gender;
         this.status = status;
+        this.userRole = role;
     }
     public String getUserId() {
         return userId;
@@ -98,5 +103,13 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }

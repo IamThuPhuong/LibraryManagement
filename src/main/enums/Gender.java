@@ -1,4 +1,4 @@
-package main.info.user;
+package main.enums;
 
 public enum Gender {
     MALE,
