@@ -2,8 +2,11 @@ package main.service;
 
 import main.constants.AuthorConstants;
 import main.enums.Gender;
+import main.enums.Permission;
 import main.info.user.User;
+import main.validate.AuthorValidator;
 import main.validate.InfoValidator;
+import main.validate.Validator;
 import main.vo.UserDetailVO;
 
 import java.util.ArrayList;
@@ -11,7 +14,38 @@ import java.util.List;
 import java.util.UUID;
 
 public class InfoUpdateService {
+
+    /** instance variable: người dùng sau khi đăng nhập */
+    private User currentUser;
+
+    /** instance variable: danh sách người dùng */
+    private List<User> userList;
+
+    /** Common xử lý phân quyền */
+    private static AuthorService authorService = new AuthorService();
+
+    /** Quyền truy cập class InfoUpdateService */
+    private static final Permission  PERMISSION = Permission.MANAGE_USER;
+
+    /** Validate check thông tin user hợp lệ */
+    Validator validator = new InfoValidator(userList);
+
+    /** Validate check quyền truy cập chức năng */
+    Validator authorValidator = new AuthorValidator(currentUser, authorService);
+
+    public InfoUpdateService() {
+    }
+
+    public InfoUpdateService(User currentUser, List<User> userList) {
+        this.currentUser = currentUser;
+        this.userList = userList;
+    }
+
     public User updateUser(User user, UserDetailVO vo){
+        // Check xem sửa mình hay sửa người
+        if(!currentUser.equals(user)){
+            authorValidator.validate(PERMISSION);
+        }
         if(!vo.getUserName().isEmpty()){
             user.setUserName(vo.getUserName());
         }
@@ -32,7 +66,7 @@ public class InfoUpdateService {
         return user;
     }
 
-    public User createUser(List<User> userList, UserDetailVO vo) throws ExceptionInInitializerError{
+    public List<User> createUser(List<User> userList, UserDetailVO vo) throws ExceptionInInitializerError{
         // Thay the SQL
         List<String> userNameList = new ArrayList<>();
         for (User user : userList){
@@ -40,9 +74,10 @@ public class InfoUpdateService {
         }
 
         // validate input
-        InfoValidator validator = new InfoValidator(userList);
         validator.validate(vo);
-
+        if (currentUser != null){
+            authorValidator.validate(PERMISSION);
+        }
 
         // Create new user
         // new UserID: Sử dụng UUID (không cần kiểm tra trùng lặp vì xác suất trùng gần như 0)
@@ -83,8 +118,18 @@ public class InfoUpdateService {
             newUser.setGender(vo.getGender());
         }
 
-        return newUser;
+        userList.add(newUser);
+
+        return userList;
     }
 
+    public List<User> showUserList(List<User> userList){
+        authorValidator.validate(PERMISSION);
+        System.out.println("Danh sách người dùng:");
+        for (User user : userList) {
+            user.toString();
+        }
+        return userList;
+    }
 
 }

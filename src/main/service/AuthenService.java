@@ -8,21 +8,22 @@ import java.util.Scanner;
 
 public class AuthenService {
     public String USER_ID = "0";
+    public String token = "";
     Scanner input = new Scanner(System.in);
 
 
-    public void loginService(List<User> users){
+    public User loginService(List<User> users, String userName, String password){
         boolean checkLogin = false;
-        do{
-            System.out.println("Username:");
-            String userName = input.nextLine();
-            System.out.println("Password:");
-            String password = input.nextLine();
+        AuthenService authenService = new AuthenService();
+        User foundedUser = authenService.findUser(users, userName);
+        checkLogin = checkLogin(foundedUser, userName, password);
 
-            AuthenService authenService = new AuthenService();
-            User foundedUser = authenService.findUser(users, userName);
-            checkLogin = checkLogin(foundedUser, userName, password);
-        } while (!checkLogin);
+        if(checkLogin){
+            USER_ID = foundedUser.getUserId();
+            return foundedUser;
+        } else {
+            return null;
+        }
     }
 
 
@@ -40,7 +41,6 @@ public class AuthenService {
     public boolean checkLogin(User user, String userNameInput, String passwordInput){
         if(user.getUserName().equals(userNameInput) && user.getPassword().equals(passwordInput)){
             System.out.println("Đăng nhập thành công!");
-            USER_ID = user.getUserId();
             return true;
         } else {
             System.out.println("Tên người dùng hoặc mật khẩu sai!");

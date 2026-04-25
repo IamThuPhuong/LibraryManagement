@@ -31,7 +31,6 @@ public class User {
         this.address = address;
         this.gender = gender;
         this.status = status;
-        this.userRole = role;
     }
     public String getUserId() {
         return userId;
@@ -111,5 +110,21 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password.hashCode() + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", birthDay=" + birthDay +
+                ", idCard='" + idCard + '\'' +
+                ", address='" + address + '\'' +
+                ", gender=" + gender +
+                ", status=" + status +
+                ", userRole=" + userRole +
+                '}';
     }
 }

@@ -24,7 +24,7 @@ import java.util.List;
  * @see UserDetailVO
  * @see User
  */
-public class InfoValidator {
+public class InfoValidator implements Validator {
     private List<User> userList;
 
     /**
@@ -79,9 +79,7 @@ public class InfoValidator {
         }
 
         // Validate BirthDay
-        if (obj.getBirthDay() == null) {
-            System.out.println("Ngày sinh không được null!");
-        } else if (isBirthdayInFuture(obj.getBirthDay())) {
+        if (isBirthdayInFuture(obj.getBirthDay())) {
             System.out.println("Ngày sinh không được lớn hơn ngày hôm nay!");
         }
     }
@@ -94,7 +92,7 @@ public class InfoValidator {
      * @return {@code true} nếu độ dài hợp lệ, {@code false} nếu vượt quá hoặc null
      * @see AuthorConstants#USER_MAX_LENGTH
      */
-    public boolean isValidLength(String input){
+    private boolean isValidLength(String input){
         if (input.length() < AuthorConstants.USER_MAX_LENGTH){
             return true;
         }

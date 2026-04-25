@@ -14,6 +14,9 @@ public class UserDetailVO {
     private String address = AuthorConstants.INIT_STRING;
     private Gender gender = Gender.OTHER;
 
+    public UserDetailVO() {
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -42,10 +45,30 @@ public class UserDetailVO {
         return birthDay;
     }
 
-    public void setBirthDay(LocalDate birthDay) {
-        this.birthDay = birthDay;
-    }
+    /** Dùng String để tránh các lỗi parse LocalDate */
+    public void setBirthDay(String birthDayStr) {
+        // Kiểm tra null hoặc rỗng
+        if (birthDayStr == null || birthDayStr.trim().isEmpty()) {
+            this.birthDay = LocalDate.parse(
+                    AuthorConstants.STRING_INIT_DATE,
+                    AuthorConstants.DATE_FORMATTER
+            );
+            return;
+        }
 
+        try {
+            // Parse String thành LocalDate theo format
+            this.birthDay = LocalDate.parse(birthDayStr, AuthorConstants.DATE_FORMATTER);
+        } catch (Exception e) {
+            System.out.println("Định dạng ngày sinh không hợp lệ: " + birthDayStr);
+            System.out.println("Vui lòng sử dụng định dạng: dd/MM/yyyy");
+            // Sử dụng giá trị mặc định nếu parse lỗi
+            this.birthDay = LocalDate.parse(
+                    AuthorConstants.STRING_INIT_DATE,
+                    AuthorConstants.DATE_FORMATTER
+            );
+        }
+    }
     public String getIdCard() {
         return idCard;
     }
@@ -67,6 +90,16 @@ public class UserDetailVO {
     }
 
     public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public UserDetailVO(String userName, String password, String fullName, LocalDate birthDay, String idCard, String address, Gender gender) {
+        this.userName = userName;
+        this.password = password;
+        this.fullName = fullName;
+        this.birthDay = birthDay;
+        this.idCard = idCard;
+        this.address = address;
         this.gender = gender;
     }
 }
