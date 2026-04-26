@@ -54,7 +54,14 @@ public class AuthorValidator implements Validator {
      * @throws ExceptionInInitializerError nếu không có quyền
      */
     private void checkAssesible(Permission permission){
-        boolean isAccessable = authorService.checkPermission(currentUser, permission);
+        boolean isAccessable = false;
+        try{
+            isAccessable = authorService.checkPermission(currentUser, permission);
+        } catch (NullPointerException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+
         if (!isAccessable){
             throw new ExceptionInInitializerError("Bạn không có quyền sử dụng tính năng này!");
         }

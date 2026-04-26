@@ -38,7 +38,15 @@ public class AuthenService {
         return null;
     }
 
-    public boolean checkLogin(User user, String userNameInput, String passwordInput){
+    public boolean checkLogin(User user, String userNameInput, String passwordInput) throws NullPointerException {
+        try {
+            if (user == null) {
+                throw new NullPointerException("Không tồn tại người dùng này!");
+            }
+        } catch (NullPointerException e) {
+            System.out.println(e);
+            return false;
+        }
         if(user.getUserName().equals(userNameInput) && user.getPassword().equals(passwordInput)){
             System.out.println("Đăng nhập thành công!");
             return true;

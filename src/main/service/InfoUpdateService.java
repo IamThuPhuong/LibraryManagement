@@ -9,6 +9,9 @@ import main.validate.InfoValidator;
 import main.validate.Validator;
 import main.vo.UserDetailVO;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,10 +44,24 @@ public class InfoUpdateService {
         this.userList = userList;
     }
 
-    public User updateUser(User user, UserDetailVO vo){
+    public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError {
         // Check xem sửa mình hay sửa người
-        if(!currentUser.equals(user)){
-            authorValidator.validate(PERMISSION);
+        try {
+            if (user == null) {
+                throw new IllegalArgumentException("User cần cập nhật không tồn tại!");
+            }
+            if (currentUser == null) {
+                throw new IllegalArgumentException("Bạn chưa đăng nhập!");
+            }
+            if (!currentUser.equals(user)) {
+                authorValidator.validate(PERMISSION);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return user; // Trả về user gốc nếu có lỗi
+        } catch (ExceptionInInitializerError e) {
+            System.out.println(e.getMessage());
+            return user; // Trả về user gốc nếu không có quyền
         }
         if(!vo.getUserName().isEmpty()){
             user.setUserName(vo.getUserName());
@@ -66,7 +83,7 @@ public class InfoUpdateService {
         return user;
     }
 
-    public List<User> createUser(List<User> userList, UserDetailVO vo) throws ExceptionInInitializerError{
+    public List<User> createUser(List<User> userList, UserDetailVO vo) throws ExceptionInInitializerError, IOException {
         // Thay the SQL
         List<String> userNameList = new ArrayList<>();
         for (User user : userList){
@@ -120,6 +137,9 @@ public class InfoUpdateService {
 
         userList.add(newUser);
 
+        // add vao data.txt sau khi chuyển sang Spring sẽ add vào DB
+        saveUserListToFile(newUser);
+
         return userList;
     }
 
@@ -130,6 +150,20 @@ public class InfoUpdateService {
             user.toString();
         }
         return userList;
+    }
+
+    public void saveUserListToFile(User user) throws IOException {
+        // Thay thế bằng SQL khi chuyển sang Spring
+        // Ghi đè file data.txt với nội dung mới từ userList
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("user.txt", true))){
+            String line = user.getUserId() + "," + user.getUserName() + "," + user.getPassword() + "," +
+                    user.getFullName() + "," + user.getBirthDay() + "," + user.getIdCard() + "," +
+                    user.getAddress() + "," + user.getGender();
+            writer.write(line);
+            writer.newLine();
+    } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
     }
 
 }

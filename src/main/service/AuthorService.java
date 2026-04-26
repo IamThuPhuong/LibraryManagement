@@ -17,7 +17,10 @@ public class AuthorService {
         return mapRolePermission;
     }
 
-    public boolean checkPermission(User user, Permission permission) {
+    public boolean checkPermission(User user, Permission permission) throws NullPointerException {
+        if (user == null)     {
+            throw new NullPointerException("Bạn chưa đăng nhập!");
+        }
         if (user.getUserRole() == UserRole.ADMIN) return true;
 
         Set<Permission> permissions = getPermissionsByRole(user.getUserRole());
