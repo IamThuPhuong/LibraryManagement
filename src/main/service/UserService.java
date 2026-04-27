@@ -4,6 +4,7 @@ import main.constants.AuthorConstants;
 import main.enums.Gender;
 import main.enums.Permission;
 import main.info.user.User;
+import main.repositories.UserRepository;
 import main.validate.AuthorValidator;
 import main.validate.InfoValidator;
 import main.validate.Validator;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class InfoUpdateService {
+public class UserService {
 
     /** instance variable: người dùng sau khi đăng nhập */
     private User currentUser;
@@ -36,15 +37,18 @@ public class InfoUpdateService {
     /** Validate check quyền truy cập chức năng */
     Validator authorValidator = new AuthorValidator(currentUser, authorService);
 
-    public InfoUpdateService() {
+    /** Repository để thao tác với dữ liệu người dùng */
+    UserRepository userRepository = new UserRepository();
+
+    public UserService() throws IOException {
     }
 
-    public InfoUpdateService(User currentUser, List<User> userList) {
+    public UserService(User currentUser) {
         this.currentUser = currentUser;
-        this.userList = userList;
     }
 
-    public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError {
+
+    public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         // Check xem sửa mình hay sửa người
         try {
             if (user == null) {
@@ -80,15 +84,15 @@ public class InfoUpdateService {
             user.setGender(vo.getGender());
         }
         // status khong duoc sua
+
+        // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
+
         return user;
     }
 
     public List<User> createUser(List<User> userList, UserDetailVO vo) throws ExceptionInInitializerError, IOException {
-        // Thay the SQL
-        List<String> userNameList = new ArrayList<>();
-        for (User user : userList){
-            userNameList.add(user.getUserName());
-        }
+        // Stream
+        List<String> userNameList = userRepository.getAllUserNames();
 
         // validate input
         validator.validate(vo);
@@ -143,7 +147,7 @@ public class InfoUpdateService {
         return userList;
     }
 
-    public List<User> showUserList(List<User> userList){
+    public List<User> showUserList(List<User> userList) throws ExceptionInInitializerError {
         authorValidator.validate(PERMISSION);
         System.out.println("Danh sách người dùng:");
         for (User user : userList) {
@@ -155,13 +159,28 @@ public class InfoUpdateService {
     public void saveUserListToFile(User user) throws IOException {
         // Thay thế bằng SQL khi chuyển sang Spring
         // Ghi đè file data.txt với nội dung mới từ userList
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("user.txt", true))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
             String line = user.getUserId() + "," + user.getUserName() + "," + user.getPassword() + "," +
                     user.getFullName() + "," + user.getBirthDay() + "," + user.getIdCard() + "," +
                     user.getAddress() + "," + user.getGender();
             writer.write(line);
             writer.newLine();
     } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
+
+    public void overwriteUserListToFile(List<User> userList) throws IOException {
+        // Thay thế bằng SQL khi chuyển sang Spring
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt"))) {
+            for (User user : userList) {
+                String line = user.getUserId() + "," + user.getUserName() + "," + user.getPassword() + "," +
+                        user.getFullName() + "," + user.getBirthDay() + "," + user.getIdCard() + "," +
+                        user.getAddress() + "," + user.getGender();
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
     }

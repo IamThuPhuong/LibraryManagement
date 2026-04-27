@@ -1,0 +1,8 @@
+15242f54-9b5e-463d-b63d-d0706f5d231c,s2thuphuongs2,12345678,null,1970-01-01,,,null
+1dcd8077-b04c-40a1-a11e-9a11a8e29eed,testTaoNguoiDung,testTaoNguoiDung,Nguyen Van A,1970-01-01,0120910232131,02/A1, Duong Nguyen Thuong Hien, Quan 3,MALE
+d3df9a8c-9637-414f-916a-c3651f3bb719,s2thuphuongs2,12345678,null,1970-01-01,,,null
+255a2325-0e50-4f09-903d-87d39e843188,s2thuphuongs2,123456789,null,1970-01-01,,,null
+7f10fca9-5a81-4f52-a9d7-1df1d305e353,s2thuphuongs2,123456789,null,1970-01-01,,,null
+e8a887dd-b0b0-4bfe-91cd-7344236b32cf,tricho,987654321,Pham Minh Tri,1970-01-01,123345678,So A, Duong BBB, TPHCM,MALE
+44d2b463-e2ec-40ca-9d04-002002101aa4,s2thuphuongs2,12345678,null,1970-01-01,,,null
+ba355766-6c26-4aa0-912b-c886f8ea8ed0,s2thuphuongs2,123456789,null,1970-01-01,,,null

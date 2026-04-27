@@ -2,8 +2,9 @@ package test.service;
 
 import main.enums.Gender;
 import main.info.user.User;
+import main.repositories.UserRepository;
 import main.service.AuthenService;
-import main.service.InfoUpdateService;
+import main.service.UserService;
 import main.vo.UserDetailVO;
 
 import java.io.IOException;
@@ -47,16 +48,17 @@ public class AuthorServiceTest {
             chosenService = input.nextLine();
 
             AuthenService authenService = new AuthenService();
-            InfoUpdateService infoUpdateService = new InfoUpdateService(currentUser, USERLIST);
+            UserService userService = new UserService(currentUser);
             AuthorServiceTest authorServiceTest1 = new AuthorServiceTest();
+            UserRepository  userRepository = new UserRepository();
             switch (chosenService) {
                 case "1":
                     authorServiceTest1.createUser();
                 case "2":
-                    infoUpdateService.showUserList(USERLIST);
+                    userRepository.getAllUsers().forEach(user -> System.out.println("Username: " + user.getUserName() + " - FullName: " + user.getFullName()));
                     System.out.println("Nhập username của người dùng muốn cập nhật:");
                     String username = input.nextLine();
-                    User userToUpdate = authenService.findUser(USERLIST, username);
+                    User userToUpdate = authenService.findUser(username);
                     authorServiceTest1.updateUser(userToUpdate);
                 case "3":
                     authorServiceTest1.updateUser(currentUser);
@@ -81,7 +83,7 @@ public class AuthorServiceTest {
         String password = input.nextLine();
 
         AuthenService authenService = new AuthenService();
-        User user = authenService.loginService(USERLIST, username, password);
+        User user = authenService.loginService(username, password);
         currentUser = user;
         return user;
     }
@@ -90,7 +92,7 @@ public class AuthorServiceTest {
      * Tạo user phía màn hình
      */
     public void createUser() throws IOException {
-        InfoUpdateService infoUpdateService = new InfoUpdateService();
+        UserService userService = new UserService();
         AuthenService authenService = new AuthenService();
         // Thay thế màn hình=> form nhập thông tin người dùng
         UserDetailVO userDetailVO = new UserDetailVO();
@@ -139,7 +141,7 @@ public class AuthorServiceTest {
         userDetailVO.setGender(genderEnum);
 
 
-        USERLIST = infoUpdateService.createUser(USERLIST, userDetailVO);
+        USERLIST = userService.createUser(USERLIST, userDetailVO);
         System.out.println("Tạo người dùng thành công! Thông tin người dùng mới:");
         System.out.println("Username: " + username);
 
@@ -156,7 +158,7 @@ public class AuthorServiceTest {
     /**
      * Cập nhật user phía màn hình
      */
-    public void updateUser(User user) {
+    public void updateUser(User user) throws IOException {
 
         //====[START] MAN HINH
         UserDetailVO vo = new UserDetailVO();
@@ -192,7 +194,7 @@ public class AuthorServiceTest {
                     vo.setFullName(newFullName);
                     break;
                 case "4":
-                    System.out.println("Nhập birthday mới (yyyy-MM-dd):");
+                    System.out.println("Nhập birthday mới (dd-MM-yyyy):");
                     String newBirthDay = input.nextLine();
                     vo.setBirthDay(newBirthDay);
                     break;
@@ -227,8 +229,8 @@ public class AuthorServiceTest {
 
         // =[END]=MAN HINH
 
-        InfoUpdateService infoUpdateService = new InfoUpdateService();
-        infoUpdateService.updateUser(user, vo);
+        UserService userService = new UserService();
+        userService.updateUser(user, vo);
 
         System.out.println("Cập nhật thông tin thành công! Thông tin mới:");
         System.out.println("Username: " + user.getUserName());

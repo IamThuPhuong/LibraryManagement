@@ -2,7 +2,9 @@ package main.vo;
 
 import main.constants.AuthorConstants;
 import main.enums.Gender;
+import main.repositories.UserRepository;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class UserDetailVO {
@@ -13,6 +15,7 @@ public class UserDetailVO {
     private String idCard = AuthorConstants.INIT_STRING;
     private String address = AuthorConstants.INIT_STRING;
     private Gender gender = Gender.OTHER;
+    private UserRepository userRepository = new UserRepository();
 
     public UserDetailVO() {
     }
@@ -22,6 +25,19 @@ public class UserDetailVO {
     }
 
     public void setUserName(String userName) {
+        // TODO : check lại chỗ này làm đúng chưa
+        try{
+            userRepository.getAllUserNames().forEach(existingUserName -> {
+                if (existingUserName.equals(userName)) {
+                    System.out.println("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+                    return;
+                }
+            });
+        } catch (IOException e) {
+            System.out.println("Lỗi khi lấy danh sách người dùng: " + e.getMessage());
+            return;
+        }
+
         this.userName = userName;
     }
 

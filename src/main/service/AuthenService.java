@@ -2,43 +2,52 @@ package main.service;
 
 import main.constants.AuthorConstants;
 import main.info.user.User;
+import main.repositories.UserRepository;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class AuthenService {
+
+    private UserRepository userRepository = new UserRepository();
     public String USER_ID = "0";
-    public String token = "";
     Scanner input = new Scanner(System.in);
 
 
-    public User loginService(List<User> users, String userName, String password){
-        boolean checkLogin = false;
-        AuthenService authenService = new AuthenService();
-        User foundedUser = authenService.findUser(users, userName);
-        checkLogin = checkLogin(foundedUser, userName, password);
 
-        if(checkLogin){
+    public User loginService(String userName, String password) {
+        User foundedUser = null;
+        try {
+            foundedUser = userRepository.findByUserName(userName);
+        } catch (IOException e) {
+            System.out.println("Lỗi khi tìm kiếm người dùng: " + e.getMessage());
+            return null;
+        }
+        if(foundedUser != null && checkLogin(foundedUser, userName, password)){
             USER_ID = foundedUser.getUserId();
             return foundedUser;
         } else {
+            System.out.println("Đăng nhập thất bại!");
             return null;
         }
     }
 
-
-
-    public User findUser(List<User> listUser, String userNameInput){
-        for(User user : listUser) {
-            if (user.getUserName().equals(userNameInput)) {
-                return user;
-            }
+    public User findUser(String userNameInput)  {
+        User foundedUser;
+        try{
+            foundedUser = userRepository.findByUserName(userNameInput);
+        } catch (IOException e) {
+            System.out.println("Lỗi khi lấy danh sách người dùng: " + e.getMessage());
+            return null;
+        }
+        if (foundedUser != null) {
+            return foundedUser;
         }
         System.out.println("Không tồn tại người dùng này!");
         return null;
     }
 
-    public boolean checkLogin(User user, String userNameInput, String passwordInput) throws NullPointerException {
+    public boolean checkLogin(User user, String userNameInput, String passwordInput) {
         try {
             if (user == null) {
                 throw new NullPointerException("Không tồn tại người dùng này!");
