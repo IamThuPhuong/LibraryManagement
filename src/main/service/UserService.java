@@ -160,11 +160,10 @@ public class UserService {
         // Thay thế bằng SQL khi chuyển sang Spring
         // Ghi đè file data.txt với nội dung mới từ userList
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
-            String line = user.getUserId() + "," + user.getUserName() + "," + user.getPassword() + "," +
-                    user.getFullName() + "," + user.getBirthDay() + "," + user.getIdCard() + "," +
-                    user.getAddress() + "," + user.getGender();
+            String line = "\n" + user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
+                    user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
+                    user.getAddress() + "|" + user.getGender();
             writer.write(line);
-            writer.newLine();
     } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }

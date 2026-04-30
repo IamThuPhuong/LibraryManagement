@@ -36,20 +36,8 @@ public class UserRepository {
         }
 
     }
-    public List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers() {
         return this.stream().toList();
-    }
-
-    public List<User> getUsers9x() throws IOException {
-        return this.stream()
-                .filter(user -> user.getBirthDay().getYear() >= 1990 && user.getBirthDay().getYear() < 2000)
-                .toList();
-    }
-
-    public List<User> getFemaleUsers() throws IOException {
-        return this.stream()
-                .filter(user -> user.getGender() == Gender.FEMALE)
-                .toList();
     }
 
     public User findByUserName(String userName) throws IOException {

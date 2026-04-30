@@ -14,7 +14,6 @@ import java.util.Scanner;
 
 public class AuthorServiceTest {
     private final UserRepository userRepository = new UserRepository();
-    public static String tokenClientSide = "";
     public static Scanner input = new Scanner(System.in);
     public static List<User> USERLIST = new ArrayList<>();
     public static User currentUser = new User();
@@ -49,7 +48,6 @@ public class AuthorServiceTest {
             chosenService = input.nextLine();
 
             AuthenService authenService = new AuthenService();
-            UserService userService = new UserService(currentUser);
             AuthorServiceTest authorServiceTest1 = new AuthorServiceTest();
             UserRepository  userRepository = new UserRepository();
             switch (chosenService) {

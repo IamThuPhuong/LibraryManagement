@@ -4,7 +4,6 @@ import main.constants.AuthorConstants;
 import main.enums.Gender;
 import main.repositories.UserRepository;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 public class UserDetailVO {
@@ -15,7 +14,6 @@ public class UserDetailVO {
     private String idCard = AuthorConstants.INIT_STRING;
     private String address = AuthorConstants.INIT_STRING;
     private Gender gender = Gender.OTHER;
-    private UserRepository userRepository = new UserRepository();
 
     public UserDetailVO() {
     }
@@ -93,16 +91,6 @@ public class UserDetailVO {
     }
 
     public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public UserDetailVO(String userName, String password, String fullName, LocalDate birthDay, String idCard, String address, Gender gender) {
-        this.userName = userName;
-        this.password = password;
-        this.fullName = fullName;
-        this.birthDay = birthDay;
-        this.idCard = idCard;
-        this.address = address;
         this.gender = gender;
     }
 }
