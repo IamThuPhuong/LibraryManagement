@@ -3,26 +3,30 @@ package main.service;
 import main.constants.AuthorConstants;
 import main.info.user.User;
 import main.repositories.UserRepository;
+import main.validate.UserChangePasswordDataValidator;
+import main.validate.UserPasswordValidator;
+import main.validate.Validator;
+import main.vo.UserChangePasswordVO;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class AuthenService {
 
-    private UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository();
     public String USER_ID = "0";
     Scanner input = new Scanner(System.in);
 
+    /** Validate check password hợp lệ khi tạo mới user */
+    Validator<String> passwordCreateValidator = new UserPasswordValidator();
+
+    /** Validate check password hợp lệ khi cập nhật password */
+    Validator<UserChangePasswordVO> passwordUpdateValidator = new UserChangePasswordDataValidator();
 
 
     public User loginService(String userName, String password) {
         User foundedUser = null;
-        try {
-            foundedUser = userRepository.findByUserName(userName);
-        } catch (IOException e) {
-            System.out.println("Lỗi khi tìm kiếm người dùng: " + e.getMessage());
-            return null;
-        }
+        foundedUser = userRepository.findByUserName(userName);
         if(foundedUser != null && checkLogin(foundedUser, userName, password)){
             USER_ID = foundedUser.getUserId();
             return foundedUser;
@@ -34,12 +38,7 @@ public class AuthenService {
 
     public User findUser(String userNameInput)  {
         User foundedUser;
-        try{
-            foundedUser = userRepository.findByUserName(userNameInput);
-        } catch (IOException e) {
-            System.out.println("Lỗi khi lấy danh sách người dùng: " + e.getMessage());
-            return null;
-        }
+        foundedUser = userRepository.findByUserName(userNameInput);
         if (foundedUser != null) {
             return foundedUser;
         }
@@ -80,4 +79,17 @@ public class AuthenService {
         }
     }
 
+    public boolean changePassword(User user, UserChangePasswordVO changePasswordVO) throws IllegalArgumentException, IOException {
+        passwordUpdateValidator.validate(changePasswordVO);
+        String newPass = changePasswordVO.getNewPassword();
+        String confirmPass = changePasswordVO.getNewPassword();
+        if (!newPass.equals(confirmPass)) {
+            System.out.println("Mật khẩu xác nhận không khớp!");
+            return false;
+        }
+        user.setPassword(newPass);
+        userRepository.updateUser(user);
+        System.out.println("Đổi mật khẩu thành công!");
+        return true;
+    }
 }

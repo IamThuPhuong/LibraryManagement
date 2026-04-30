@@ -1,8 +1,12 @@
 package main.validate;
 
+import main.constants.ErrConstants;
 import main.enums.Permission;
 import main.info.user.User;
 import main.service.AuthorService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Validator để kiểm tra quyền hạn (authorization) của người dùng.
@@ -14,7 +18,7 @@ import main.service.AuthorService;
  * @version 1.0
  * @since 2026-04-25
  */
-public class AuthorValidator implements Validator {
+public class AuthorValidator implements Validator<Permission> {
     private User currentUser = new User();
     AuthorService authorService = new AuthorService();
 
@@ -36,15 +40,15 @@ public class AuthorValidator implements Validator {
      * @throws IllegalArgumentException nếu currentUser hoặc permission null
      * @throws ExceptionInInitializerError nếu không có quyền
      */
-    public void validate(Object permission){
+    public List<String> validate(Permission permission){
+        List<String> resultCheck = new ArrayList<>();
         if (permission == null){
-            throw new IllegalArgumentException("Lỗi phân quyền rồi sao permission null rồi???");
+            resultCheck.add(ErrConstants.PERMISSION_NULL);
         }
-        try{
-            checkAssesible((Permission)permission);
-        } catch (ExceptionInInitializerError e){
-            System.out.println(e);
+        if (!checkAssesible(permission)){
+            resultCheck.add(ErrConstants.PERMISSION_DENIED);
         }
+        return resultCheck;
     }
 
     /**
@@ -53,18 +57,19 @@ public class AuthorValidator implements Validator {
      * @param permission quyền cần kiểm tra
      * @throws ExceptionInInitializerError nếu không có quyền
      */
-    private void checkAssesible(Permission permission){
+    private boolean checkAssesible(Permission permission){
         boolean isAccessable = false;
         try{
             isAccessable = authorService.checkPermission(currentUser, permission);
         } catch (NullPointerException e){
             System.out.println(e.getMessage());
-            return;
+            return false;
         }
 
         if (!isAccessable){
-            throw new ExceptionInInitializerError("Bạn không có quyền sử dụng tính năng này!");
+            return false;
         }
+        return true;
     }
 
 }

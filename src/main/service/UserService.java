@@ -5,15 +5,12 @@ import main.enums.Gender;
 import main.enums.Permission;
 import main.info.user.User;
 import main.repositories.UserRepository;
-import main.validate.AuthorValidator;
-import main.validate.InfoValidator;
-import main.validate.Validator;
+import main.validate.*;
 import main.vo.UserDetailVO;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,9 +19,6 @@ public class UserService {
     /** instance variable: người dùng sau khi đăng nhập */
     private User currentUser;
 
-    /** instance variable: danh sách người dùng */
-    private List<User> userList;
-
     /** Common xử lý phân quyền */
     private static AuthorService authorService = new AuthorService();
 
@@ -32,10 +26,16 @@ public class UserService {
     private static final Permission  PERMISSION = Permission.MANAGE_USER;
 
     /** Validate check thông tin user hợp lệ */
-    Validator validator = new InfoValidator(userList);
+    Validator<UserDetailVO> userValidator = new UserValidator();
 
     /** Validate check quyền truy cập chức năng */
-    Validator authorValidator = new AuthorValidator(currentUser, authorService);
+    Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
+
+    /** Validate check thông tin user hợp lệ khi tạo mới user */
+    Validator<User> userCreateValidator = new UserCreateDataValidator();
+
+    /** Validate check thông tin user hợp lệ khi cập nhật user */
+    Validator<User> userUpdateValidator = new UserCreateDataValidator();
 
     /** Repository để thao tác với dữ liệu người dùng */
     UserRepository userRepository = new UserRepository();
@@ -49,6 +49,7 @@ public class UserService {
 
 
     public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+        userUpdateValidator.validate(user);
         // Check xem sửa mình hay sửa người
         try {
             if (user == null) {
@@ -90,12 +91,12 @@ public class UserService {
         return user;
     }
 
-    public List<User> createUser(List<User> userList, UserDetailVO vo) throws ExceptionInInitializerError, IOException {
+    public User createUser(UserDetailVO vo) throws ExceptionInInitializerError, IOException {
         // Stream
         List<String> userNameList = userRepository.getAllUserNames();
 
         // validate input
-        validator.validate(vo);
+        userValidator.validate(vo);
         if (currentUser != null){
             authorValidator.validate(PERMISSION);
         }
@@ -139,12 +140,10 @@ public class UserService {
             newUser.setGender(vo.getGender());
         }
 
-        userList.add(newUser);
-
         // add vao data.txt sau khi chuyển sang Spring sẽ add vào DB
         saveUserListToFile(newUser);
 
-        return userList;
+        return newUser;
     }
 
     public List<User> showUserList(List<User> userList) throws ExceptionInInitializerError {

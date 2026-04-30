@@ -3,6 +3,13 @@ package main.constants;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Lớp AuthorConstants chứa các hằng số liên quan đến tác giả và quản lý người dùng trong hệ thống.
+ *
+ * @author Thu Phương
+ * @version 1.0
+ * @since 2026-04-30
+ */
 public class AuthorConstants {
 
     /** Cờ đăng xuất */

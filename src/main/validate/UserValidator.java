@@ -1,12 +1,14 @@
 package main.validate;
 
 import main.constants.AuthorConstants;
+import main.constants.ErrConstants;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.vo.UserDetailVO;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,18 +28,13 @@ import java.util.List;
  * @see UserDetailVO
  * @see User
  */
-public class InfoValidator implements Validator {
-    private List<User> userList;
+public class UserValidator implements Validator<UserDetailVO> {
     private UserRepository userRepository = new UserRepository();
 
     /**
      * Constructor khởi tạo InfoValidator với danh sách người dùng hiện có.
-     *
-     * @param userList danh sách {@link User} để kiểm tra trùng lặp username
      */
-    public InfoValidator(List<User> userList) {
-        this.userList = userList;
-    }
+    public UserValidator() {}
 
     /**
      * Validate thông tin người dùng từ {@link UserDetailVO}.
@@ -52,50 +49,56 @@ public class InfoValidator implements Validator {
      * @see #containsSpecialChar(String)
      * @see #isBirthdayInFuture(LocalDate)
      */
-    public void validate(Object target) {
-        UserDetailVO obj = (UserDetailVO) target;
+    @Override
+    public List<String> validate(UserDetailVO target) {
+        // UserDetailVO obj = (UserDetailVO) target; ==> dùng cách này cast Object thì khi compile không lỗi nhưng khi người dùng chạy sẽ lỗi
+        // Dùng generic để đảm bảo type safety, tránh lỗi ClassCastException khi cast Object.
+        // Có gì báo lỗi trên compiler luôn
+
+        UserPasswordValidator userPasswordValidator = new UserPasswordValidator();
+
+        List<String> resultCheck = new ArrayList<>();
+        resultCheck.addAll(userPasswordValidator.validate(target.getPassword()));
 
         // Validate UserName
-        if (obj.getUserName() == null) {
+        if (target.getUserName() == null) {
             System.out.println("UserName không được null!");
+            resultCheck.add(ErrConstants.USERNAME_CAN_NOT_NULL);
         } else {
             // Check ký tự đặc biệt
-            if (containsSpecialChar(obj.getUserName())) {
+            if (containsSpecialChar(target.getUserName())) {
                 System.out.println("UserName không được chứa ký tự đặc biệt!");
+                resultCheck.add(ErrConstants.USERNAME_CANT_USE_SPECIAL_KEY);
             }
             // Check độ dài
-            if (!isValidLength(obj.getUserName())) {
+            if (!isValidLength(target.getUserName())) {
                 System.out.println("UserName vượt quá độ dài cho phép (" + AuthorConstants.USER_MAX_LENGTH + " ký tự)");
+                resultCheck.add(ErrConstants.USERNAME_MUSTBE_EXACTLY_LENGTH);
+            }
+        }
+        // Validate Password
+        if (target.getPassword() == null) {
+            System.out.println("Password không được null!");
+            resultCheck.add(ErrConstants.PASSWORD_CAN_NOT_NULL);
+        } else {
+            if (containsSpecialChar(target.getPassword())) {
+                System.out.println("Password không được chứa ký tự đặc biệt!");
+                resultCheck.add(ErrConstants.PASSWORD_CANT_USE_SPECIAL_KEY);
             }
         }
 
         // Check trùng lặp username
-        try {
-            if (userRepository.getAllUserNames().contains(obj.getUserName())) {
-                throw new IllegalArgumentException("Username đã tồn tại!");
-            }
-        } catch (IOException e) {
-            System.out.println("Lỗi khi lấy danh sách người dùng: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-
-        // Validate Password
-        if (obj.getPassword() == null) {
-            System.out.println("Password không được null!");
-        } else {
-            if (containsSpecialChar(obj.getPassword())) {
-                System.out.println("Password không được chứa ký tự đặc biệt!");
-            }
-            if (!isValidLength(obj.getPassword())) {
-                System.out.println("Password vượt quá độ dài cho phép!");
-            }
+        if (userRepository.findByUserName(target.getUserName()) != null) {
+            System.out.println("Tên người dùng đã tồn tại");
+            resultCheck.add(ErrConstants.USERNAME_EXISTED);
         }
 
         // Validate BirthDay
-        if (isBirthdayInFuture(obj.getBirthDay())) {
+        if (isBirthdayInFuture(target.getBirthDay())) {
             System.out.println("Ngày sinh không được lớn hơn ngày hôm nay!");
+            resultCheck.add(ErrConstants.BIRTHDAY_AFTER_TODAY);
         }
+        return resultCheck;
     }
 
     /**

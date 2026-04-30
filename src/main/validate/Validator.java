@@ -1,5 +1,9 @@
 package main.validate;
 
+import main.vo.UserChangePasswordVO;
+
+import java.util.List;
+
 /**
  * Interface định nghĩa hợp đồng cho các class validator.
  * Các class implement interface này phải cung cấp logic validate cho đối tượng target.
@@ -8,7 +12,7 @@ package main.validate;
  * @version 1.0
  * @since 2026-04-19
  */
-public interface Validator {
+public interface Validator<T> {
 
     /**
      * Validate thông tin của đối tượng target.
@@ -18,13 +22,10 @@ public interface Validator {
      * hoặc throw exception tùy theo implementation.
      *
      * <p><b>Lưu ý:</b> Hiện tại implementation chỉ in lỗi ra console.
-     * Khi chuyển sang Spring, nên cải thiện bằng cách collect lỗi
-     * vào list và return, hoặc throw checked exception.
      *
      * @param target đối tượng cần validate (thường là VO hoặc DTO)
      * @throws ClassCastException nếu target không phải kiểu mong đợi
      * @throws NullPointerException nếu target là null và implementation không handle
-     * @see InfoValidator#validate(Object)
      */
-    public void validate(Object target);
+    public List<String> validate(T target);
 }
