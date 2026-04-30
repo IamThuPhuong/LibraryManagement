@@ -25,19 +25,6 @@ public class UserDetailVO {
     }
 
     public void setUserName(String userName) {
-        // TODO : check lại chỗ này làm đúng chưa
-        try{
-            userRepository.getAllUserNames().forEach(existingUserName -> {
-                if (existingUserName.equals(userName)) {
-                    System.out.println("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
-                    return;
-                }
-            });
-        } catch (IOException e) {
-            System.out.println("Lỗi khi lấy danh sách người dùng: " + e.getMessage());
-            return;
-        }
-
         this.userName = userName;
     }
 

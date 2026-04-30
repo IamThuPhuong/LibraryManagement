@@ -2,8 +2,10 @@ package main.validate;
 
 import main.constants.AuthorConstants;
 import main.info.user.User;
+import main.repositories.UserRepository;
 import main.vo.UserDetailVO;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,6 +28,7 @@ import java.util.List;
  */
 public class InfoValidator implements Validator {
     private List<User> userList;
+    private UserRepository userRepository = new UserRepository();
 
     /**
      * Constructor khởi tạo InfoValidator với danh sách người dùng hiện có.
@@ -64,6 +67,17 @@ public class InfoValidator implements Validator {
             if (!isValidLength(obj.getUserName())) {
                 System.out.println("UserName vượt quá độ dài cho phép (" + AuthorConstants.USER_MAX_LENGTH + " ký tự)");
             }
+        }
+
+        // Check trùng lặp username
+        try {
+            if (userRepository.getAllUserNames().contains(obj.getUserName())) {
+                throw new IllegalArgumentException("Username đã tồn tại!");
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi khi lấy danh sách người dùng: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
 
         // Validate Password

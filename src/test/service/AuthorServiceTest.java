@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AuthorServiceTest {
+    private final UserRepository userRepository = new UserRepository();
     public static String tokenClientSide = "";
     public static Scanner input = new Scanner(System.in);
     public static List<User> USERLIST = new ArrayList<>();
@@ -99,8 +100,8 @@ public class AuthorServiceTest {
         System.out.println("Form nhập thông tin người dùng:");
         System.out.print("1. Username (*):");
         String username = input.nextLine();
-        while (username.isEmpty()) {
-            System.out.println("Username không được để trống! Vui lòng nhập lại:");
+        while (username.isEmpty() || userRepository.findByUserName(username) != null) {
+            System.out.println("Username không hợp lệ hoặc đã tồn tại! Vui lòng nhập lại:");
             username = input.nextLine();
         }
         System.out.print("\n2. Password (*):");
@@ -141,7 +142,7 @@ public class AuthorServiceTest {
         userDetailVO.setGender(genderEnum);
 
 
-        USERLIST = userService.createUser(USERLIST, userDetailVO);
+        userService.createUser(USERLIST, userDetailVO);
         System.out.println("Tạo người dùng thành công! Thông tin người dùng mới:");
         System.out.println("Username: " + username);
 

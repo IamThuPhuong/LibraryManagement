@@ -11,10 +11,10 @@ import java.util.stream.Stream;
 
 public class UserRepository {
     public Stream<User> stream() {
-        Path path = Path.of("users.txt");
+        Path path = Path.of("src/test/data/user.txt");
         try {
             return Files.lines(path).map(line -> {
-                String[] parts = line.split(",");
+                String[] parts = line.split("\\|");
                 if (parts.length != 8) {
                     throw new RuntimeException("Invalid user data format: " + line);
                 }
