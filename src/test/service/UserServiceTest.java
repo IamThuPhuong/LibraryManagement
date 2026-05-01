@@ -1,26 +1,31 @@
 package test.service;
 
 import main.enums.Gender;
+import main.enums.UserRole;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
 import main.service.UserService;
+import main.validate.AuthorValidator;
 import main.vo.UserDetailVO;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import static test.service.AuthorServiceTest.input;
+import static test.service.AuthenServiceTest.input;
 
 public class UserServiceTest {
     private final UserRepository userRepository = new UserRepository();
-    private static List<User> USERLIST = new ArrayList<>();
 
     /**
      * Tạo user phía màn hình
      */
     public void createUser() throws IOException {
+        User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+        // Validate phía màn hình
+//        if (currentUser.getUserRole() != UserRole.ADMIN && currentUser.getUserRole() != UserRole.MANAGER) {
+//            System.out.println("Bạn không có quyền tạo người dùng mới!");
+//            return;
+//        }
         UserService userService = new UserService();
         AuthenService authenService = new AuthenService();
         // Thay thế màn hình=> form nhập thông tin người dùng
@@ -40,7 +45,7 @@ public class UserServiceTest {
         }
         System.out.print("\n3. Fullname:");
         String fullName = input.nextLine();
-        System.out.print("\n4. BirthDay (yyyy-MM-dd):");
+        System.out.print("\n4. BirthDay (dd/MM/yyyy):");
         String birthDay = input.nextLine();
         System.out.print("\n5. Id Card:");
         String idCard = input.nextLine();
@@ -60,6 +65,43 @@ public class UserServiceTest {
                 genderEnum = Gender.OTHER;
         }
 
+
+        if (currentUser != null) {
+            System.out.println("Bạn đang đăng nhập với quyền: " + currentUser.getUserRole());
+            if (currentUser.getUserRole() == UserRole.ADMIN) {
+                System.out.println("Chọn quyền:");
+                System.out.println("\n8. User Role (Chose: 1.Admin /2.Manager /3.Officer /4.Reader):");
+                switch (input.nextLine()) {
+                    case "1":
+                        userDetailVO.setUserRole(UserRole.ADMIN);
+                        break;
+                    case "2":
+                        userDetailVO.setUserRole(UserRole.MANAGER);
+                        break;
+                    case "3":
+                        userDetailVO.setUserRole(UserRole.OFFICER);
+                        break;
+                    default:
+                        userDetailVO.setUserRole(UserRole.READER);
+                }
+            } else if (currentUser.getUserRole() == UserRole.MANAGER) {
+                System.out.println("Chọn quyền:");
+                System.out.println("\n8. User Role (Chose: 1.Officer /2.Reader):");
+                switch (input.nextLine()) {
+                    case "1":
+                        userDetailVO.setUserRole(UserRole.OFFICER);
+                        break;
+                    default:
+                        userDetailVO.setUserRole(UserRole.READER);
+                }
+            } else {
+                System.out.println("Bạn không có quyền tạo người dùng mới!");
+                return;
+            }
+        } else {
+            System.out.println("Bạn đang đăng ký tài khoản mới!");
+        }
+
         // Set thông tin người dùng từ form vào UserDetailVO
         userDetailVO.setUserName(username);
         userDetailVO.setPassword(password);
@@ -69,7 +111,7 @@ public class UserServiceTest {
         userDetailVO.setAddress(address);
         userDetailVO.setGender(genderEnum);
 
-
+        // Service
         userService.createUser(userDetailVO);
         System.out.println("Tạo người dùng thành công! Thông tin người dùng mới:");
         System.out.println("Username: " + username);
@@ -77,8 +119,9 @@ public class UserServiceTest {
         System.out.println("Bạn có muốn đăng nhập ngay không? (Y/N)");
         String loginChoice = input.nextLine();
         if (loginChoice.equalsIgnoreCase("Y")) {
-            AuthorServiceTest authorServiceTest = new AuthorServiceTest();
-            authorServiceTest.loginLibrary();
+            AuthenServiceTest authenServiceTest = new AuthenServiceTest();
+            // Service
+            authenServiceTest.loginLibrary();
         } else {
             System.out.println("Bạn có thể đăng nhập sau từ menu chính.");
         }
@@ -172,15 +215,4 @@ public class UserServiceTest {
         System.out.println("Gender: " + user.getGender());
 
     }
-
-    public void changePassword(User user) throws IOException {
-        System.out.println("Nhập mật khẩu mới:");
-        String newPassword = input.nextLine();
-        while (newPassword.isEmpty()) {
-            System.out.println("Mật khẩu không được để trống! Vui lòng nhập lại:");
-            newPassword = input.nextLine();
-        }
-        // TODO: Làm tiếp phần đổi mật khẩu
-    }
-
 }

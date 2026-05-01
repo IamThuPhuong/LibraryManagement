@@ -1,6 +1,7 @@
 package main.repositories;
 
 import main.enums.Gender;
+import main.enums.UserRole;
 import main.info.user.User;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class UserRepository {
         try {
             return Files.lines(path).map(line -> {
                 String[] parts = line.split("\\|");
-                if (parts.length != 8) {
+                if (parts.length != 9) {
                     throw new RuntimeException("Invalid user data format: " + line);
                 }
                 User user = new User();
@@ -29,6 +30,9 @@ public class UserRepository {
                 if (parts[7] != null && !parts[7].isEmpty() && !parts[7].equals("null")) {
                     user.setGender(Gender.valueOf(parts[7]));
                 }
+                if (parts[8] != null && !parts[8].isEmpty() && !parts[8].equals("null")) {
+                    user.setUserRole(UserRole.valueOf(parts[8]));
+                }
                 return user;
             });
         } catch (IOException e) {
@@ -38,6 +42,13 @@ public class UserRepository {
     }
     public List<User> getAllUsers() {
         return this.stream().toList();
+    }
+
+    public User findByUserId(String userId) {
+        return this.stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst()
+                .orElse(null);
     }
 
     public User findByUserName(String userName) {

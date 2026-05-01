@@ -1,5 +1,6 @@
 package main.service;
 
+import main.constants.AuthenConstants;
 import main.constants.AuthorConstants;
 import main.info.user.User;
 import main.repositories.UserRepository;
@@ -14,7 +15,7 @@ import java.util.Scanner;
 public class AuthenService {
 
     private final UserRepository userRepository = new UserRepository();
-    public String USER_ID = "0";
+    public static String USER_ID = "0";
     Scanner input = new Scanner(System.in);
 
     /** Validate check password hợp lệ khi tạo mới user */
@@ -24,15 +25,15 @@ public class AuthenService {
     Validator<UserChangePasswordVO> passwordUpdateValidator = new UserChangePasswordDataValidator();
 
 
-    public User loginService(String userName, String password) {
-        User foundedUser = null;
+    public boolean loginService(String userName, String password) {
+        User foundedUser;
         foundedUser = userRepository.findByUserName(userName);
         if(foundedUser != null && checkLogin(foundedUser, userName, password)){
             USER_ID = foundedUser.getUserId();
-            return foundedUser;
+            return true;
         } else {
             System.out.println("Đăng nhập thất bại!");
-            return null;
+            return false;
         }
     }
 
@@ -72,7 +73,7 @@ public class AuthenService {
         int userAnswer = input.nextInt();
         input.nextLine();
         if(AuthorConstants.LOUGOUT_FLAG == userAnswer){
-            USER_ID = AuthorConstants.DEFAULT_USER;
+            USER_ID = AuthenConstants.DEFAULT_USER;
             return true;
         } else {
             return false;

@@ -3,6 +3,7 @@ package main.validate;
 import main.constants.ErrConstants;
 import main.enums.Permission;
 import main.info.user.User;
+import main.repositories.UserRepository;
 import main.service.AuthorService;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
  * @since 2026-04-25
  */
 public class AuthorValidator implements Validator<Permission> {
+    private final UserRepository userRepository = new UserRepository();
     private User currentUser = new User();
     AuthorService authorService = new AuthorService();
 

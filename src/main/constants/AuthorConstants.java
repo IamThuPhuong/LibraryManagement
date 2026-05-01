@@ -15,9 +15,6 @@ public class AuthorConstants {
     /** Cờ đăng xuất */
     public static final int LOUGOUT_FLAG = 1;
 
-    /** Cờ khách ghé website */
-    public static final String DEFAULT_USER = "0";
-
     /** Khởi tạo chuỗi */
     public static final String INIT_STRING = " ";
 

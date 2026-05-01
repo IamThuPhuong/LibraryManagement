@@ -3,6 +3,7 @@ package main.service;
 import main.constants.AuthorConstants;
 import main.enums.Gender;
 import main.enums.Permission;
+import main.enums.UserRole;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.validate.*;
@@ -16,8 +17,11 @@ import java.util.UUID;
 
 public class UserService {
 
+    /** Repository để thao tác với dữ liệu người dùng */
+    UserRepository userRepository = new UserRepository();
+
     /** instance variable: người dùng sau khi đăng nhập */
-    private User currentUser;
+    private User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
 
     /** Common xử lý phân quyền */
     private static AuthorService authorService = new AuthorService();
@@ -36,9 +40,6 @@ public class UserService {
 
     /** Validate check thông tin user hợp lệ khi cập nhật user */
     Validator<User> userUpdateValidator = new UserCreateDataValidator();
-
-    /** Repository để thao tác với dữ liệu người dùng */
-    UserRepository userRepository = new UserRepository();
 
     public UserService() throws IOException {
     }
@@ -92,6 +93,8 @@ public class UserService {
     }
 
     public User createUser(UserDetailVO vo) throws ExceptionInInitializerError, IOException {
+        authorValidator.validate(PERMISSION);
+        User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
         // Stream
         List<String> userNameList = userRepository.getAllUserNames();
 
@@ -140,6 +143,22 @@ public class UserService {
             newUser.setGender(vo.getGender());
         }
 
+        if (currentUser != null) {
+            if (currentUser.getUserRole().equals(UserRole.ADMIN)) {
+                newUser.setUserRole(vo.getUserRole());
+            } else if (currentUser.getUserRole().equals(UserRole.MANAGER)) {
+                if (vo.getUserRole().equals(UserRole.ADMIN)) {
+                    System.out.println("Bạn không có quyền tạo người dùng có vai trò ADMIN!");
+                    newUser.setUserRole(UserRole.OFFICER);
+                } else {
+                    newUser.setUserRole(vo.getUserRole());
+                }
+            }
+        } else {
+            // Nếu không có người dùng hiện tại (tức là đang tạo user đầu tiên), mặc định là READER
+            newUser.setUserRole(UserRole.READER);
+        }
+
         // add vao data.txt sau khi chuyển sang Spring sẽ add vào DB
         saveUserListToFile(newUser);
 
@@ -161,7 +180,7 @@ public class UserService {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
             String line = "\n" + user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
                     user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
-                    user.getAddress() + "|" + user.getGender();
+                    user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole();
             writer.write(line);
     } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());

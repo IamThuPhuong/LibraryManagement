@@ -2,7 +2,7 @@ package main.vo;
 
 import main.constants.AuthorConstants;
 import main.enums.Gender;
-import main.repositories.UserRepository;
+import main.enums.UserRole;
 
 import java.time.LocalDate;
 
@@ -14,6 +14,7 @@ public class UserDetailVO {
     private String idCard = AuthorConstants.INIT_STRING;
     private String address = AuthorConstants.INIT_STRING;
     private Gender gender = Gender.OTHER;
+    private UserRole userRole = UserRole.READER;
 
     public UserDetailVO() {
     }
@@ -92,5 +93,13 @@ public class UserDetailVO {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }
