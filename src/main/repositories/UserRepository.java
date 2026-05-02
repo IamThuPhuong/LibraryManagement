@@ -7,6 +7,7 @@ import main.info.user.User;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -64,7 +65,7 @@ public class UserRepository {
     }
 
     public void updateUser(User user) throws IOException {
-        List<User> users = this.getAllUsers();
+        List<User> users = new ArrayList<>(this.getAllUsers());
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUserId().equals(user.getUserId())) {
                 users.set(i, user);
@@ -75,15 +76,18 @@ public class UserRepository {
         Path path = Path.of("src/test/data/user.txt");
         StringBuilder sb = new StringBuilder();
         for (User u : users) {
-            sb.append(u.getUserId())
-                    .append(u.getUserName())
-                    .append(u.getPassword())
-                    .append(u.getFullName())
-                    .append(u.getBirthDay())
-                    .append(u.getIdCard())
-                    .append(u.getAddress())
-                    .append(u.getGender() != null ? u.getGender().name() : "null");
+            sb.append(u.getUserId()).append("|")
+                    .append(u.getUserName()).append("|")
+                    .append(u.getPassword()).append("|")
+                    .append(u.getFullName()).append("|")
+                    .append(u.getBirthDay()).append("|")
+                    .append(u.getIdCard()).append("|")
+                    .append(u.getAddress()).append("|")
+                    .append(u.getGender() != null ? u.getGender().name() : "null").append("|")
+                    .append(u.getUserRole() != null ? u.getUserRole().name() : "null")
+                    .append("\n");
         }
-        Files.writeString(path, String.join("|", sb) + "\n", StandardOpenOption.TRUNCATE_EXISTING);
+
+        Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
     }
 }

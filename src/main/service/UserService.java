@@ -27,7 +27,7 @@ public class UserService {
     private static AuthorService authorService = new AuthorService();
 
     /** Quyền truy cập class InfoUpdateService */
-    private static final Permission  PERMISSION = Permission.MANAGE_USER;
+    private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
 
     /** Validate check thông tin user hợp lệ */
     Validator<UserDetailVO> userValidator = new UserValidator();
@@ -50,17 +50,12 @@ public class UserService {
 
 
     public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+        authorValidator.validate(PERMISSION_OF_FUNCTION);
         userUpdateValidator.validate(user);
         // Check xem sửa mình hay sửa người
         try {
             if (user == null) {
                 throw new IllegalArgumentException("User cần cập nhật không tồn tại!");
-            }
-            if (currentUser == null) {
-                throw new IllegalArgumentException("Bạn chưa đăng nhập!");
-            }
-            if (!currentUser.equals(user)) {
-                authorValidator.validate(PERMISSION);
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -69,31 +64,32 @@ public class UserService {
             System.out.println(e.getMessage());
             return user; // Trả về user gốc nếu không có quyền
         }
-        if(!vo.getUserName().isEmpty()){
+        if(vo.getUserName() != null && !vo.getUserName().isEmpty()){
             user.setUserName(vo.getUserName());
         }
-        if (!vo.getFullName().isEmpty()){
+        if (vo.getFullName() != null && !vo.getFullName().isEmpty()){
             user.setFullName(vo.getFullName());
         }
         // password khong duoc nhap
-        if (!vo.getBirthDay().equals(user.getBirthDay())){
+        if (!vo.getBirthDay().equals(AuthorConstants.INIT_DATE)){
             user.setBirthDay(vo.getBirthDay());
         }
-        if (!vo.getAddress().isEmpty()){
+        if (vo.getAddress() != null && !vo.getAddress().isEmpty()){
             user.setAddress(vo.getAddress());
         }
-        if (!vo.getGender().equals(user.getGender())){
+        if (!vo.getGender().equals(Gender.OTHER)){
             user.setGender(vo.getGender());
         }
         // status khong duoc sua
 
         // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
+        userRepository.updateUser(user);
 
         return user;
     }
 
     public User createUser(UserDetailVO vo) throws ExceptionInInitializerError, IOException {
-        authorValidator.validate(PERMISSION);
+        authorValidator.validate(PERMISSION_OF_FUNCTION);
         User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
         // Stream
         List<String> userNameList = userRepository.getAllUserNames();
@@ -101,7 +97,7 @@ public class UserService {
         // validate input
         userValidator.validate(vo);
         if (currentUser != null){
-            authorValidator.validate(PERMISSION);
+            authorValidator.validate(PERMISSION_OF_FUNCTION);
         }
 
         // Create new user
@@ -166,7 +162,7 @@ public class UserService {
     }
 
     public List<User> showUserList(List<User> userList) throws ExceptionInInitializerError {
-        authorValidator.validate(PERMISSION);
+        authorValidator.validate(PERMISSION_OF_FUNCTION);
         System.out.println("Danh sách người dùng:");
         for (User user : userList) {
             user.toString();

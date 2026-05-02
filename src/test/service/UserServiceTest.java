@@ -152,9 +152,7 @@ public class UserServiceTest {
 
             switch (chosenInfo) {
                 case "1":
-                    System.out.println("Nhập username mới:");
-                    String newUsername = input.nextLine();
-                    vo.setUserName(newUsername);
+                    System.out.println("Username không được thay đổi!");
                     break;
                 case "2":
                     System.out.println("Nhập password mới:");
@@ -167,7 +165,7 @@ public class UserServiceTest {
                     vo.setFullName(newFullName);
                     break;
                 case "4":
-                    System.out.println("Nhập birthday mới (dd-MM-yyyy):");
+                    System.out.println("Nhập birthday mới (dd/MM/yyyy):");
                     String newBirthDay = input.nextLine();
                     vo.setBirthDay(newBirthDay);
                     break;
