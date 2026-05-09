@@ -97,7 +97,7 @@ public class MainMenuTest {
                     authenServiceTest.changePassword(currentUser);
                     break;
                 case "9":
-                    boolean checkLogout = authenService.logoutService(currentUser);
+                    boolean checkLogout = authenService.logoutService();
                     if (checkLogout) {
                         currentUser = null; // TODO - sau này sẽ xóa token client side, hoặc xóa session server side
                         System.out.println("Đăng xuất thành công!");

@@ -51,17 +51,11 @@ public class UserServiceTest {
         String address = input.nextLine();
         System.out.print("\n7. Gender (Chose: 1.Male /2.Female):");
         String gender = input.nextLine();
-        Gender genderEnum;
-        switch (gender) {
-            case "1":
-                genderEnum = Gender.MALE;
-                break;
-            case "2":
-                genderEnum = Gender.FEMALE;
-                break;
-            default:
-                genderEnum = Gender.OTHER;
-        }
+        Gender genderEnum = switch (gender) { // Sử dụng switch expression của Java 14+ để gán giá trị enum
+            case "1" -> Gender.MALE;
+            case "2" -> Gender.FEMALE;
+            default -> Gender.OTHER;
+        };
 
 
         if (currentUser != null) {
@@ -133,7 +127,7 @@ public class UserServiceTest {
 
         //====[START] MAN HINH
         UserDetailVO vo = new UserDetailVO();
-        String chosenInfo = "";
+        String chosenInfo;
         do {
             System.out.println("=========THÔNG TIN NGƯỜI DÙNG===========");
             System.out.println("1. Username: " + user.getUserName());

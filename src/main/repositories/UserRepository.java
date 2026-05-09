@@ -77,7 +77,7 @@ public class UserRepository {
                 .toList();
     }
 
-    public void saveUserListToFile(User user) throws IOException {
+    public void saveUserListToFile(User user)  {
         // Thay thế bằng SQL khi chuyển sang Spring
         // Ghi đè file data.txt với nội dung mới từ userList
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){

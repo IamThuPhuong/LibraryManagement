@@ -13,19 +13,19 @@ public class UserPasswordValidator implements Validator<String> {
         if(target == null || target.isEmpty()) {
             resultCheck.add(ErrConstants.PASSWORD_CAN_NOT_NULL);
         }
-        if (target.length() < 8) {
+        if (target != null && target.length() < 8) {
             resultCheck.add(ErrConstants.PASSWORD_MUSTBE_EXACTLY_LENGTH);
         }
         if (!containsSpecialChar(target)) {
             resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_SPECIAL_KEY);
         }
-        if (target.chars().filter(Character::isDigit).count() == 0) {
+        if (target.chars().filter(Character::isDigit).findAny().isEmpty()) {
             resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_NUMBER);
         }
-        if (target.chars().filter(Character::isUpperCase).count() == 0) {
+        if (target.chars().filter(Character::isUpperCase).findAny().isEmpty()) {
             resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_UPPERCASE);
         }
-        if (target.chars().filter(Character::isLowerCase).count() == 0) {
+        if (target.chars().filter(Character::isLowerCase).findAny().isEmpty()) {
             resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_LOWERCASE);
         }
         if (target.contains(" ")) {

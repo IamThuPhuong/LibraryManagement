@@ -5,7 +5,6 @@ import main.constants.AuthorConstants;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.validate.UserChangePasswordDataValidator;
-import main.validate.UserPasswordValidator;
 import main.validate.Validator;
 import main.vo.UserChangePasswordVO;
 
@@ -19,9 +18,6 @@ public class AuthenService {
     private final UserRepository userRepository = new UserRepository();
     public static String USER_ID = "0";
     Scanner input = new Scanner(System.in);
-
-    /** Validate check password hợp lệ khi tạo mới user */
-    Validator<String> passwordCreateValidator = new UserPasswordValidator();
 
     /** Validate check password hợp lệ khi cập nhật password */
     Validator<UserChangePasswordVO> passwordUpdateValidator = new UserChangePasswordDataValidator();
@@ -60,7 +56,7 @@ public class AuthenService {
                 throw new NullPointerException("Không tồn tại người dùng này!");
             }
         } catch (NullPointerException e) {
-            System.out.println(e);
+            System.out.println("Lỗi:" + e);
             return false;
         }
         if(user.getUserName().equals(userNameInput) && user.getPassword().equals(passwordInput)){
@@ -72,11 +68,10 @@ public class AuthenService {
         }
     }
 
-    public boolean logoutService(User user){
+    public boolean logoutService(){
         System.out.println("Ban co chac muon dang xuat?:");
         System.out.println("\t1. Co");
         System.out.println("\t2. Khong.");
-        Boolean answer = false;
         int userAnswer = input.nextInt();
         input.nextLine();
         if(AuthorConstants.LOUGOUT_FLAG == userAnswer){
