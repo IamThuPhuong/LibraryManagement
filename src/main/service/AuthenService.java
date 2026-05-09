@@ -22,7 +22,7 @@ public class AuthenService {
     Validator<UserChangePasswordVO> passwordUpdateValidator = new UserChangePasswordDataValidator();
 
 
-    public boolean loginService(String userName, String password) {
+    public boolean login(String userName, String password) {
         User foundedUser;
         try {
             foundedUser = userRepository.findByUserName(userName);
@@ -30,9 +30,14 @@ public class AuthenService {
             System.out.println("Không tồn tại người dùng này!");
             return false;
         }
-        if(foundedUser != null && checkLogin()){
-            USER_ID = foundedUser.getUserId();
-            return true;
+        if(foundedUser != null){
+            if(foundedUser.getPassword().equals(password)){
+                USER_ID = foundedUser.getUserId();
+                return true;
+            } else {
+                System.out.println("Đăng nhập thất bại!");
+                return false;
+            }
         } else {
             System.out.println("Đăng nhập thất bại!");
             return false;

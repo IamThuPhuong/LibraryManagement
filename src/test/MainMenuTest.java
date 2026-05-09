@@ -43,9 +43,9 @@ public class MainMenuTest {
 
         while (!isLogin) {
             isLogin = authenServiceTest.loginLibrary();
-            currentUser = userRepository.findByUserId(AuthenService.USER_ID);
         }
 
+        currentUser = userRepository.findByUserId(AuthenService.USER_ID);
         System.out.println("Chọn chức năng");
         System.out.println("Quản lý người dùng (admin only - hiện tạm để test phân quyền)");
         System.out.println("1. Tạo người dùng");

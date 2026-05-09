@@ -20,7 +20,7 @@ public class AuthenServiceTest {
         String password = input.nextLine();
 
         AuthenService authenService = new AuthenService();
-        return authenService.loginService(username, password);
+        return authenService.login(username, password);
     }
 
     public void changePassword(User user) {
