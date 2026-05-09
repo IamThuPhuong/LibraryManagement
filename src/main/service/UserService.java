@@ -12,6 +12,7 @@ import main.vo.UserDetailVO;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,10 +37,10 @@ public class UserService {
     Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
 
     /** Validate check thông tin user hợp lệ khi tạo mới user */
-    Validator<User> userCreateValidator = new UserCreateDataValidator();
+    Validator<UserDetailVO> userCreateValidator = new UserCreateDataValidator();
 
     /** Validate check thông tin user hợp lệ khi cập nhật user */
-    Validator<User> userUpdateValidator = new UserCreateDataValidator();
+    Validator<UserDetailVO> userUpdateValidator = new UserCreateDataValidator();
 
     public UserService() throws IOException {
     }
@@ -51,7 +52,16 @@ public class UserService {
 
     public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
-        userUpdateValidator.validate(user);
+        List<String> errorList = new ArrayList<>();
+        errorList.addAll(userUpdateValidator.validate(vo));
+        if (!errorList.isEmpty()){
+            System.out.println("Không thể cập nhật người dùng do có lỗi sau:");
+            for (String error : errorList) {
+                System.out.println("- " + error);
+            }
+            return user;
+        }
+
         // Check xem sửa mình hay sửa người
         try {
             if (user == null) {
@@ -93,6 +103,18 @@ public class UserService {
 
     public User createUser(UserDetailVO vo) throws ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
+
+        List<String> errorList = new ArrayList<>();
+        errorList.addAll(userCreateValidator.validate(vo));
+
+        if (!errorList.isEmpty()){
+            System.out.println("Không thể tạo người dùng mới do có lỗi sau:");
+            for (String error : errorList) {
+                System.out.println("- " + error);
+            }
+            return null;
+        }
+
         User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
         // Stream
         List<String> userNameList = userRepository.getAllUserNames();
@@ -159,47 +181,8 @@ public class UserService {
         }
 
         // add vao data.txt sau khi chuyển sang Spring sẽ add vào DB
-        saveUserListToFile(newUser);
+        userRepository.saveUserListToFile(newUser);
 
         return newUser;
     }
-
-    public List<User> showUserList(List<User> userList) throws ExceptionInInitializerError {
-        authorValidator.validate(PERMISSION_OF_FUNCTION);
-        System.out.println("Danh sách người dùng:");
-        for (User user : userList) {
-            user.toString();
-        }
-        return userList;
-    }
-
-    public void saveUserListToFile(User user) throws IOException {
-        // Thay thế bằng SQL khi chuyển sang Spring
-        // Ghi đè file data.txt với nội dung mới từ userList
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
-            String line = user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
-                    user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
-                    user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole();
-            writer.newLine();
-            writer.write(line);
-        } catch (IOException e) {
-            System.out.println("Lỗi khi ghi file: " + e.getMessage());
-        }
-    }
-
-    public void overwriteUserListToFile(List<User> userList) throws IOException {
-        // Thay thế bằng SQL khi chuyển sang Spring
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt"))) {
-            for (User user : userList) {
-                String line = user.getUserId() + "," + user.getUserName() + "," + user.getPassword() + "," +
-                        user.getFullName() + "," + user.getBirthDay() + "," + user.getIdCard() + "," +
-                        user.getAddress() + "," + user.getGender();
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Lỗi khi ghi file: " + e.getMessage());
-        }
-    }
-
 }

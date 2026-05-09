@@ -81,9 +81,9 @@ public class UserValidator implements Validator<UserDetailVO> {
             System.out.println("Password không được null!");
             resultCheck.add(ErrConstants.PASSWORD_CAN_NOT_NULL);
         } else {
-            if (containsSpecialChar(target.getPassword())) {
-                System.out.println("Password không được chứa ký tự đặc biệt!");
-                resultCheck.add(ErrConstants.PASSWORD_CANT_USE_SPECIAL_KEY);
+            if (!containsSpecialChar(target.getPassword())) {
+                System.out.println("Password phải chứa ít nhất 1 ký tự đặc biệt!");
+                resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_SPECIAL_KEY);
             }
         }
 

@@ -10,6 +10,8 @@ import main.validate.Validator;
 import main.vo.UserChangePasswordVO;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AuthenService {
@@ -86,7 +88,15 @@ public class AuthenService {
     }
 
     public boolean changePassword(User user, UserChangePasswordVO changePasswordVO) throws IllegalArgumentException, IOException {
-        passwordUpdateValidator.validate(changePasswordVO);
+        List<String> errorList = new ArrayList<>();
+        errorList.addAll(passwordUpdateValidator.validate(changePasswordVO));
+        if (!errorList.isEmpty()) {
+            System.out.println("Không thể đổi mật khẩu do có lỗi sau:");
+            for (String error : errorList) {
+                System.out.println("- " + error);
+            }
+            return false;
+        }
         String newPass = changePasswordVO.getNewPassword();
         String confirmPass = changePasswordVO.getNewPassword();
         if (!newPass.equals(confirmPass)) {

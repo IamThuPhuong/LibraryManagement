@@ -22,6 +22,11 @@ public class UserChangePasswordDataValidator implements Validator<UserChangePass
 
         resultCheck.addAll(passwordValidator.validate(target.getNewPassword()));
 
+        if (target.getNewPassword() != null && target.getOldPassword() != null
+                && target.getNewPassword().equals(target.getOldPassword())) {
+            resultCheck.add(ErrConstants.NEW_PASSWORD_SAME_AS_OLD);
+        }
+
         return resultCheck;
     }
 

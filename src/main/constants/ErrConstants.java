@@ -29,15 +29,32 @@ public class ErrConstants {
 
     // ==================== PASSWORD ERRORS ====================
 
+    /** Password không hợp lệ. */
+    public static final String PASSWORD_INVALID = "PASSWORD_INVALID";
+
     /** Password là trường bắt buộc phải có giá trị để đảm bảo bảo mật. */
     public static final String PASSWORD_CAN_NOT_NULL = "PASSWORD_CAN_NOT_NULL";
 
     /** Password có thể chứa ký tự đặc biệt nhưng phải tuân thủ quy tắc bảo mật. */
-    public static final String PASSWORD_CANT_USE_SPECIAL_KEY = "PASSWORD_CANT_USE_SPECIAL_KEY";
+    public static final String PASSWORD_NEEDTO_USE_SPECIAL_KEY = "PASSWORD_NEEDTO_USE_SPECIAL_KEY";
+
+    /** Password cần chứa ít nhất 1 chữ số */
+    public static final String PASSWORD_NEEDTO_USE_NUMBER = "PASSWORD_NEEDTO_USE_NUMBER";
+
+    /** Password cần chứa ít nhất 1 chữ cái viết hoa */
+    public static final String PASSWORD_NEEDTO_USE_UPPERCASE = "PASSWORD_NEEDTO_USE_UPPERCASE";
+
+    /** Password cần chứa ít nhất 1 chữ cái viết thường */
+    public  static final String PASSWORD_NEEDTO_USE_LOWERCASE = "PASSWORD_NEEDTO_USE_LOWERCASE";
+
+    /** Password không được chứa khoảng trắng */
+    public static final String PASSWORD_CANT_USE_SPACE = "PASSWORD_CANT_USE_SPACE";
 
     /** Password phải có độ dài tối thiểu 8 ký tự để đảm bảo độ mạnh. */
     public static final String PASSWORD_MUSTBE_EXACTLY_LENGTH = "PASSWORD_MUSTBE_EXACTLY_LENGTH";
 
+    /** Password mới không được trùng với password cũ. */
+    public static final String NEW_PASSWORD_SAME_AS_OLD = "NEW_PASSWORD_SAME_AS_OLD";
     // ==================== BIRTHDAY ERRORS ====================
 
     /** Ngày sinh không được là ngày trong tương lai để đảm bảo tính hợp lý của dữ liệu. */
@@ -50,4 +67,6 @@ public class ErrConstants {
 
     /** Hệ thống từ chối truy cập do thiếu quyền hạn phù hợp. */
     public static final String PERMISSION_DENIED = "PERMISSION_DENIED";
+
+    // TODO: làm mapping mã lỗi và description để trả về cho client - nào rảnh làm
 }

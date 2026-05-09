@@ -1,0 +1,3 @@
+5b445ac1-7a9a-4c41-965e-871031c3af2a|admin|admin|Quan Tri Vien|2002-10-22|14253647585||null|ADMIN
+15242f54-9b5e-463d-b63d-d0706f5d231c|s2thuphuongs2|12345678| |2002-10-22|12345idcard| |FEMALE|MANAGER
+1dcd8077-b04c-40a1-a11e-9a11a8e29eed|testTaoNguoiDung|testTaoNguoiDung|Nguyen Van A|1970-01-01|0120910232131|02/A1 Duong Nguyen Thuong Hien Quan 3|MALE|READER

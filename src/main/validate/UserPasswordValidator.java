@@ -1,5 +1,6 @@
 package main.validate;
 
+import main.constants.AuthorConstants;
 import main.constants.ErrConstants;
 
 import java.util.ArrayList;
@@ -15,9 +16,39 @@ public class UserPasswordValidator implements Validator<String> {
         if (target.length() < 8) {
             resultCheck.add(ErrConstants.PASSWORD_MUSTBE_EXACTLY_LENGTH);
         }
+        if (!containsSpecialChar(target)) {
+            resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_SPECIAL_KEY);
+        }
+        if (target.chars().filter(Character::isDigit).count() == 0) {
+            resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_NUMBER);
+        }
+        if (target.chars().filter(Character::isUpperCase).count() == 0) {
+            resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_UPPERCASE);
+        }
+        if (target.chars().filter(Character::isLowerCase).count() == 0) {
+            resultCheck.add(ErrConstants.PASSWORD_NEEDTO_USE_LOWERCASE);
+        }
+        if (target.contains(" ")) {
+            resultCheck.add(ErrConstants.PASSWORD_CANT_USE_SPACE);
+        }
+
 
         return resultCheck;
     }
 
+    private static boolean containsSpecialChar(String input) throws IllegalArgumentException{
+        if (input == null){
+            throw new NullPointerException("Nội dung nhập không được để trống!");
+        }
+        boolean isSpecialChar = false;
+        for (String eachChar : AuthorConstants.SPECIAL_CHAR_LIST){
+            if (input.contains(eachChar)){
+                isSpecialChar = true;
+                System.out.println("Nội dung nhập không đươc bao gồm các ký tự đặc biệt  {\"!\",\"@\",\"#\",\"$\",\"%\",\"&\",\"*\",\"?\"}");
+                break;
+            }
+        }
+        return isSpecialChar;
+    }
 
 }

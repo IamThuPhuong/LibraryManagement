@@ -4,6 +4,8 @@ import main.enums.Gender;
 import main.enums.UserRole;
 import main.info.user.User;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDate;
@@ -73,6 +75,20 @@ public class UserRepository {
         return this.stream()
                 .map(User::getUserName)
                 .toList();
+    }
+
+    public void saveUserListToFile(User user) throws IOException {
+        // Thay thế bằng SQL khi chuyển sang Spring
+        // Ghi đè file data.txt với nội dung mới từ userList
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
+            String line = user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
+                    user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
+                    user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole();
+            writer.newLine();
+            writer.write(line);
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
     }
 
     public void updateUser(User user) throws IOException {
