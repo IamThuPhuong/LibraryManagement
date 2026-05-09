@@ -1,12 +1,11 @@
 package main.validate;
 
-import main.constants.AuthorConstants;
 import main.constants.ErrConstants;
+import main.constants.UserConstants;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.vo.UserDetailVO;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +71,7 @@ public class UserValidator implements Validator<UserDetailVO> {
             }
             // Check độ dài
             if (!isValidLength(target.getUserName())) {
-                System.out.println("UserName vượt quá độ dài cho phép (" + AuthorConstants.USER_MAX_LENGTH + " ký tự)");
+                System.out.println("UserName vượt quá độ dài cho phép (" + UserConstants.USER_MAX_LENGTH + " ký tự)");
                 resultCheck.add(ErrConstants.USERNAME_MUSTBE_EXACTLY_LENGTH);
             }
         }
@@ -103,14 +102,14 @@ public class UserValidator implements Validator<UserDetailVO> {
 
     /**
      * Kiểm tra độ dài của chuỗi input có hợp lệ không.
-     * Hợp lệ nếu độ dài nhỏ hơn hoặc bằng {@link AuthorConstants#USER_MAX_LENGTH}.
+     * Hợp lệ nếu độ dài nhỏ hơn hoặc bằng {@link UserConstants#USER_MAX_LENGTH}.
      *
      * @param input chuỗi cần kiểm tra
      * @return {@code true} nếu độ dài hợp lệ, {@code false} nếu vượt quá hoặc null
-     * @see AuthorConstants#USER_MAX_LENGTH
+     * @see UserConstants#USER_MAX_LENGTH
      */
     private boolean isValidLength(String input){
-        if (input.length() < AuthorConstants.USER_MAX_LENGTH){
+        if (input.length() < UserConstants.USER_MAX_LENGTH){
             return true;
         }
         return false;
@@ -118,21 +117,21 @@ public class UserValidator implements Validator<UserDetailVO> {
 
     /**
      * Kiểm tra chuỗi có chứa ký tự đặc biệt không.
-     * Danh sách ký tự đặc biệt được định nghĩa trong {@link AuthorConstants#SPECIAL_CHAR_LIST}.
+     * Danh sách ký tự đặc biệt được định nghĩa trong {@link UserConstants#SPECIAL_CHAR_LIST}.
      *
      * <p>Ký tự cấm: {@code ! @ # $ % & * ?}
      *
      * @param input chuỗi cần kiểm tra
      * @return {@code true} nếu chứa ký tự đặc biệt, {@code false} nếu không
      * @throws NullPointerException nếu input là {@code null}
-     * @see AuthorConstants#SPECIAL_CHAR_LIST
+     * @see UserConstants#SPECIAL_CHAR_LIST
      */
     private static boolean containsSpecialChar(String input) throws IllegalArgumentException{
         if (input == null){
             throw new NullPointerException("Nội dung nhập không được để trống!");
         }
         boolean isSpecialChar = false;
-        for (String eachChar : AuthorConstants.SPECIAL_CHAR_LIST){
+        for (String eachChar : UserConstants.SPECIAL_CHAR_LIST){
             if (input.contains(eachChar)){
                 isSpecialChar = true;
                 System.out.println("Nội dung nhập không đươc bao gồm các ký tự đặc biệt  {\"!\",\"@\",\"#\",\"$\",\"%\",\"&\",\"*\",\"?\"}");

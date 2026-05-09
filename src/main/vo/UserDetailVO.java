@@ -1,6 +1,6 @@
 package main.vo;
 
-import main.constants.AuthorConstants;
+import main.constants.UserConstants;
 import main.enums.Gender;
 import main.enums.UserRole;
 
@@ -9,10 +9,10 @@ import java.time.LocalDate;
 public class UserDetailVO {
     private String userName;
     private String password;
-    private String fullName = AuthorConstants.INIT_STRING;
-    private LocalDate birthDay = AuthorConstants.INIT_DATE;
-    private String idCard = AuthorConstants.INIT_STRING;
-    private String address = AuthorConstants.INIT_STRING;
+    private String fullName = UserConstants.INIT_STRING;
+    private LocalDate birthDay = UserConstants.INIT_DATE;
+    private String idCard = UserConstants.INIT_STRING;
+    private String address = UserConstants.INIT_STRING;
     private Gender gender = Gender.OTHER;
     private UserRole userRole = UserRole.READER;
 
@@ -52,22 +52,22 @@ public class UserDetailVO {
         // Kiểm tra null hoặc rỗng
         if (birthDayStr == null || birthDayStr.trim().isEmpty()) {
             this.birthDay = LocalDate.parse(
-                    AuthorConstants.STRING_INIT_DATE,
-                    AuthorConstants.DATE_FORMATTER
+                    UserConstants.STRING_INIT_DATE,
+                    UserConstants.DATE_FORMATTER
             );
             return;
         }
 
         try {
             // Parse String thành LocalDate theo format
-            this.birthDay = LocalDate.parse(birthDayStr, AuthorConstants.DATE_FORMATTER);
+            this.birthDay = LocalDate.parse(birthDayStr, UserConstants.DATE_FORMATTER);
         } catch (Exception e) {
             System.out.println("Định dạng ngày sinh không hợp lệ: " + birthDayStr);
             System.out.println("Vui lòng sử dụng định dạng: dd/MM/yyyy");
             // Sử dụng giá trị mặc định nếu parse lỗi
             this.birthDay = LocalDate.parse(
-                    AuthorConstants.STRING_INIT_DATE,
-                    AuthorConstants.DATE_FORMATTER
+                    UserConstants.STRING_INIT_DATE,
+                    UserConstants.DATE_FORMATTER
             );
         }
     }

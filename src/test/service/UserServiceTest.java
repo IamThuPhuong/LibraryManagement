@@ -76,7 +76,8 @@ public class UserServiceTest {
                     default:
                         userDetailVO.setUserRole(UserRole.READER);
                 }
-            } else if (currentUser.getUserRole() == UserRole.MANAGER) {
+            } else //if (currentUser.getUserRole() == UserRole.MANAGER) {
+            {
                 System.out.println("Chọn quyền:");
                 System.out.println("\n8. User Role (Chose: 1.Officer /2.Reader):");
                 switch (input.nextLine()) {
@@ -86,9 +87,9 @@ public class UserServiceTest {
                     default:
                         userDetailVO.setUserRole(UserRole.READER);
                 }
-            } else {
-                System.out.println("Bạn không có quyền tạo người dùng mới!");
-                return;
+//            } else {
+//                System.out.println("Bạn không có quyền tạo người dùng mới!");
+//                return;
             }
         } else {
             System.out.println("Bạn đang đăng ký tài khoản mới!");

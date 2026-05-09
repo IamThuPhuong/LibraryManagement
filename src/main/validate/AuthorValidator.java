@@ -1,6 +1,6 @@
 package main.validate;
 
-import main.constants.ErrConstants;
+import main.constants.AuthorConstants;
 import main.enums.Permission;
 import main.info.user.User;
 import main.repositories.UserRepository;
@@ -42,13 +42,16 @@ public class AuthorValidator implements Validator<Permission> {
      * @throws IllegalArgumentException nếu currentUser hoặc permission null
      * @throws ExceptionInInitializerError nếu không có quyền
      */
+    @Override
     public List<String> validate(Permission permission){
         List<String> resultCheck = new ArrayList<>();
-        if (permission == null){
-            resultCheck.add(ErrConstants.PERMISSION_NULL);
+        if (permission == null) {
+                resultCheck.add(AuthorConstants.PERMISSION_NULL);
+                throw new IllegalArgumentException(AuthorConstants.PERMISSION_NULL);
         }
-        if (!checkAssesible(permission)){
-            resultCheck.add(ErrConstants.PERMISSION_DENIED);
+        if (!checkAssesible(permission)) {
+            resultCheck.add(AuthorConstants.PERMISSION_DENIED);
+            throw new ExceptionInInitializerError(AuthorConstants.PERMISSION_DENIED);
         }
         return resultCheck;
     }

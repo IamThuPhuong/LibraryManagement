@@ -1,7 +1,7 @@
 package main.validate;
 
-import main.constants.AuthorConstants;
 import main.constants.ErrConstants;
+import main.constants.UserConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class UserPasswordValidator implements Validator<String> {
             throw new NullPointerException("Nội dung nhập không được để trống!");
         }
         boolean isSpecialChar = false;
-        for (String eachChar : AuthorConstants.SPECIAL_CHAR_LIST){
+        for (String eachChar : UserConstants.SPECIAL_CHAR_LIST){
             if (input.contains(eachChar)){
                 isSpecialChar = true;
                 System.out.println("Nội dung nhập không đươc bao gồm các ký tự đặc biệt  {\"!\",\"@\",\"#\",\"$\",\"%\",\"&\",\"*\",\"?\"}");

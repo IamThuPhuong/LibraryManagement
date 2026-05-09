@@ -60,13 +60,5 @@ public class ErrConstants {
     /** Ngày sinh không được là ngày trong tương lai để đảm bảo tính hợp lý của dữ liệu. */
     public static final String BIRTHDAY_AFTER_TODAY = "BIRTHDAY_AFTER_TODAY";
 
-    // ==================== PERMISSION ERRORS ====================
-
-    /** Permission phải được chỉ định rõ ràng để kiểm tra quyền hạn. */
-    public static final String PERMISSION_NULL = "PERMISSION_NULL";
-
-    /** Hệ thống từ chối truy cập do thiếu quyền hạn phù hợp. */
-    public static final String PERMISSION_DENIED = "PERMISSION_DENIED";
-
     // TODO: làm mapping mã lỗi và description để trả về cho client - nào rảnh làm
 }

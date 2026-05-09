@@ -1,7 +1,6 @@
 package main.service;
 
 import main.constants.AuthenConstants;
-import main.constants.AuthorConstants;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.validate.UserChangePasswordDataValidator;
@@ -16,7 +15,7 @@ import java.util.Scanner;
 public class AuthenService {
 
     private final UserRepository userRepository = new UserRepository();
-    public static String USER_ID = "0";
+    public static String USER_ID = AuthenConstants.IS_NOT_LOGIN_FLAG;
     Scanner input = new Scanner(System.in);
 
     /** Validate check password hợp lệ khi cập nhật password */
@@ -31,7 +30,7 @@ public class AuthenService {
             System.out.println("Không tồn tại người dùng này!");
             return false;
         }
-        if(foundedUser != null && checkLogin(foundedUser, userName, password)){
+        if(foundedUser != null && checkLogin()){
             USER_ID = foundedUser.getUserId();
             return true;
         } else {
@@ -50,22 +49,8 @@ public class AuthenService {
         return null;
     }
 
-    public boolean checkLogin(User user, String userNameInput, String passwordInput) {
-        try {
-            if (user == null) {
-                throw new NullPointerException("Không tồn tại người dùng này!");
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Lỗi:" + e);
-            return false;
-        }
-        if(user.getUserName().equals(userNameInput) && user.getPassword().equals(passwordInput)){
-            System.out.println("Đăng nhập thành công!");
-            return true;
-        } else {
-            System.out.println("Tên người dùng hoặc mật khẩu sai!");
-            return false;
-        }
+    public boolean checkLogin() {
+        return AuthenService.USER_ID != null;
     }
 
     public boolean logoutService(){
@@ -74,13 +59,14 @@ public class AuthenService {
         System.out.println("\t2. Khong.");
         int userAnswer = input.nextInt();
         input.nextLine();
-        if(AuthorConstants.LOUGOUT_FLAG == userAnswer){
-            USER_ID = AuthenConstants.DEFAULT_USER;
+        if(AuthenConstants.LOUGOUT_FLAG == userAnswer){
+            USER_ID = AuthenConstants.IS_NOT_LOGIN_FLAG;
             return true;
         } else {
             return false;
         }
     }
+
 
     public boolean changePassword(User user, UserChangePasswordVO changePasswordVO) throws IllegalArgumentException, IOException {
         List<String> errorList = new ArrayList<>();

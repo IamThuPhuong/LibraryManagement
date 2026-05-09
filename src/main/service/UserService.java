@@ -1,6 +1,6 @@
 package main.service;
 
-import main.constants.AuthorConstants;
+import main.constants.UserConstants;
 import main.enums.Gender;
 import main.enums.Permission;
 import main.enums.UserRole;
@@ -53,8 +53,7 @@ public class UserService {
 
     public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
-        List<String> errorList = new ArrayList<>();
-        errorList.addAll(userUpdateValidator.validate(vo));
+        List<String> errorList = new ArrayList<>(userUpdateValidator.validate(vo));
         if (!errorList.isEmpty()){
             System.out.println("Không thể cập nhật người dùng do có lỗi sau:");
             for (String error : errorList) {
@@ -82,7 +81,7 @@ public class UserService {
             user.setFullName(vo.getFullName());
         }
         // password khong duoc nhap
-        if (!vo.getBirthDay().equals(AuthorConstants.INIT_DATE)){
+        if (!vo.getBirthDay().equals(UserConstants.INIT_DATE)){
             user.setBirthDay(vo.getBirthDay());
         }
         if (vo.getAddress() != null && !vo.getAddress().isEmpty()){
@@ -147,17 +146,17 @@ public class UserService {
             newUser.setFullName(vo.getFullName());
         }
         // new BirthDay
-        if (!vo.getBirthDay().equals(AuthorConstants.INIT_DATE)){
+        if (!vo.getBirthDay().equals(UserConstants.INIT_DATE)){
             newUser.setBirthDay(vo.getBirthDay());
         }
         
         //new IdCard
-        if(!vo.getIdCard().equals(AuthorConstants.INIT_STRING)){
+        if(!vo.getIdCard().equals(UserConstants.INIT_STRING)){
             newUser.setIdCard(vo.getIdCard());
         }
         
         // new Address
-        if(!vo.getAddress().equals(AuthorConstants.INIT_STRING)){
+        if(!vo.getAddress().equals(UserConstants.INIT_STRING)){
             newUser.setAddress(vo.getAddress());
         }
         // new Gender
