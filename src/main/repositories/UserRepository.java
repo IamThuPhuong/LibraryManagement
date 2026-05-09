@@ -17,8 +17,13 @@ public class UserRepository {
         try {
             return Files.lines(path).map(line -> {
                 String[] parts = line.split("\\|");
-                if (parts.length != 9) {
-                    throw new RuntimeException("Invalid user data format: " + line);
+                try{
+                    if (parts.length != 9) {
+                        throw new RuntimeException("Invalid user data format:" + line);
+                    }
+                } catch (RuntimeException e) {
+                    System.err.println(e.getMessage());
+                    return null; // Trả về null nếu dữ liệu không hợp lệ
                 }
                 User user = new User();
                 user.setUserId(parts[0]);
@@ -45,14 +50,20 @@ public class UserRepository {
         return this.stream().toList();
     }
 
-    public User findByUserId(String userId) {
+    public User findByUserId(String userId) throws NullPointerException {
+        if (userId == null || userId.isEmpty()) {
+            throw new NullPointerException("User ID không được để trống!");
+        }
         return this.stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findFirst()
                 .orElse(null);
     }
 
-    public User findByUserName(String userName) {
+    public User findByUserName(String userName) throws NullPointerException {
+        if (userName == null || userName.isEmpty()) {
+            throw new NullPointerException("User name không được để trống!");
+        }
         return this.stream()
                 .filter(user -> user.getUserName().equals(userName))
                 .findFirst()
@@ -65,6 +76,14 @@ public class UserRepository {
     }
 
     public void updateUser(User user) throws IOException {
+        try {
+            if (user == null) {
+                throw new IllegalArgumentException("Check lại file data.txt!");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         List<User> users = new ArrayList<>(this.getAllUsers());
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUserId().equals(user.getUserId())) {

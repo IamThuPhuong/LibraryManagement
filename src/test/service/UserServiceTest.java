@@ -6,7 +6,6 @@ import main.info.user.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
 import main.service.UserService;
-import main.validate.AuthorValidator;
 import main.vo.UserDetailVO;
 
 import java.io.IOException;
@@ -27,7 +26,6 @@ public class UserServiceTest {
 //            return;
 //        }
         UserService userService = new UserService();
-        AuthenService authenService = new AuthenService();
         // Thay thế màn hình=> form nhập thông tin người dùng
         UserDetailVO userDetailVO = new UserDetailVO();
         System.out.println("Form nhập thông tin người dùng:");

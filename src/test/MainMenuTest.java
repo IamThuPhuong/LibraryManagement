@@ -1,5 +1,6 @@
 package test;
 
+import main.constants.AuthenConstants;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
@@ -16,11 +17,12 @@ public class MainMenuTest {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println("Chọn 1 chức năng:");
-        System.out.println("1. Đăng nhập");
+//        System.out.println("Chọn 1 chức năng:");
+//        System.out.println("1. Đăng nhập");
         //System.out.println("2. Đăng ký");
 
-        String chosenService = input.nextLine();
+//        String chosenService = input.nextLine();
+        String chosenService = AuthenConstants.LOGIN_FLAG;
 
         AuthenServiceTest authenServiceTest = new AuthenServiceTest();
         UserServiceTest userServiceTest = new UserServiceTest();
@@ -34,13 +36,23 @@ public class MainMenuTest {
                 break;
         }
 
-        currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+        try {
+            currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+        } catch (NullPointerException e) {
+            System.out.println("Đăng nhập thất bại, vui lòng thử lại!");
+            do {
+                isLogin = authenServiceTest.loginLibrary();
+            } while (!isLogin);
+            currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+        }
+
         while (!isLogin) {
-            System.out.println("Bạn chưa đăng nhập, vui lòng chọn 1 chức năng:");
-            System.out.println("1. Đăng nhập");
+//            System.out.println("Bạn chưa đăng nhập, vui lòng chọn 1 chức năng:");
+//            System.out.println("1. Đăng nhập");
             //System.out.println("2. Đăng ký");
 
-            chosenService = input.nextLine();
+//            chosenService = input.nextLine();
+            chosenService = AuthenConstants.LOGIN_FLAG;
 
 
             switch (chosenService) {
@@ -53,6 +65,7 @@ public class MainMenuTest {
             }
         }
 
+        do {
             System.out.println("Chọn chức năng");
             System.out.println("Quản lý người dùng (admin only - hiện tạm để test phân quyền)");
             System.out.println("1. Tạo người dùng");
@@ -93,7 +106,9 @@ public class MainMenuTest {
                     }
                     break;
             }
+        } while (!chosenService.equals("9"));
 
     }
+
 
 }

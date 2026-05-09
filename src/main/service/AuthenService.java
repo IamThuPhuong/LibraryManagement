@@ -27,7 +27,12 @@ public class AuthenService {
 
     public boolean loginService(String userName, String password) {
         User foundedUser;
-        foundedUser = userRepository.findByUserName(userName);
+        try {
+            foundedUser = userRepository.findByUserName(userName);
+        } catch (NullPointerException e) {
+            System.out.println("Không tồn tại người dùng này!");
+            return false;
+        }
         if(foundedUser != null && checkLogin(foundedUser, userName, password)){
             USER_ID = foundedUser.getUserId();
             return true;
