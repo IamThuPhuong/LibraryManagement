@@ -15,3 +15,6 @@ NEW_PASSWORD_SAME_AS_OLD|Password mới không được trùng với password c�
 BIRTHDAY_AFTER_TODAY|Ngày sinh không được là ngày trong tương lai để đảm bảo tính hợp lý của dữ liệu
 PERMISSION_NULL|Permission phải được chỉ định rõ ràng để kiểm tra quyền hạn
 PERMISSION_DENIED|Hệ thống từ chối truy cập do thiếu quyền hạn phù hợp
+IDCARDNO_CAN_NOT_NULL|Căn cước công dân không được để trống
+IDCARDNO_EXISTED|Căn cước công dân đã tồn tại
+FULLNAME_CAN_NOT_NULL|Họ tên không đươc để trống

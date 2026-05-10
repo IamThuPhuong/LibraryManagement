@@ -9,6 +9,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+
+/**
+ * 1.6 Phân quyền người dùng (quản lý hoặc nhân viên)
+ *
+ * @author Thu Phương
+ * @version 1.0
+ * @since 2026-04-23
+ */
 public class AuthorService {
 
     public Map<UserRole, Set<Permission>> mapRolePermission(UserRole role, Set<Permission> permission) {
@@ -44,13 +52,6 @@ public class AuthorService {
             System.out.println("Officer có quyền thêm và xóa sách");
             permission.remove(Permission.MANAGE_USER);
         }
-        if (userRole == UserRole.READER) {
-            permission.remove(Permission.DELETE_BOOK);
-            permission.remove(Permission.ADD_BOOK);
-            permission.remove(Permission.MANAGE_USER);
-            System.out.println("Reader chỉ có quyền đọc sách");
-        }
-
         return permission;
     }
 }

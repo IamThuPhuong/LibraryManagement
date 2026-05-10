@@ -5,6 +5,7 @@ import main.info.user.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
 import test.service.AuthenServiceTest;
+import test.service.ReaderCardServiceTest;
 import test.service.UserServiceTest;
 
 import java.io.IOException;
@@ -35,8 +36,10 @@ public class MainMenuTest {
     public static void showMainMenu() throws IOException {
         String chosenService = AuthenConstants.LOGIN_FLAG;
 
+        // Test chức năng 1
         AuthenServiceTest authenServiceTest = new AuthenServiceTest();
         UserServiceTest userServiceTest = new UserServiceTest();
+
         AuthenService authenService = new AuthenService();
         // session login
         boolean isLogin = authenService.checkLogin();
@@ -45,19 +48,26 @@ public class MainMenuTest {
             isLogin = authenServiceTest.loginLibrary();
         }
 
+        // After login
         currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+        // Test chức năng 2
+        ReaderCardServiceTest readerCardServiceTest = new ReaderCardServiceTest();
         System.out.println("Chọn chức năng");
-        System.out.println("Quản lý người dùng (admin only - hiện tạm để test phân quyền)");
+        System.out.println("Quản lý người dùng");
         System.out.println("1. Tạo người dùng");
         System.out.println("2. Cập nhật thông tin người dùng");
         System.out.println("Quản lý thông tin cá nhân");
         System.out.println("3. Cập nhật thông tin cá nhân");
         System.out.println("4. Đổi mật khẩu");
-        System.out.println("9. Đăng xuất");
+        System.out.println("Quản lý độc giả");
+        System.out.println("5. Xem danh sách độc giả");
+        System.out.println("6. Thêm độc giả");
+        System.out.println("99. Đăng xuất");
 
         chosenService = input.nextLine();
 
         UserRepository userRepository = new UserRepository();
+
         switch (chosenService) {
             case "1":
                 userServiceTest.createUser();
@@ -75,10 +85,16 @@ public class MainMenuTest {
             case "4":
                 authenServiceTest.changePassword(currentUser);
                 break;
-            case "9":
-                boolean checkLogout = authenService.logoutService();
+            case "5":
+                readerCardServiceTest.showReaderList();
+                break;
+            case "6":
+                readerCardServiceTest.addReader();
+                break;
+            case "99":
+                boolean checkLogout = authenService.logout();
                 if (checkLogout) {
-                    currentUser = null; // TODO - sau này sẽ xóa token client side, hoặc xóa session server side
+                    currentUser = null;
                     System.out.println("Đăng xuất thành công!");
                 } else {
                     System.out.println("Đăng xuất thất bại!");

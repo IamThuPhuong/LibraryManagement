@@ -62,31 +62,18 @@ public class UserServiceTest {
             System.out.println("Bạn đang đăng nhập với quyền: " + currentUser.getUserRole());
             if (currentUser.getUserRole() == UserRole.ADMIN) {
                 System.out.println("Chọn quyền:");
-                System.out.println("\n8. User Role (Chose: 1.Admin /2.Manager /3.Officer /4.Reader):");
+                System.out.println("\n8. User Role (Chose: 1.Manager /2.Officer):");
                 switch (input.nextLine()) {
                     case "1":
-                        userDetailVO.setUserRole(UserRole.ADMIN);
-                        break;
-                    case "2":
                         userDetailVO.setUserRole(UserRole.MANAGER);
                         break;
-                    case "3":
+                    case "2":
                         userDetailVO.setUserRole(UserRole.OFFICER);
                         break;
-                    default:
-                        userDetailVO.setUserRole(UserRole.READER);
                 }
             } else //if (currentUser.getUserRole() == UserRole.MANAGER) {
             {
-                System.out.println("Chọn quyền:");
-                System.out.println("\n8. User Role (Chose: 1.Officer /2.Reader):");
-                switch (input.nextLine()) {
-                    case "1":
-                        userDetailVO.setUserRole(UserRole.OFFICER);
-                        break;
-                    default:
-                        userDetailVO.setUserRole(UserRole.READER);
-                }
+                userDetailVO.setUserRole(UserRole.OFFICER);
 //            } else {
 //                System.out.println("Bạn không có quyền tạo người dùng mới!");
 //                return;

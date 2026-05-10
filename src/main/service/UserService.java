@@ -1,6 +1,6 @@
 package main.service;
 
-import main.constants.UserConstants;
+import main.constants.Constants;
 import main.enums.Gender;
 import main.enums.Permission;
 import main.enums.UserRole;
@@ -17,6 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Chức năng 1: Người dùng khi muốn sử dụng các chức năng của hệ thống phải thực hiện đăng
+ * nhập.
+ *
+ * @author Thu Phương
+ * @version 1.0
+ * @since 2026-04-10
+ */
 public class UserService {
 
     /** Repository để thao tác với dữ liệu người dùng */
@@ -43,14 +51,12 @@ public class UserService {
     /** Validate check thông tin user hợp lệ khi cập nhật user */
     Validator<UserDetailVO> userUpdateValidator = new UserCreateDataValidator();
 
-    public UserService() throws IOException {
-    }
-
-    public UserService(User currentUser) {
-        this.currentUser = currentUser;
-    }
-
-
+    /**
+     * 1.4 Cập nhật thông tin cá nhân
+     * @param user
+     * @param vo
+     * @return user
+     */
     public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>(userUpdateValidator.validate(vo));
@@ -81,7 +87,7 @@ public class UserService {
             user.setFullName(vo.getFullName());
         }
         // password khong duoc nhap
-        if (!vo.getBirthDay().equals(UserConstants.INIT_DATE)){
+        if (!vo.getBirthDay().equals(Constants.INIT_DATE)){
             user.setBirthDay(vo.getBirthDay());
         }
         if (vo.getAddress() != null && !vo.getAddress().isEmpty()){
@@ -101,7 +107,12 @@ public class UserService {
         return user;
     }
 
-    public User createUser(UserDetailVO vo) throws ExceptionInInitializerError, IOException {
+    /**
+     * 1.5 Tạo người dùng
+     * @param vo
+     * @return User
+     */
+    public User createUser(UserDetailVO vo) throws ExceptionInInitializerError {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
 
         List<String> errorList = new ArrayList<>();
@@ -146,17 +157,17 @@ public class UserService {
             newUser.setFullName(vo.getFullName());
         }
         // new BirthDay
-        if (!vo.getBirthDay().equals(UserConstants.INIT_DATE)){
+        if (!vo.getBirthDay().equals(Constants.INIT_DATE)){
             newUser.setBirthDay(vo.getBirthDay());
         }
         
         //new IdCard
-        if(!vo.getIdCard().equals(UserConstants.INIT_STRING)){
+        if(!vo.getIdCard().equals(Constants.INIT_STRING)){
             newUser.setIdCard(vo.getIdCard());
         }
         
         // new Address
-        if(!vo.getAddress().equals(UserConstants.INIT_STRING)){
+        if(!vo.getAddress().equals(Constants.INIT_STRING)){
             newUser.setAddress(vo.getAddress());
         }
         // new Gender
@@ -176,11 +187,11 @@ public class UserService {
                 }
             }
         } else {
-            // Nếu không có người dùng hiện tại (tức là đang tạo user đầu tiên), mặc định là READER
-            newUser.setUserRole(UserRole.READER);
+            newUser.setUserRole(UserRole.OFFICER);
         }
 
-        // add vao data.txt sau khi chuyển sang Spring sẽ add vào DB
+
+        // add vao data.csv sau khi chuyển sang Spring sẽ add vào DB
         userRepository.saveUserListToFile(newUser);
 
         return newUser;

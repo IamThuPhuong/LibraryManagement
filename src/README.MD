@@ -1,0 +1,1 @@
+[Database Diagram](https://dbdiagram.io/d/LibraryManagement-6a0014837a923b94726945f0)

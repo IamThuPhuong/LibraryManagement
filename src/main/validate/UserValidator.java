@@ -141,19 +141,6 @@ public class UserValidator implements Validator<UserDetailVO> {
         return isSpecialChar;
     }
 
-    /**
-     * Kiểm tra ngày sinh có lớn hơn ngày hôm nay không.
-     * Ngày sinh không được là ngày tương lai.
-     *
-     * <p>Ví dụ:
-     * <pre>
-     *   isBirthdayInFuture(LocalDate.now().plusDays(1)) // true (không hợp lệ)
-     *   isBirthdayInFuture(LocalDate.now().minusYears(20)) // false (hợp lệ)
-     * </pre>
-     *
-     * @param birthDay ngày sinh cần kiểm tra
-     * @return {@code true} nếu ngày sinh trong tương lai (không hợp lệ), {@code false} nếu hợp lệ
-     */
     private boolean isBirthdayInFuture(LocalDate birthDay) {
         return birthDay.isAfter(LocalDate.now());
     }

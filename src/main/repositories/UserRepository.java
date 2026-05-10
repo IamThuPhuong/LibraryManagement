@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public class UserRepository {
     public Stream<User> stream() {
-        Path path = Path.of("src/test/data/user.txt");
+        Path path = Path.of("src/test/data/user.csv");
         try {
             return Files.lines(path).map(line -> {
                 String[] parts = line.split("\\|");
@@ -71,6 +71,12 @@ public class UserRepository {
                 .findFirst()
                 .orElse(null);
     }
+    public List<User> findByUserRole(UserRole userRole){
+        return this.stream()
+                .filter(user -> user.getUserRole().equals(userRole))
+                .toList();
+    }
+
     public List<String> getAllUserNames(){
         return this.stream()
                 .map(User::getUserName)
@@ -79,7 +85,7 @@ public class UserRepository {
 
     public void saveUserListToFile(User user)  {
         // Thay thế bằng SQL khi chuyển sang Spring
-        // Ghi đè file data.txt với nội dung mới từ userList
+        // Ghi đè file data.csv với nội dung mới từ userList
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
             String line = user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
                     user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
@@ -94,7 +100,7 @@ public class UserRepository {
     public void updateUser(User user) throws IOException {
         try {
             if (user == null) {
-                throw new IllegalArgumentException("Check lại file data.txt!");
+                throw new IllegalArgumentException("Check lại file data.csv!");
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -108,7 +114,7 @@ public class UserRepository {
             }
         }
         // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
-        Path path = Path.of("src/test/data/user.txt");
+        Path path = Path.of("src/test/data/user.csv");
         StringBuilder sb = new StringBuilder();
         for (User u : users) {
             sb.append(u.getUserId()).append("|")

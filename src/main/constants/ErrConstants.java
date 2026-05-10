@@ -60,5 +60,14 @@ public class ErrConstants {
     /** Ngày sinh không được là ngày trong tương lai để đảm bảo tính hợp lý của dữ liệu. */
     public static final String BIRTHDAY_AFTER_TODAY = "BIRTHDAY_AFTER_TODAY";
 
-    // TODO: làm mapping mã lỗi và description để trả về cho client - nào rảnh làm
+    // ==================== IDCARDNO ERRORS ====================
+    /** Căn cước công dân không được để trống */
+    public static final String IDCARDNO_CAN_NOT_NULL = "IDCARDNO_CAN_NOT_NULL";
+
+    /** Căn cước công dân đã tồn tại */
+    public static final String IDCARDNO_EXISTED = "IDCARDNO_EXISTED";
+
+    // ==================== FULL NAME ERRORS ====================
+    /** Họ tên không được để trống */
+    public static final String FULLNAME_CAN_NOT_NULL = "FULLNAME_CAN_NOT_NULL";
 }

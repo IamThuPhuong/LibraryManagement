@@ -12,6 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Chức năng 1: Người dùng khi muốn sử dụng các chức năng của hệ thống phải thực hiện đăng
+ * nhập.
+ *
+ * @author Thu Phương
+ * @version 1.0
+ * @since 2026-04-10
+ */
 public class AuthenService {
 
     private final UserRepository userRepository = new UserRepository();
@@ -22,6 +30,12 @@ public class AuthenService {
     Validator<UserChangePasswordVO> passwordUpdateValidator = new UserChangePasswordDataValidator();
 
 
+    /**
+     * 1.1 Đăng nhập
+     * @param userName
+     * @param password
+     * @return boolean
+     */
     public boolean login(String userName, String password) {
         User foundedUser;
         try {
@@ -58,7 +72,11 @@ public class AuthenService {
         return AuthenService.USER_ID != null;
     }
 
-    public boolean logoutService(){
+    /**
+     * 1.2 Đăng xuất
+     * @return boolean
+     */
+    public boolean logout(){
         System.out.println("Ban co chac muon dang xuat?:");
         System.out.println("\t1. Co");
         System.out.println("\t2. Khong.");
