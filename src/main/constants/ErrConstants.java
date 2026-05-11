@@ -67,7 +67,20 @@ public class ErrConstants {
     /** Căn cước công dân đã tồn tại */
     public static final String IDCARDNO_EXISTED = "IDCARDNO_EXISTED";
 
+    /** Căn cước công dân không được chứa ký tự đặc biệt */
+    public static final String IDCARDNO_CONTAINS_SPECIAL_KEYS = "IDCARDNO_CONTAINS_SPECIAL_KEYS";
+
+    /** Căn cước công dân chỉ chứa số */
+    public static final String IDCARDNO_CONTAINS_LETTERS = "IDCARDNO_CONTAINS_LETTERS";
+
+    /** Độ dài căn cước không hợp lệ */
+    public static final String IDCARD_LENGTH_INVALID = "IDCARD_LENGTH_INVALID";
+
     // ==================== FULL NAME ERRORS ====================
     /** Họ tên không được để trống */
     public static final String FULLNAME_CAN_NOT_NULL = "FULLNAME_CAN_NOT_NULL";
+
+    // ==================== EMAIL ERRORS ====================
+    /** Email không hợp lệ */
+    public static final String INVALID_MAIL = "INVALID_MAIL";
 }

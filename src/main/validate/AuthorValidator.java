@@ -39,8 +39,6 @@ public class AuthorValidator implements Validator<Permission> {
      * Validate quyền của người dùng hiện tại.
      *
      * @param permission quyền cần kiểm tra
-     * @throws IllegalArgumentException nếu currentUser hoặc permission null
-     * @throws ExceptionInInitializerError nếu không có quyền
      */
     @Override
     public List<String> validate(Permission permission){
@@ -60,7 +58,6 @@ public class AuthorValidator implements Validator<Permission> {
      * Kiểm tra quyền truy cập nội bộ.
      *
      * @param permission quyền cần kiểm tra
-     * @throws ExceptionInInitializerError nếu không có quyền
      */
     private boolean checkAssesible(Permission permission){
         boolean isAccessable = false;

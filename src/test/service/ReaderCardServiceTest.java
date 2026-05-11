@@ -1,17 +1,9 @@
 package test.service;
 
 import main.enums.Gender;
-import main.enums.UserRole;
 import main.info.card.ReaderCard;
-import main.info.user.User;
-import main.repositories.UserRepository;
-import main.service.AuthenService;
 import main.service.ReaderCardService;
-import main.service.UserService;
 import main.vo.ReaderDetailVO;
-import main.vo.UserDetailVO;
-
-import java.time.LocalDate;
 
 import static test.service.AuthenServiceTest.input;
 
@@ -68,9 +60,10 @@ public class ReaderCardServiceTest {
         readerDetailVO.setStartDate(startDate);
 
         // Service
-        readerCardService.addReader(readerDetailVO);
+        readerCardService.createReader(readerDetailVO);
         System.out.println("Tạo độc giả thành công!");
-
-
     }
+
+    // TODO: Test 2.3 cập nhật thông tin độc giả
+
 }

@@ -8,6 +8,7 @@ import main.info.card.ReaderCard;
 import main.info.user.User;
 import main.repositories.ReaderRepository;
 import main.validate.AuthorValidator;
+import main.validate.ReaderUpdateDataValidator;
 import main.validate.ReaderValidator;
 import main.validate.Validator;
 import main.vo.ReaderDetailVO;
@@ -34,7 +35,7 @@ public class ReaderCardService {
     /**
      * Service xử lý phân quyền
      */
-    private static AuthorService authorService = new AuthorService();
+    private static final AuthorService authorService = new AuthorService();
 
     /**
      * instance variable: người dùng sau khi đăng nhập
@@ -51,10 +52,10 @@ public class ReaderCardService {
      */
     Validator<ReaderDetailVO> readerValidator = new ReaderValidator();
 
-    UserService userService = new UserService();
-    /**
-     * Quyền truy cập class InfoUpdateService
-     */
+    /** Validate update thông tin độc giả */
+    Validator<ReaderDetailVO> readerUpdateValidator = new ReaderUpdateDataValidator();
+
+    /** Quyền truy cập class InfoUpdateService */
     private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
 
     public List<ReaderCard> showReaderList() {
@@ -69,7 +70,7 @@ public class ReaderCardService {
      * @param vo
      * @return readerCard
      */
-    public ReaderCard addReader(ReaderDetailVO vo) {
+    public ReaderCard createReader(ReaderDetailVO vo) {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>();
         errorList.addAll(readerValidator.validate(vo));
@@ -86,15 +87,7 @@ public class ReaderCardService {
 
         String readerId = "READER" + readerRepository.countAllReader();
         readerCard.setReaderId(readerId);
-
-        if (vo.getFullName() != null && !vo.getFullName().isEmpty()) {
-            readerCard.setFullName(vo.getFullName());
-        }
-
-        // Check IdCard da ton tai
-        if (vo.getIdCard() != null && !vo.getIdCard().isEmpty()) {
-            readerCard.setIdCard(vo.getIdCard());
-        }
+        readerCard.setFullName(vo.getFullName());
 
         if (!vo.getBirthDate().equals(Constants.INIT_DATE)) {
             readerCard.setBirthDate(vo.getBirthDate());
@@ -127,6 +120,52 @@ public class ReaderCardService {
         return readerCard;
 
     }
+
+    /**
+     * 2.3 Chỉnh sửa thông tin một độc giả
+     * @param reader
+     * @param vo
+     * @return readerCard
+     */
+    public ReaderCard updateReader(ReaderCard reader, ReaderDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+        authorValidator.validate(PERMISSION_OF_FUNCTION);
+        List<String> errorList = new ArrayList<>(readerUpdateValidator.validate(vo));
+        if (!errorList.isEmpty()){
+            System.out.println("Không thể cập nhật độc giả do có lỗi sau:");
+            for (String error : errorList) {
+                System.out.println("- " + error);
+            }
+            return reader;
+        }
+
+        if(!vo.getFullName().equals(reader.getFullName())) {
+            reader.setFullName(vo.getFullName());
+        }
+        if(!vo.getGender().equals(reader.getGender())) {
+            reader.setGender(vo.getGender());
+        }
+        if(!vo.getEmail().equals(reader.getEmail())) {
+            reader.setEmail(vo.getEmail());
+        }
+        if(!vo.getIdCard().equals(reader.getReaderId())) {
+            reader.setIdCard(vo.getIdCard());
+        }
+        if(!vo.getAddress().equals(reader.getAddress())) {
+            reader.setAddress(vo.getAddress());
+        }
+        if(!(vo.getBirthDate().isEqual(reader.getBirthDate()))) {
+            reader.setBirthDate(vo.getBirthDate());
+        }
+        if(!(vo.getStartDate().isEqual(reader.getStartDate()))) {
+            reader.setStartDate(vo.getStartDate());
+        }
+
+        readerRepository.updateReaderCard(reader);
+
+        return reader;
+    }
+
+
 
 
 }
