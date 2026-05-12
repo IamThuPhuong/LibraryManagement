@@ -1,6 +1,7 @@
 package test;
 
 import main.constants.AuthenConstants;
+import main.info.card.ReaderCard;
 import main.info.user.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
@@ -62,6 +63,7 @@ public class MainMenuTest {
         System.out.println("Quản lý độc giả");
         System.out.println("5. Xem danh sách độc giả");
         System.out.println("6. Thêm độc giả");
+        System.out.println("7. Cập nhật thông tin độc giả");
         System.out.println("99. Đăng xuất");
 
         chosenService = input.nextLine();
@@ -90,6 +92,10 @@ public class MainMenuTest {
                 break;
             case "6":
                 readerCardServiceTest.addReader();
+                break;
+            case "7":
+                ReaderCard readerCard = new ReaderCard(); // TODO - Thêm phần tìm kiếm reader theo username
+                readerCardServiceTest.updateReader(readerCard);
                 break;
             case "99":
                 boolean checkLogout = authenService.logout();

@@ -2,12 +2,10 @@ package main.repositories;
 
 import main.enums.Gender;
 import main.info.card.ReaderCard;
-import main.info.user.User;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -125,6 +123,10 @@ public class ReaderRepository {
                     .append("\n");
         }
 
-        Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+        try {
+            Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e){
+            throw new IOException("Lỗi khi ghi file");
+        }
     }
 }

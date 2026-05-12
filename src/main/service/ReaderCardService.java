@@ -165,7 +165,4 @@ public class ReaderCardService {
         return reader;
     }
 
-
-
-
 }
