@@ -94,8 +94,7 @@ public class MainMenuTest {
                 readerCardServiceTest.addReader();
                 break;
             case "7":
-                ReaderCard readerCard = new ReaderCard(); // TODO - Thêm phần tìm kiếm reader theo username
-                readerCardServiceTest.updateReader(readerCard);
+                readerCardServiceTest.updateReader();
                 break;
             case "99":
                 boolean checkLogout = authenService.logout();

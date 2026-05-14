@@ -6,18 +6,20 @@ import main.service.ReaderCardService;
 import main.vo.ReaderDetailVO;
 
 import java.io.IOException;
+import java.util.List;
 
 import static test.service.AuthenServiceTest.input;
 
 public class ReaderCardServiceTest {
     ReaderCardService readerCardService = new ReaderCardService();
 
-    public void showReaderList(){
-        for (ReaderCard reader : readerCardService.showReaderList()){
+    public void showReaderList() {
+        for (ReaderCard reader : readerCardService.showReaderList()) {
             System.out.println(reader.toString());
         }
     }
-    public void addReader (){
+
+    public void addReader() {
 
         // Form nhập thông tin độc giả
         ReaderDetailVO readerDetailVO = new ReaderDetailVO();
@@ -67,91 +69,111 @@ public class ReaderCardServiceTest {
     }
 
     // TODO: Test 2.3 cập nhật thông tin độc giả
+
     /**
      * Cập nhật user phía màn hình
      */
-    public void updateReader(ReaderCard readerCard) throws IOException {
-
-        //====[START] MAN HINH
-        ReaderDetailVO vo = new ReaderDetailVO();
-        String chosenInfo;
-        do {
-            System.out.println("=========THÔNG TIN ĐỘC GIẢ===========");
-            System.out.println("1. Họ và tên: " + readerCard.getFullName());
-            System.out.println("2. Số CCCD: " + readerCard.getIdCard());
-            System.out.println("3. Ngày sinh: " + readerCard.getBirthDate());
-            System.out.println("4. Giới tính: " + readerCard.getGender());
-            System.out.println("5. Email: " + readerCard.getEmail());
-            System.out.println("6. Địa chỉ: " + readerCard.getAddress());
-            System.out.println("7. Ngày bắt đầu đăng ký" + readerCard.getStartDate());
-
-            System.out.println("Chọn thông tin muốn cập nhật (1-7), hoặc 0 để thoát:");
-
-            chosenInfo = input.nextLine();
-
-
-            switch (chosenInfo) {
-                case "1":
-                    System.out.println("Nhập họ tên:");
-                    String newFullName = input.nextLine();
-                    vo.setFullName(newFullName);
-                    break;
-                case "2":
-                    System.out.println("Nhập số CCCD:");
-                    String newIDCardNo = input.nextLine();
-                    vo.setIdCard(newIDCardNo);
-                    break;
-                case "3":
-                    System.out.println("Nhập ngày sinh (dd/MM/yyyy):");
-                    String newBirthDate = input.nextLine();
-                    vo.setBirthDay(newBirthDate);
-                    break;
-                case "4":
-                    System.out.println("Chọn giới tính mới (1.Male /2.Female):");
-                    String newGender = input.nextLine();
-                    switch (newGender) {
-                        case "1":
-                            readerCard.setGender(Gender.MALE);
-                            break;
-                        case "2":
-                            readerCard.setGender(Gender.FEMALE);
-                            break;
-                        default:
-                            readerCard.setGender(Gender.OTHER);
-                    }
-                    vo.setGender(readerCard.getGender());
-                    break;
-                case "5":
-                    System.out.println("Nhập email:");
-                    String newEmail = input.nextLine();
-                    vo.setEmail(newEmail);
-                    break;
-                case "6":
-                    System.out.println("Nhập địa chỉ:");
-                    String newAddress = input.nextLine();
-                    vo.setAddress(newAddress);
-                    break;
-                case "7":
-                    System.out.println("Nhập ngày bắt đầu đăng ký (dd/MM/yyyy):");
-                    String newStartDate = input.nextLine();
-                    vo.setStartDate(newStartDate);
-                    break;
+    public void updateReader() throws IOException {
+        while (true) {
+            System.out.print("=========DANH SÁCH ĐỘC GIẢ===========");
+            List<ReaderCard> readerList = readerCardService.showReaderList();
+            for (int i = 0; i < readerList.size(); i++) {
+                System.out.println(i + 1 + ". " + readerList.get(i).toString());
             }
 
-        } while (!chosenInfo.equals("0"));
+            System.out.println("Chọn người muốn update (Từ 1 đến " + readerList.size() + ")");
+            int readerNo = input.nextInt();
 
-        ReaderCardService readerService = new ReaderCardService();
-        readerService.updateReader(readerCard, vo);
+            ReaderCard readerCard = readerList.get(readerNo - 1);
 
-        System.out.println("Cập nhật thông tin thành công! Thông tin mới:");
-        System.out.println("Họ và tên: " + readerCard.getFullName());
-        System.out.println("Số căn cước: " + readerCard.getIdCard());
-        System.out.println("Ngày sinh: " + readerCard.getBirthDate());
-        System.out.println("Giới tính: " + readerCard.getGender());
-        System.out.println("Email: " + readerCard.getEmail());
-        System.out.println("Address: " + readerCard.getAddress());
-        System.out.println("Ngày đăng ký: " + readerCard.getStartDate());
+            ReaderDetailVO vo = new ReaderDetailVO();
+            String chosenInfo;
+            do {
+                System.out.println("=========THÔNG TIN ĐỘC GIẢ===========");
+                System.out.println("1. Họ và tên: " + readerCard.getFullName());
+                System.out.println("2. Số CCCD: " + readerCard.getIdCard());
+                System.out.println("3. Ngày sinh: " + readerCard.getBirthDate());
+                System.out.println("4. Giới tính: " + readerCard.getGender());
+                System.out.println("5. Email: " + readerCard.getEmail());
+                System.out.println("6. Địa chỉ: " + readerCard.getAddress());
+                System.out.println("7. Ngày bắt đầu đăng ký" + readerCard.getStartDate());
 
+                System.out.println("Chọn thông tin muốn cập nhật (1-7), 0 để hoàn tất update, 9 để quay lại, 99 để thoát hẳn:");
+
+                chosenInfo = input.nextLine();
+
+
+                switch (chosenInfo) {
+                    case "1":
+                        System.out.println("Nhập họ tên:");
+                        String newFullName = input.nextLine();
+                        vo.setFullName(newFullName);
+                        break;
+                    case "2":
+                        System.out.println("Nhập số CCCD:");
+                        String newIDCardNo = input.nextLine();
+                        vo.setIdCard(newIDCardNo);
+                        break;
+                    case "3":
+                        System.out.println("Nhập ngày sinh (dd/MM/yyyy):");
+                        String newBirthDate = input.nextLine();
+                        vo.setBirthDay(newBirthDate);
+                        break;
+                    case "4":
+                        System.out.println("Chọn giới tính mới (1.Male /2.Female):");
+                        String newGender = input.nextLine();
+                        switch (newGender) {
+                            case "1":
+                                readerCard.setGender(Gender.MALE);
+                                break;
+                            case "2":
+                                readerCard.setGender(Gender.FEMALE);
+                                break;
+                            default:
+                                readerCard.setGender(Gender.OTHER);
+                        }
+                        vo.setGender(readerCard.getGender());
+                        break;
+                    case "5":
+                        System.out.println("Nhập email:");
+                        String newEmail = input.nextLine();
+                        vo.setEmail(newEmail);
+                        break;
+                    case "6":
+                        System.out.println("Nhập địa chỉ:");
+                        String newAddress = input.nextLine();
+                        vo.setAddress(newAddress);
+                        break;
+                    case "7":
+                        System.out.println("Nhập ngày bắt đầu đăng ký (dd/MM/yyyy):");
+                        String newStartDate = input.nextLine();
+                        vo.setStartDate(newStartDate);
+                        break;
+                }
+
+            } while (!chosenInfo.equals("0") && !chosenInfo.equals("99") && !chosenInfo.equals("9"));
+
+            if (chosenInfo.equals("9")) {
+                continue;
+            }
+
+            if (chosenInfo.equals("99")) {
+                break;
+            }
+
+
+            ReaderCardService readerService = new ReaderCardService();
+            readerService.updateReader(readerCard, vo);
+
+            System.out.println("Cập nhật thông tin thành công! Thông tin mới:");
+            System.out.println("Họ và tên: " + readerCard.getFullName());
+            System.out.println("Số căn cước: " + readerCard.getIdCard());
+            System.out.println("Ngày sinh: " + readerCard.getBirthDate());
+            System.out.println("Giới tính: " + readerCard.getGender());
+            System.out.println("Email: " + readerCard.getEmail());
+            System.out.println("Address: " + readerCard.getAddress());
+            System.out.println("Ngày đăng ký: " + readerCard.getStartDate());
+        }
     }
 
 }

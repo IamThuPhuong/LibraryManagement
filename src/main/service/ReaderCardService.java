@@ -138,25 +138,25 @@ public class ReaderCardService {
             return reader;
         }
 
-        if(!vo.getFullName().equals(reader.getFullName())) {
+        if(!Constants.INIT_STRING.equals(vo.getFullName())) {
             reader.setFullName(vo.getFullName());
         }
-        if(!vo.getGender().equals(reader.getGender())) {
+        if(!Gender.OTHER.equals(vo.getGender())) {
             reader.setGender(vo.getGender());
         }
-        if(!vo.getEmail().equals(reader.getEmail())) {
+        if(!Constants.INIT_STRING.equals(vo.getEmail())) {
             reader.setEmail(vo.getEmail());
         }
-        if(!vo.getIdCard().equals(reader.getReaderId())) {
+        if(!Constants.INIT_STRING.equals(vo.getIdCard())){
             reader.setIdCard(vo.getIdCard());
         }
-        if(!vo.getAddress().equals(reader.getAddress())) {
+        if(!Constants.INIT_STRING.equals(vo.getAddress())) {
             reader.setAddress(vo.getAddress());
         }
-        if(!(vo.getBirthDate().isEqual(reader.getBirthDate()))) {
+        if(!Constants.INIT_DATE.isEqual(vo.getBirthDate())) {
             reader.setBirthDate(vo.getBirthDate());
         }
-        if(!(vo.getStartDate().isEqual(reader.getStartDate()))) {
+        if(!Constants.INIT_DATE.isEqual(vo.getBirthDate())) {
             reader.setStartDate(vo.getStartDate());
         }
 
