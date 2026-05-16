@@ -2,7 +2,7 @@ package main.repositories;
 
 import main.enums.Gender;
 import main.enums.UserRole;
-import main.info.user.User;
+import main.info.User;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

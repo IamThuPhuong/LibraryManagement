@@ -1,4 +1,4 @@
-package main.info.user;
+package main.info;
 
 import main.enums.Gender;
 import main.enums.Status;

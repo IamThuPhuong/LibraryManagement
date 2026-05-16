@@ -2,7 +2,7 @@ package main.validate;
 
 import main.constants.ErrConstants;
 import main.constants.UserConstants;
-import main.info.user.User;
+import main.info.User;
 import main.repositories.UserRepository;
 import main.vo.UserDetailVO;
 
@@ -109,10 +109,7 @@ public class UserValidator implements Validator<UserDetailVO> {
      * @see UserConstants#USER_MAX_LENGTH
      */
     private boolean isValidLength(String input){
-        if (input.length() < UserConstants.USER_MAX_LENGTH){
-            return true;
-        }
-        return false;
+        return input.length() < UserConstants.USER_MAX_LENGTH;
     }
 
     /**

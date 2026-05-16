@@ -2,7 +2,7 @@ package main.validate;
 
 import main.constants.AuthorConstants;
 import main.enums.Permission;
-import main.info.user.User;
+import main.info.User;
 import main.repositories.UserRepository;
 import main.service.AuthorService;
 

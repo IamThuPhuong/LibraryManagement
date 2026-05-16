@@ -1,7 +1,7 @@
 package main.service;
 
 import main.constants.AuthenConstants;
-import main.info.user.User;
+import main.info.User;
 import main.repositories.UserRepository;
 import main.validate.UserChangePasswordDataValidator;
 import main.validate.Validator;

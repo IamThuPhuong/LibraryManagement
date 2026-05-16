@@ -1,8 +1,7 @@
 package test;
 
 import main.constants.AuthenConstants;
-import main.info.card.ReaderCard;
-import main.info.user.User;
+import main.info.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
 import test.service.AuthenServiceTest;
@@ -35,7 +34,7 @@ public class MainMenuTest {
     }
 
     public static void showMainMenu() throws IOException {
-        String chosenService = AuthenConstants.LOGIN_FLAG;
+        String chosenService;
 
         // Test chức năng 1
         AuthenServiceTest authenServiceTest = new AuthenServiceTest();

@@ -2,7 +2,7 @@ package main.service;
 
 import main.enums.Permission;
 import main.enums.UserRole;
-import main.info.user.User;
+import main.info.User;
 
 import java.util.HashMap;
 import java.util.HashSet;

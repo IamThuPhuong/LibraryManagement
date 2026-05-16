@@ -2,7 +2,7 @@ package test.service;
 
 import main.enums.Gender;
 import main.enums.UserRole;
-import main.info.user.User;
+import main.info.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
 import main.service.UserService;

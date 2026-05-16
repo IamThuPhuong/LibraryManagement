@@ -1,4 +1,4 @@
-package main.info.card;
+package main.info;
 
 import main.enums.Gender;
 

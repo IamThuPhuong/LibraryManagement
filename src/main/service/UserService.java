@@ -4,7 +4,7 @@ import main.constants.Constants;
 import main.enums.Gender;
 import main.enums.Permission;
 import main.enums.UserRole;
-import main.info.user.User;
+import main.info.User;
 import main.repositories.UserRepository;
 import main.validate.AuthorValidator;
 import main.validate.UserCreateDataValidator;

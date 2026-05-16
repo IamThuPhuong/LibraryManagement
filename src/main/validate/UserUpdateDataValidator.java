@@ -1,7 +1,6 @@
 package main.validate;
 
 import main.constants.ErrConstants;
-import main.info.user.User;
 import main.vo.UserDetailVO;
 
 import java.util.ArrayList;

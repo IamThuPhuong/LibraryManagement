@@ -2,7 +2,7 @@ package test.service;
 
 import main.constants.Constants;
 import main.enums.Gender;
-import main.info.card.ReaderCard;
+import main.info.ReaderCard;
 import main.service.ReaderCardService;
 import main.vo.ReaderDetailVO;
 
@@ -204,6 +204,6 @@ public class ReaderCardServiceTest {
             return;
         }
         System.out.println("Kết quả tìm kiếm:");
-        System.out.println(foundReader.toString());
+        System.out.println(foundReader);
     }
 }
