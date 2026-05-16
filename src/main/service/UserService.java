@@ -10,6 +10,7 @@ import main.validate.AuthorValidator;
 import main.validate.UserCreateDataValidator;
 import main.validate.UserValidator;
 import main.validate.Validator;
+import main.validate.UserUpdateDataValidator;
 import main.vo.UserDetailVO;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class UserService {
     Validator<UserDetailVO> userCreateValidator = new UserCreateDataValidator();
 
     /** Validate check thông tin user hợp lệ khi cập nhật user */
-    Validator<UserDetailVO> userUpdateValidator = new UserCreateDataValidator();
+    Validator<UserDetailVO> userUpdateValidator = new UserUpdateDataValidator();
 
     /**
      * 1.4 Cập nhật thông tin cá nhân

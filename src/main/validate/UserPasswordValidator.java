@@ -44,8 +44,6 @@ public class UserPasswordValidator implements Validator<String> {
         for (String eachChar : UserConstants.SPECIAL_CHAR_LIST){
             if (input.contains(eachChar)){
                 isSpecialChar = true;
-                System.out.println("Nội dung nhập không đươc bao gồm các ký tự đặc biệt  {\"!\",\"@\",\"#\",\"$\",\"%\",\"&\",\"*\",\"?\"}");
-                break;
             }
         }
         return isSpecialChar;

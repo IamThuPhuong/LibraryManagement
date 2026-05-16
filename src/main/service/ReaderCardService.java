@@ -88,8 +88,9 @@ public class ReaderCardService {
         String readerId = "READER" + readerRepository.countAllReader();
         readerCard.setReaderId(readerId);
         readerCard.setFullName(vo.getFullName());
+        readerCard.setIdCard(vo.getIdCard());
 
-        if (!vo.getBirthDate().equals(Constants.INIT_DATE)) {
+        if (!vo.getBirthDate().isEqual(Constants.INIT_DATE)) {
             readerCard.setBirthDate(vo.getBirthDate());
         }
 
@@ -105,8 +106,10 @@ public class ReaderCardService {
             readerCard.setAddress(vo.getAddress());
         }
 
-        if (!vo.getStartDate().equals(ReaderConstants.TODAY)) {
+        if (!vo.getStartDate().isEqual(Constants.INIT_DATE)) {
             readerCard.setStartDate(vo.getStartDate());
+        } else {
+            readerCard.setStartDate(ReaderConstants.TODAY);
         }
 
         readerCard.setEndDate(
@@ -156,8 +159,9 @@ public class ReaderCardService {
         if(!Constants.INIT_DATE.isEqual(vo.getBirthDate())) {
             reader.setBirthDate(vo.getBirthDate());
         }
-        if(!Constants.INIT_DATE.isEqual(vo.getBirthDate())) {
+        if(!Constants.INIT_DATE.isEqual(vo.getStartDate())) {
             reader.setStartDate(vo.getStartDate());
+            reader.setEndDate(vo.getStartDate().plusMonths(ReaderConstants.PLUS_48_MONTHS));
         }
 
         readerRepository.updateReaderCard(reader);

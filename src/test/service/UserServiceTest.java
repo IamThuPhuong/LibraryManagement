@@ -92,18 +92,19 @@ public class UserServiceTest {
         userDetailVO.setGender(genderEnum);
 
         // Service
-        userService.createUser(userDetailVO);
-        System.out.println("Tạo người dùng thành công! Thông tin người dùng mới:");
-        System.out.println("Username: " + username);
+        User newUser = userService.createUser(userDetailVO);
+        System.out.println("Kết thúc chức năng tạo người dùng");
 
-        System.out.println("Bạn có muốn đăng nhập ngay không? (Y/N)");
-        String loginChoice = input.nextLine();
-        if (loginChoice.equalsIgnoreCase("Y")) {
-            AuthenServiceTest authenServiceTest = new AuthenServiceTest();
-            // Service
-            authenServiceTest.loginLibrary();
-        } else {
-            System.out.println("Bạn có thể đăng nhập sau từ menu chính.");
+        if(newUser != null) {
+            System.out.println("Bạn có muốn đăng nhập ngay không? (Y/N)");
+            String loginChoice = input.nextLine();
+            if (loginChoice.equalsIgnoreCase("Y")) {
+                AuthenServiceTest authenServiceTest = new AuthenServiceTest();
+                // Service
+                authenServiceTest.loginLibrary();
+            } else {
+                System.out.println("Bạn có thể đăng nhập sau từ menu chính.");
+            }
         }
 
     }

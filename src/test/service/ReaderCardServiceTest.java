@@ -1,5 +1,6 @@
 package test.service;
 
+import main.constants.Constants;
 import main.enums.Gender;
 import main.info.card.ReaderCard;
 import main.service.ReaderCardService;
@@ -65,7 +66,7 @@ public class ReaderCardServiceTest {
 
         // Service
         readerCardService.createReader(readerDetailVO);
-        System.out.println("Tạo độc giả thành công!");
+        System.out.println("==Kết thúc tiến trình tạo độc giả==!");
     }
 
     // TODO: Test 2.3 cập nhật thông tin độc giả
@@ -81,8 +82,13 @@ public class ReaderCardServiceTest {
                 System.out.println(i + 1 + ". " + readerList.get(i).toString());
             }
 
-            System.out.println("Chọn người muốn update (Từ 1 đến " + readerList.size() + ")");
+            System.out.println("Chọn người muốn update (Từ 1 đến " + readerList.size() + "). Chọn 0 để thoát.");
             int readerNo = input.nextInt();
+
+            if(readerNo == Constants.INT_0){
+                input.nextLine();
+                return;
+            }
 
             ReaderCard readerCard = readerList.get(readerNo - 1);
 

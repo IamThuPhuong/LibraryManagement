@@ -29,9 +29,6 @@ public class ErrConstants {
 
     // ==================== PASSWORD ERRORS ====================
 
-    /** Password không hợp lệ. */
-    public static final String PASSWORD_INVALID = "PASSWORD_INVALID";
-
     /** Password là trường bắt buộc phải có giá trị để đảm bảo bảo mật. */
     public static final String PASSWORD_CAN_NOT_NULL = "PASSWORD_CAN_NOT_NULL";
 

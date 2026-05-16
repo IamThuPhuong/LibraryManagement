@@ -8,10 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ReaderRepository {
@@ -75,6 +77,7 @@ public class ReaderRepository {
         // Thay thế bằng SQL khi chuyển sang Spring
         // Ghi đè file readerCard.csv với nội dung mới từ readerList
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/readerCard.csv", true))){
+            writer.newLine();
             String line = readerCard.getReaderId() + "|"
                     + readerCard.getFullName() + "|"
                     + readerCard.getIdCard() + "|"
@@ -89,6 +92,7 @@ public class ReaderRepository {
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
+        removeEmptyLines("src/test/data/readerCard.csv");
     }
 
     public void updateReaderCard(ReaderCard readerCard) throws IOException {
@@ -111,7 +115,7 @@ public class ReaderRepository {
         Path path = Path.of("src/test/data/readerCard.csv");
         StringBuilder sb = new StringBuilder();
         for (ReaderCard readerCard1 : readerCards) {
-            sb.append(readerCard1.getReaderId()).append("|")
+            sb.append("\n").append(readerCard1.getReaderId()).append("|")
                     .append(readerCard1.getFullName()).append("|")
                     .append(readerCard1.getIdCard()).append("|")
                     .append(readerCard1.getBirthDate()).append("|")
@@ -127,6 +131,29 @@ public class ReaderRepository {
             Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e){
             throw new IOException("Lỗi khi ghi file");
+        }
+        removeEmptyLines("src/test/data/readerCard.csv");
+    }
+
+    public static void removeEmptyLines(String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+
+            // 1. Đọc toàn bộ các dòng trong file vào bộ nhớ
+            List<String> lines = Files.readAllLines(path);
+
+            // 2. Lọc bỏ các dòng trống hoặc chỉ chứa khoảng trắng (trim)
+            List<String> filteredLines = lines.stream()
+                    .filter(line -> line != null && !line.trim().isEmpty())
+                    .collect(Collectors.toList());
+
+            // 3. Ghi đè danh sách dòng đã lọc ngược lại vào file
+            Files.write(path, filteredLines);
+
+            System.out.println("Đã xóa các dòng trống thành công!");
+
+        } catch (IOException e) {
+            System.err.println("Lỗi khi xử lý file: " + e.getMessage());
         }
     }
 }

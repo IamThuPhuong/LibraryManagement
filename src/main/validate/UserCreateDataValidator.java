@@ -13,7 +13,7 @@ public class UserCreateDataValidator implements Validator<UserDetailVO> {
     public List<String> validate(UserDetailVO target)  {
         List<String> resultCheck = new ArrayList<>();
         if (null != passwordValidator.validate(target.getPassword())) {
-            resultCheck.add(ErrConstants.PASSWORD_INVALID);
+            resultCheck.addAll(passwordValidator.validate(target.getPassword()));
         }
         return resultCheck;
     }
