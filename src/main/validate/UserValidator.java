@@ -28,7 +28,7 @@ import java.util.List;
  * @see User
  */
 public class UserValidator implements Validator<UserDetailVO> {
-    private UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository();
 
     /**
      * Constructor khởi tạo InfoValidator với danh sách người dùng hiện có.

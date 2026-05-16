@@ -18,7 +18,7 @@ public class UserServiceTest {
     /**
      * Tạo user phía màn hình
      */
-    public void createUser() throws IOException {
+    public void createUser() {
         User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
         // Validate phía màn hình
 //        if (currentUser.getUserRole() != UserRole.ADMIN && currentUser.getUserRole() != UserRole.MANAGER) {

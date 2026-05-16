@@ -169,4 +169,31 @@ public class ReaderCardService {
         return reader;
     }
 
+    /**
+     * 2.4 Xóa thông tin một độc giả
+     * @param deleteId
+     * @return
+     */
+    public String deleteReaderCard(String deleteId){
+        readerRepository.delete(deleteId);
+        return deleteId;
+    }
+
+    /**
+     * 2.5 Tìm kiếm độc giả theo CMND
+     * @param idCardNo
+     * @return
+     */
+    public ReaderCard findReaderByIdCardNo(String idCardNo){
+        return readerRepository.findByIdCardNo(idCardNo);
+    }
+
+    /**
+     * 2.6 Tìm kiếm độc giả theo họ tên
+     * @param name
+     * @return
+     */
+    public List<ReaderCard> findReaderByFullName(String name){
+        return readerRepository.findByName(name);
+    }
 }

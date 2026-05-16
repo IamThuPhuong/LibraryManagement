@@ -69,7 +69,6 @@ public class ReaderCardServiceTest {
         System.out.println("==Kết thúc tiến trình tạo độc giả==!");
     }
 
-    // TODO: Test 2.3 cập nhật thông tin độc giả
 
     /**
      * Cập nhật user phía màn hình
@@ -182,4 +181,29 @@ public class ReaderCardServiceTest {
         }
     }
 
+    public void findReaderByFullName(){
+        System.out.println("Nhập tên tìm kiếm (Không dấu):");
+        String name = input.nextLine();
+        List<ReaderCard> foundReaders = readerCardService.findReaderByFullName(name);
+        if (foundReaders == null){
+            System.out.println("Không tìm thấy độc giả nào");
+            return;
+        }
+        System.out.println("Kết quả tìm kiếm:");
+        for (int i = 0; i < foundReaders.size(); i++){
+            System.out.println(i + ". " + foundReaders.get(i).toString());
+        }
+    }
+
+    public void findReaderByIdCardNo(){
+        System.out.println("Nhập số CCCD:");
+        String cccd = input.nextLine();
+        ReaderCard foundReader = readerCardService.findReaderByIdCardNo(cccd);
+        if (foundReader == null){
+            System.out.println("Không tồn tại độc giả này");
+            return;
+        }
+        System.out.println("Kết quả tìm kiếm:");
+        System.out.println(foundReader.toString());
+    }
 }

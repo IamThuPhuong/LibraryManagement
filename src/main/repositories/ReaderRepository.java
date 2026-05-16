@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ReaderRepository {
-    UserRepository userRepository = new UserRepository();
 
     public Stream<ReaderCard> stream() {
         Path path = Path.of("src/test/data/readerCard.csv");
@@ -69,6 +68,12 @@ public class ReaderRepository {
                 .orElse(null);
     }
 
+    public List<ReaderCard> findByName(String name){
+        return this.stream()
+                .filter(readerCard -> readerCard.getFullName().contains(name))
+                .toList();
+    }
+
     public int countAllReader(){
         return Math.toIntExact(this.stream().count());
     }
@@ -111,6 +116,33 @@ public class ReaderRepository {
                 break;
             }
         }
+        overwriteReaderCards(readerCards);
+    }
+
+    public void delete(String deleteReaderId){
+        try{
+            if (deleteReaderId == null){
+                throw new IllegalArgumentException("Reader Id không tồn tại!");
+            }
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        List<ReaderCard> readerCards = new ArrayList<>(this.getAllReaders());
+        for (int i = 0; i < readerCards.size(); i++){
+            if(readerCards.get(i).getReaderId().equals(deleteReaderId)){
+                readerCards.remove(readerCards.get(i));
+                break;
+            }
+        }
+        try {
+            overwriteReaderCards(readerCards);
+        } catch (IOException e){
+            System.out.println("Ghi file thất bại! Lỗi: " + e);
+        }
+    }
+
+    private static void overwriteReaderCards(List<ReaderCard> readerCards) throws IOException {
         // Ghi đè file readerCard.csv với nội dung mới từ readerList sau khi đã cập nhật readerCard
         Path path = Path.of("src/test/data/readerCard.csv");
         StringBuilder sb = new StringBuilder();

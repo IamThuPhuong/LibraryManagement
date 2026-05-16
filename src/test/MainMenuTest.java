@@ -64,6 +64,7 @@ public class MainMenuTest {
         System.out.println("5. Xem danh sách độc giả");
         System.out.println("6. Thêm độc giả");
         System.out.println("7. Cập nhật thông tin độc giả");
+        System.out.println("8. Tìm kiếm độc giả");
         System.out.println("99. Đăng xuất");
 
         chosenService = input.nextLine();
@@ -95,6 +96,19 @@ public class MainMenuTest {
                 break;
             case "7":
                 readerCardServiceTest.updateReader();
+                break;
+            case "8":
+                System.out.println("Chọn nội dung tìm kiếm:");
+                System.out.println("1. Tìm kiếm theo họ tên");
+                System.out.println("2. Tìm kiếm theo CMND");
+                String chosen = input.nextLine();
+                if(chosen.equals("1")){
+                    input.nextLine();
+                    readerCardServiceTest.findReaderByFullName();
+                } else {
+                    input.nextLine();
+                    readerCardServiceTest.findReaderByIdCardNo();
+                }
                 break;
             case "99":
                 boolean checkLogout = authenService.logout();

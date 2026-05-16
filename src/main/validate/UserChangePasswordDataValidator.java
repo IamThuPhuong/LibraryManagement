@@ -18,7 +18,7 @@ public class UserChangePasswordDataValidator implements Validator<UserChangePass
         // Rule kiểm tra: kiểm tra input trước nghiệp vụ sau
         List<String> resultCheck = new ArrayList<>();
 
-        resultCheck.addAll(passwordValidator.validate(target.getOldPassword()));
+//        resultCheck.addAll(passwordValidator.validate(target.getOldPassword()));
 
         resultCheck.addAll(passwordValidator.validate(target.getNewPassword()));
 
