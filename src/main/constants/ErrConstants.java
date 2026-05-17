@@ -80,4 +80,29 @@ public class ErrConstants {
     // ==================== EMAIL ERRORS ====================
     /** Email không hợp lệ */
     public static final String INVALID_MAIL = "INVALID_MAIL";
+
+    // ==================== BOOK ERRORS ====================
+    /** Mã ISBN không được để trống */
+    public static final String ISBN_CAN_NOT_NULL = "ISBN_CAN_NOT_NULL";
+
+    /** Tên sách không được để trống */
+    public static final String NAME_CAN_NOT_NULL = "NAME_CAN_NOT_NULL";
+
+    /** Tác giả không được để trống */
+    public static final String AUTHOR_CAN_NOT_NULL = "AUTHOR_CAN_NOT_NULL";
+
+    /** Nhà xuất bản không được để trống */
+    public static final String PUBLISHER_CAN_NOT_NULL = "PUBSLIHER_CAN_NOT_NULL";
+
+    /** Năm xuất bản không được để trống */
+    public static final String PUBLISHYEAR_CAN_NOT_NULL = "PUBLISHYEAR_CAN_NOT_NULL";
+
+    /** Giá cả không hợp lệ */
+    public static final String PRICE_INVALID = "PRICE_INVALID";
+
+    /** Số lượng không hợp lệ */
+    public static final String TOTAL_INVALID = "TOTAL_INVALID";
+
+    /** Số năm không được lớn hơn năm hiện tại */
+    public static final String PUBLISHYEAR_IN_FUTURE = "PUBLISHYEAR_IN_FUTURE";
 }

@@ -5,6 +5,7 @@ import main.info.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
 import test.service.AuthenServiceTest;
+import test.service.BookServiceTest;
 import test.service.ReaderCardServiceTest;
 import test.service.UserServiceTest;
 
@@ -52,6 +53,7 @@ public class MainMenuTest {
         currentUser = userRepository.findByUserId(AuthenService.USER_ID);
         // Test chức năng 2
         ReaderCardServiceTest readerCardServiceTest = new ReaderCardServiceTest();
+        BookServiceTest bookServiceTest = new BookServiceTest();
         System.out.println("Chọn chức năng");
         System.out.println("Quản lý người dùng");
         System.out.println("1. Tạo người dùng");
@@ -64,6 +66,11 @@ public class MainMenuTest {
         System.out.println("6. Thêm độc giả");
         System.out.println("7. Cập nhật thông tin độc giả");
         System.out.println("8. Tìm kiếm độc giả");
+        System.out.println("Quản lý sách:");
+        System.out.println("9. Xem danh sách sách hiện có");
+        System.out.println("10. Thêm sách");
+        System.out.println("11. Cập nhật thông tin sách");
+        System.out.println("12. Tìm kiếm sách");
         System.out.println("99. Đăng xuất");
 
         chosenService = input.nextLine();
@@ -107,6 +114,26 @@ public class MainMenuTest {
                 } else {
                     input.nextLine();
                     readerCardServiceTest.findReaderByIdCardNo();
+                }
+                break;
+            case "9":
+                bookServiceTest.showBookList();
+                break;
+            case "10":
+                bookServiceTest.addBook();
+                break;
+            case "11":
+                bookServiceTest.updateBook();
+                break;
+            case "12":
+                System.out.println("Chọn nội dung tìm kiếm:");
+                System.out.println("1. Tìm kiếm theo ISBN");
+                System.out.println("2. Tìm kiếm theo tên");
+                String chosenFindBook = input.nextLine();
+                if(chosenFindBook.equals("1")){
+                    bookServiceTest.findBookByIsbn();
+                } else {
+                    bookServiceTest.findBookByName();
                 }
                 break;
             case "99":

@@ -18,4 +18,7 @@ public class Constants {
 
     /** Khởi tạo Integer */
     public static final int INT_0 = 0;
+
+    /** Khởi tạo Long */
+    public static final long DEFAULT_LONG = 0L;
 }
