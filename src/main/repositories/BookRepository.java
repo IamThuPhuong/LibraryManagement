@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -60,10 +59,6 @@ public class BookRepository {
 
     public List<Book> getAllBooks() {
         return this.stream().toList();
-    }
-
-    public int countAllBooks() {
-        return Math.toIntExact(this.stream().count());
     }
 
     public void saveBookToFile(Book book) {

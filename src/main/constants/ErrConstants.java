@@ -105,4 +105,27 @@ public class ErrConstants {
 
     /** Số năm không được lớn hơn năm hiện tại */
     public static final String PUBLISHYEAR_IN_FUTURE = "PUBLISHYEAR_IN_FUTURE";
+
+    // ==================== BORROW ERRORS ====================
+
+    /** Mã mượn sách không được để trống */
+    public static final String BORROW_ID_CANNOT_NULL = "BORROW_ID_CANNOT_NULL";
+
+    /** Độc giả không được để trống */
+    public static final String BORROW_READER_CANNOT_NULL = "BORROW_READER_CANNOT_NULL";
+
+    /** Ngày mượn không được để trống */
+    public static final String BORROW_DATE_CANNOT_NULL = "BORROW_DATE_CANNOT_NULL";
+
+    /** Sách mượn không được để trống */
+    public static final String BORROW_BOOK_CANNOT_NULL = "BORROW_BOOK_CANNOT_NULL";
+
+    /**Số lượng mượn phải lớn hơn 0 */
+    public static final String BORROW_AMOUNT_NOT_ZERO = "BORROW_AMOUNT_NOT_ZERO";
+
+    /** Không đủ số lượng sách */
+    public static final String NOT_ENOUGH_BOOK = "BOOK_NOT_ENOUGH";
+
+    /** Số lượng mượn không được lớn hơn 10 */
+    public static final String BORROW_UNDER_10 = "BORROW_UNDER_10";
 }
