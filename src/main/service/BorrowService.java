@@ -1,42 +1,74 @@
 package main.service;
 
+import main.constants.Constants;
 import main.enums.BorrowStatus;
+import main.enums.Permission;
 import main.info.BorrowCard;
 import main.info.BorrowDetail;
+import main.info.User;
+import main.repositories.BorrowRepository;
+import main.validate.AuthorValidator;
 import main.validate.BorrowValidator;
 import main.validate.Validator;
-import main.vo.BorrowDetailVO;
+import main.vo.BorrowVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BorrowService {
-    private Validator<BorrowDetailVO> borrowValidator = new BorrowValidator();
+import static test.MainMenuTest.userRepository;
 
-    public BorrowCard setBorrowCard(BorrowDetailVO vo){
+public class BorrowService {
+    private final Validator<BorrowVO> borrowValidator = new BorrowValidator();
+    private final AuthorService authorService = new AuthorService();
+    private final User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+    Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
+    private final BorrowRepository borrowRepository = new BorrowRepository();
+    /** Quyền truy cập chức năng */
+    private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
+
+    /**
+     * 4. Lập phiếu mượn sách
+     * @param vo
+     * @return
+     */
+    public BorrowCard setBorrowCard(BorrowVO vo){
+
+        authorValidator.validate(PERMISSION_OF_FUNCTION);
+
+        List<String> errorList = borrowValidator.validate(vo);
+        if (errorList != null){
+            System.out.println("Không thể lập thẻ mượn sách do các lỗi sau:");
+            for (String error : errorList) {
+                System.out.println("- " + error);
+            }
+            return null;
+        }
+
+        // TODO: Test chức năng 4: Lập phiếu mượn sách
         BorrowCard borrowCard = new BorrowCard();
         BorrowDetail borrowDetail = new BorrowDetail();
         List<BorrowDetail> listBorrowDetail = new ArrayList<>();
-        // TODO: Check lại phần lập phiếu mượn sách
-        List<String> errList = borrowValidator.validate(vo);
-        if (errList != null){
-            return null;
-        }
         borrowCard.setBorrowId(vo.getBorrowId());
         borrowCard.setReaderId(vo.getReaderId());
-        borrowCard.setBorrowDate(vo.getBorrowDate());
+        if (vo.getBorrowDate() == null){
+            borrowCard.setBorrowDate(Constants.TODAY);
+        } else {
+            borrowCard.setBorrowDate(vo.getBorrowDate());
+        }
         borrowCard.setDueDate(vo.getBorrowDate().plusMonths(1));
 
         for (int i = 0; i < vo.getAmount(); i++) {
             borrowDetail.setBorrowId(vo.getBorrowId());
-            borrowDetail.setIsbn(vo.getIsbn().get(i));
+            borrowDetail.setIsbn(vo.getListDetail().get(i).getIsbn());
             borrowDetail.setReturnedDate(null);
             borrowDetail.setBorrowStatus(BorrowStatus.BORROWING);
+            borrowDetail.setNote(vo.getListDetail().get(i).getNote());
 
             listBorrowDetail.add(borrowDetail);
         }
 
         borrowCard.setBorrowDetail(listBorrowDetail);
+        borrowRepository.save(borrowCard);
 
         return borrowCard;
     }

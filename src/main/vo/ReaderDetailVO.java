@@ -1,7 +1,6 @@
 package main.vo;
 
 import main.constants.Constants;
-import main.constants.ReaderConstants;
 import main.enums.Gender;
 
 import java.time.LocalDate;
@@ -13,7 +12,7 @@ public class ReaderDetailVO {
     private Gender gender = Gender.OTHER;
     private String email = Constants.INIT_STRING;
     private String address = Constants.INIT_STRING;
-    private LocalDate startDate = ReaderConstants.TODAY;
+    private LocalDate startDate = Constants.TODAY;
 
     public String getFullName() {
         return fullName;

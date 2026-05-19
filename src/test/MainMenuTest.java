@@ -1,13 +1,9 @@
 package test;
 
-import main.constants.AuthenConstants;
 import main.info.User;
 import main.repositories.UserRepository;
 import main.service.AuthenService;
-import test.service.AuthenServiceTest;
-import test.service.BookServiceTest;
-import test.service.ReaderCardServiceTest;
-import test.service.UserServiceTest;
+import test.service.*;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -71,6 +67,9 @@ public class MainMenuTest {
         System.out.println("10. Thêm sách");
         System.out.println("11. Cập nhật thông tin sách");
         System.out.println("12. Tìm kiếm sách");
+        System.out.println("Quản lý mượn trả: ");
+        System.out.println("13. Lập phiếu mượn sách");
+        System.out.println("14. Lập phiếu trả sách");
         System.out.println("99. Đăng xuất");
 
         chosenService = input.nextLine();
@@ -135,6 +134,13 @@ public class MainMenuTest {
                 } else {
                     bookServiceTest.findBookByName();
                 }
+                break;
+            case "13":
+                BorrowCardServiceTest borrowCardServiceTest = new BorrowCardServiceTest();
+                borrowCardServiceTest.testCreateBorrowCard();
+                break;
+            case "14":
+                System.out.println("Chức năng lập phiếu trả sách đang được phát triển...");
                 break;
             case "99":
                 boolean checkLogout = authenService.logout();

@@ -109,7 +109,7 @@ public class ReaderCardService {
         if (!vo.getStartDate().isEqual(Constants.INIT_DATE)) {
             readerCard.setStartDate(vo.getStartDate());
         } else {
-            readerCard.setStartDate(ReaderConstants.TODAY);
+            readerCard.setStartDate(Constants.TODAY);
         }
 
         readerCard.setEndDate(

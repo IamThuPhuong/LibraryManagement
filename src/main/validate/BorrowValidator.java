@@ -3,49 +3,50 @@ package main.validate;
 import main.constants.ErrConstants;
 import main.info.Book;
 import main.repositories.BookRepository;
-import main.vo.BorrowDetailVO;
+import main.vo.BorrowVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BorrowValidator implements Validator<BorrowDetailVO>{
+public class BorrowValidator implements Validator<BorrowVO>{
     private final BookRepository bookRepository = new BookRepository();
 
     @Override
-    public List<String> validate(BorrowDetailVO target) {
-        // TODO: Check lại phần check null
+    public List<String> validate(BorrowVO target) {
         List<String> errList = new ArrayList<>();
 
-        if (target.getBorrowId() == null){
+        if (target.getBorrowId() == null || target.getBorrowId().trim().isEmpty()){
             errList.add(ErrConstants.BORROW_ID_CANNOT_NULL);
         }
 
-        if(target.getReaderId() == null){
+        if(target.getReaderId() == null || target.getReaderId().trim().isEmpty()){
             errList.add(ErrConstants.BORROW_READER_CANNOT_NULL);
         }
 
-        if(target.getBorrowDate() == null){
-            errList.add(ErrConstants.BORROW_DATE_CANNOT_NULL);
-        }
-
-        if(target.getIsbn() == null){
-            errList.add(ErrConstants.BORROW_BOOK_CANNOT_NULL);
-        }
-
-        if(target.getAmount() == 0){
+        if(target.getAmount() == 0) {
             errList.add(ErrConstants.BORROW_AMOUNT_NOT_ZERO);
-        }
+        } else if(target.getAmount() > 10){
+            errList.add(ErrConstants.BORROW_UNDER_10);
+        } else {
+            for (int i = 0; i < target.getAmount(); i++) {
+                String eachBook = target.getListDetail().get(i).getIsbn();
+                if (eachBook == null || eachBook.trim().isEmpty()){
+                    errList.add(ErrConstants.ISBN_CAN_NOT_NULL);
+                }
 
-        for (String eachBook : target.getIsbn()) {
-            Book existedBook = bookRepository.findByISBN(eachBook);
-            if (existedBook.getTotal() < 1) {
-                errList.add(ErrConstants.NOT_ENOUGH_BOOK + " " + existedBook.getName());
+                Book existedBook = bookRepository.findByISBN(eachBook);
+                if (existedBook == null) {
+                    errList.add(ErrConstants.ISBN_CAN_NOT_NULL + " " + eachBook);
+                    continue;
+                }
+                if (existedBook.getTotal() < 1) {
+                    errList.add(ErrConstants.NOT_ENOUGH_BOOK + " " + existedBook.getName());
+                }
             }
         }
 
-        if (target.getAmount() > 10){
-            errList.add(ErrConstants.BORROW_UNDER_10);
-        }
+
+
         return errList;
     }
 }

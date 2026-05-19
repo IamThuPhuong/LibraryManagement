@@ -69,6 +69,7 @@ public class ReaderRepository {
     }
 
     public List<ReaderCard> findByName(String name){
+        // TODO: làm phần tìm kiếm có dấu và lowercase
         return this.stream()
                 .filter(readerCard -> readerCard.getFullName().contains(name))
                 .toList();

@@ -118,7 +118,7 @@ public class ErrConstants {
     public static final String BORROW_DATE_CANNOT_NULL = "BORROW_DATE_CANNOT_NULL";
 
     /** Sách mượn không được để trống */
-    public static final String BORROW_BOOK_CANNOT_NULL = "BORROW_BOOK_CANNOT_NULL";
+    public static final String BORROW_BOOKS_CANNOT_NULL = "BORROW_BOOK_CANNOT_NULL";
 
     /**Số lượng mượn phải lớn hơn 0 */
     public static final String BORROW_AMOUNT_NOT_ZERO = "BORROW_AMOUNT_NOT_ZERO";

@@ -89,6 +89,7 @@ public class ReaderCardServiceTest {
                 return;
             }
 
+            input.nextLine();
             ReaderCard readerCard = readerList.get(readerNo - 1);
 
             ReaderDetailVO vo = new ReaderDetailVO();
