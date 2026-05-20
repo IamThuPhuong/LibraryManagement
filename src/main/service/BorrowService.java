@@ -36,7 +36,7 @@ public class BorrowService {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
 
         List<String> errorList = borrowValidator.validate(vo);
-        if (errorList != null){
+        if (!errorList.isEmpty()){
             System.out.println("Không thể lập thẻ mượn sách do các lỗi sau:");
             for (String error : errorList) {
                 System.out.println("- " + error);
@@ -44,10 +44,7 @@ public class BorrowService {
             return null;
         }
 
-        // TODO: Test chức năng 4: Lập phiếu mượn sách
         BorrowCard borrowCard = new BorrowCard();
-        BorrowDetail borrowDetail = new BorrowDetail();
-        List<BorrowDetail> listBorrowDetail = new ArrayList<>();
         borrowCard.setBorrowId(vo.getBorrowId());
         borrowCard.setReaderId(vo.getReaderId());
         if (vo.getBorrowDate() == null){
@@ -57,7 +54,9 @@ public class BorrowService {
         }
         borrowCard.setDueDate(vo.getBorrowDate().plusMonths(1));
 
+        List<BorrowDetail> listBorrowDetail = new ArrayList<>();
         for (int i = 0; i < vo.getAmount(); i++) {
+            BorrowDetail borrowDetail = new BorrowDetail();
             borrowDetail.setBorrowId(vo.getBorrowId());
             borrowDetail.setIsbn(vo.getListDetail().get(i).getIsbn());
             borrowDetail.setReturnedDate(null);

@@ -66,4 +66,11 @@ public class BorrowRepository {
             borrowDetailRepository.save(borrowDetail);
         }
     }
+
+    public BorrowCard findByBorrowId(String borrowId) {
+        return this.stream()
+                .filter(borrowCard -> borrowCard.getBorrowId().equals(borrowId))
+                .findFirst()
+                .orElse(null);
+    }
 }

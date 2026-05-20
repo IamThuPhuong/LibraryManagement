@@ -44,11 +44,11 @@ public class BorrowVO {
         this.borrowDate = borrowDate;
     }
 
-    public void setBorrowDate(String birthdaystr) {
+    public void setBorrowDate(String borrowDate) {
         // Kiểm tra null hoặc rỗng
-        if (birthdaystr == null || birthdaystr.trim().isEmpty()) {
+        if (borrowDate == null || borrowDate.trim().isEmpty()) {
             this.borrowDate = LocalDate.parse(
-                    Constants.STRING_INIT_DATE,
+                    Constants.STR_TODAY,
                     Constants.DATE_FORMATTER
             );
             return;
@@ -56,13 +56,13 @@ public class BorrowVO {
 
         try {
             // Parse String thành LocalDate theo format
-            this.borrowDate = LocalDate.parse(birthdaystr, Constants.DATE_FORMATTER);
+            this.borrowDate = LocalDate.parse(borrowDate, Constants.DATE_FORMATTER);
         } catch (Exception e) {
-            System.out.println("Định dạng ngày sinh không hợp lệ: " + birthdaystr);
+            System.out.println("Định dạng ngày sinh không hợp lệ: " + borrowDate);
             System.out.println("Vui lòng sử dụng định dạng: dd/MM/yyyy");
             // Sử dụng giá trị mặc định nếu parse lỗi
             this.borrowDate = LocalDate.parse(
-                    Constants.STRING_INIT_DATE,
+                    Constants.STR_TODAY,
                     Constants.DATE_FORMATTER
             );
         }

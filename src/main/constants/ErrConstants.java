@@ -128,4 +128,7 @@ public class ErrConstants {
 
     /** Số lượng mượn không được lớn hơn 10 */
     public static final String BORROW_UNDER_10 = "BORROW_UNDER_10";
+
+     /** Mã mượn sách đã tồn tại */
+    public static final String BORROW_ID_EXIST = "BORROW_ID_EXIST";
 }

@@ -6,7 +6,6 @@ import main.service.BorrowService;
 import main.vo.BorrowDetailVO;
 import main.vo.BorrowVO;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,31 +51,34 @@ public class BorrowCardServiceTest {
         }
 
         BorrowVO vo = new BorrowVO();
-        BorrowDetailVO detailVO = new BorrowDetailVO();
-        List<BorrowDetailVO> detailList = new java.util.ArrayList<>();
         vo.setBorrowId(borrowId);
         vo.setReaderId(readerId);
         vo.setBorrowDate(borrowDate);
         vo.setAmount(totalBooks);
+        List<BorrowDetailVO> detailList = new java.util.ArrayList<>();
         for(int i = 0; i < totalBooks; i++) {
+            BorrowDetailVO detailVO = new BorrowDetailVO();
             detailVO.setIsbn(isbnList.get(i));
             detailVO.setNote(noteList.get(i));
             detailList.add(detailVO);
         }
         vo.setListDetail(detailList);
 
-
-        // TODO: Fix lỗi NullPointerException khi tạo thẻ mượn sách
         BorrowCard borrowCard = borrowService.setBorrowCard(vo);
+        if(borrowCard == null) {
+            System.out.println("Tạo thẻ mượn sách thất bại do lỗi dữ liệu. Vui lòng kiểm tra lại thông tin đã nhập.");
+            return;
+        }
         System.out.println("==Kết thúc tiến trình tạo thẻ mượn sách==!");
-        System.out.println("Thông tin thẻ mượn sách vừa tạo:");
-        System.out.println("Mã thẻ mượn sách: " + borrowCard.getBorrowId());
-        System.out.println("Mã độc giả: " + borrowCard.getReaderId());
-        System.out.println("Ngày mượn: " + borrowCard.getBorrowDate());
-        System.out.println("Số lượng sách mượn: " + borrowCard.getBorrowDetail().size());
-        System.out.println("Chi tiết sách mượn:");
+        System.out.println("____Thông tin thẻ mượn sách vừa tạo:_________");
+        System.out.println("| Mã thẻ mượn sách: " + borrowCard.getBorrowId());
+        System.out.println("| Mã độc giả: " + borrowCard.getReaderId());
+        System.out.println("| Ngày mượn: " + borrowCard.getBorrowDate());
+        System.out.println("| Số lượng sách mượn: " + borrowCard.getBorrowDetail().size());
+        System.out.println("| Chi tiết sách mượn:");
         for (BorrowDetail detail : borrowCard.getBorrowDetail()) {
             System.out.println("- Mã ISBN: " + detail.getIsbn() + ", Ghi chú: " + detail.getNote());
         }
+        System.out.println("______________________________________________");
     }
 }

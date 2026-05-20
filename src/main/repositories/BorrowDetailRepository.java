@@ -72,9 +72,7 @@ public class BorrowDetailRepository {
     }
 
     public void save(BorrowDetail borrowDetail) {
-        // Thay thế bằng SQL khi chuyển sang Spring
-        // Ghi đè file book.csv với nội dung mới từ danh sách book
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/borrowCard.csv", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/borrowDetail.csv", true))) {
             writer.newLine();
             // Nối các thuộc tính của Book cách nhau bằng dấu "|"
             String line = borrowDetail.getBorrowId() + "|"
@@ -82,12 +80,19 @@ public class BorrowDetailRepository {
                     + borrowDetail.getReturnedDate() + "|"
                     + borrowDetail.getBorrowStatus() + "|"
                     + borrowDetail.getNote();
+
             writer.newLine();
             writer.write(line);
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi phiếu mượn chi tiết: " + e.getMessage());
         }
-        removeEmptyLines("src/test/data/borrowCard.csv");
+        removeEmptyLines("src/test/data/borrowDetail.csv");
+    }
+
+    public int countByIsbn(String isbn) {
+        return (int) this.stream()
+                .filter(detail -> detail.getIsbn().equals(isbn))
+                .count();
     }
 
 

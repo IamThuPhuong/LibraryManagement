@@ -21,6 +21,10 @@ public class Constants {
 
     /** Khởi tạo Long */
     public static final long DEFAULT_LONG = 0L;
+
     /** Ngày hôm nay */
     public static final LocalDate TODAY = LocalDate.now();
+
+    /** Ngày hôm nay (chuỗi) */
+    public static final String STR_TODAY = LocalDate.now().format(DATE_FORMATTER);
 }

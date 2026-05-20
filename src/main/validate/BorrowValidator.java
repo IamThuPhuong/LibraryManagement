@@ -3,6 +3,8 @@ package main.validate;
 import main.constants.ErrConstants;
 import main.info.Book;
 import main.repositories.BookRepository;
+import main.repositories.BorrowDetailRepository;
+import main.repositories.BorrowRepository;
 import main.vo.BorrowVO;
 
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 
 public class BorrowValidator implements Validator<BorrowVO>{
     private final BookRepository bookRepository = new BookRepository();
+    private final BorrowRepository borrowRepository = new BorrowRepository();
+    private final BorrowDetailRepository borrowDetailRepository = new BorrowDetailRepository();
 
     @Override
     public List<String> validate(BorrowVO target) {
@@ -21,6 +25,10 @@ public class BorrowValidator implements Validator<BorrowVO>{
 
         if(target.getReaderId() == null || target.getReaderId().trim().isEmpty()){
             errList.add(ErrConstants.BORROW_READER_CANNOT_NULL);
+        }
+
+        if(checkBorrowIDExist(target.getBorrowId())){
+            errList.add(ErrConstants.BORROW_ID_EXIST);
         }
 
         if(target.getAmount() == 0) {
@@ -35,11 +43,13 @@ public class BorrowValidator implements Validator<BorrowVO>{
                 }
 
                 Book existedBook = bookRepository.findByISBN(eachBook);
+                int countBorrowBook = borrowDetailRepository.countByIsbn(eachBook);
                 if (existedBook == null) {
                     errList.add(ErrConstants.ISBN_CAN_NOT_NULL + " " + eachBook);
                     continue;
                 }
-                if (existedBook.getTotal() < 1) {
+                // Sách còn lại = tổng sách thư viện sở hữu - sách đã mượn
+                if (existedBook.getTotal() - countBorrowBook < 1) {
                     errList.add(ErrConstants.NOT_ENOUGH_BOOK + " " + existedBook.getName());
                 }
             }
@@ -48,5 +58,9 @@ public class BorrowValidator implements Validator<BorrowVO>{
 
 
         return errList;
+    }
+
+    private boolean checkBorrowIDExist(String borrowId) {
+        return borrowRepository.findByBorrowId(borrowId) != null;
     }
 }
