@@ -2,7 +2,7 @@ package test.service;
 
 import main.constants.Constants;
 import main.enums.Genre;
-import main.info.Book;
+import main.entity.Book;
 import main.service.BookService;
 import main.vo.BookDetailVO;
 

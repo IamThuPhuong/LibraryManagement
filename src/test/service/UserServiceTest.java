@@ -2,8 +2,8 @@ package test.service;
 
 import main.enums.Gender;
 import main.enums.UserRole;
-import main.info.User;
-import main.repositories.UserRepository;
+import main.entity.User;
+import main.repository.UserRepository;
 import main.service.AuthenService;
 import main.service.UserService;
 import main.vo.UserDetailVO;

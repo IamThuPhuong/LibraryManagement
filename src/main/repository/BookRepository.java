@@ -1,7 +1,7 @@
-package main.repositories;
+package main.repository;
 
 import main.enums.Genre;
-import main.info.Book;
+import main.entity.Book;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static main.repositories.ReaderRepository.removeEmptyLines;
+import static main.repository.ReaderRepository.removeEmptyLines;
 
 public class BookRepository {
     public Stream<Book> stream() {

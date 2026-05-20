@@ -1,7 +1,7 @@
 package test.service;
 
-import main.info.User;
-import main.repositories.UserRepository;
+import main.entity.User;
+import main.repository.UserRepository;
 import main.service.AuthenService;
 import main.vo.UserChangePasswordVO;
 

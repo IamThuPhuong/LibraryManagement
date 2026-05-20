@@ -1,7 +1,7 @@
 package test;
 
-import main.info.User;
-import main.repositories.UserRepository;
+import main.entity.User;
+import main.repository.UserRepository;
 import main.service.AuthenService;
 import test.service.*;
 

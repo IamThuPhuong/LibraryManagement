@@ -2,8 +2,8 @@ package main.validate;
 
 import main.constants.AuthorConstants;
 import main.enums.Permission;
-import main.info.User;
-import main.repositories.UserRepository;
+import main.entity.User;
+import main.repository.UserRepository;
 import main.service.AuthorService;
 
 import java.util.ArrayList;

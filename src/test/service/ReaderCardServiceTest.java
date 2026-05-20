@@ -2,7 +2,7 @@ package test.service;
 
 import main.constants.Constants;
 import main.enums.Gender;
-import main.info.ReaderCard;
+import main.entity.ReaderCard;
 import main.service.ReaderCardService;
 import main.vo.ReaderDetailVO;
 

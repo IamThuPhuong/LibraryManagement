@@ -1,8 +1,7 @@
-package main.repositories;
+package main.repository;
 
 import main.enums.BorrowStatus;
-import main.info.BorrowCard;
-import main.info.BorrowDetail;
+import main.entity.BorrowDetail;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static main.repositories.ReaderRepository.removeEmptyLines;
+import static main.repository.ReaderRepository.removeEmptyLines;
 
 public class BorrowDetailRepository {
     private final String DETAIL_FILE_PATH = "src/test/data/borrowDetail.csv";

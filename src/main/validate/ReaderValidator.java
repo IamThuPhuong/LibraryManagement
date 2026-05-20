@@ -3,7 +3,7 @@ package main.validate;
 import main.constants.ErrConstants;
 import main.constants.ReaderConstants;
 import main.constants.UserConstants;
-import main.repositories.ReaderRepository;
+import main.repository.ReaderRepository;
 import main.vo.ReaderDetailVO;
 
 import java.time.LocalDate;

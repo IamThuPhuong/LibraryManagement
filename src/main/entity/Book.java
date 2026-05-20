@@ -1,4 +1,4 @@
-package main.info;
+package main.entity;
 
 import main.enums.Genre;
 

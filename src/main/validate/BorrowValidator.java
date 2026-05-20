@@ -1,10 +1,10 @@
 package main.validate;
 
 import main.constants.ErrConstants;
-import main.info.Book;
-import main.repositories.BookRepository;
-import main.repositories.BorrowDetailRepository;
-import main.repositories.BorrowRepository;
+import main.entity.Book;
+import main.repository.BookRepository;
+import main.repository.BorrowDetailRepository;
+import main.repository.BorrowRepository;
 import main.vo.BorrowVO;
 
 import java.util.ArrayList;

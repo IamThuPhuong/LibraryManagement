@@ -4,10 +4,10 @@ import main.constants.BookConstants;
 import main.constants.Constants;
 import main.enums.Genre;
 import main.enums.Permission;
-import main.info.Book;
-import main.info.ReaderCard;
-import main.info.User;
-import main.repositories.BookRepository;
+import main.entity.Book;
+import main.entity.ReaderCard;
+import main.entity.User;
+import main.repository.BookRepository;
 import main.validate.*;
 import main.vo.BookDetailVO;
 

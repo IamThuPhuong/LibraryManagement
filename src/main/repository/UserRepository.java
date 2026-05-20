@@ -1,8 +1,8 @@
-package main.repositories;
+package main.repository;
 
 import main.enums.Gender;
 import main.enums.UserRole;
-import main.info.User;
+import main.entity.User;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

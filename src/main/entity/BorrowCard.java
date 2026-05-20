@@ -1,4 +1,4 @@
-package main.info;
+package main.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

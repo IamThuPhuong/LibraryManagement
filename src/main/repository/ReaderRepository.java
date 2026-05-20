@@ -1,7 +1,7 @@
-package main.repositories;
+package main.repository;
 
 import main.enums.Gender;
-import main.info.ReaderCard;
+import main.entity.ReaderCard;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

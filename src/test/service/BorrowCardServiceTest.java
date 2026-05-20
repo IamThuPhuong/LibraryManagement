@@ -1,7 +1,7 @@
 package test.service;
 
-import main.info.BorrowCard;
-import main.info.BorrowDetail;
+import main.entity.BorrowCard;
+import main.entity.BorrowDetail;
 import main.service.BorrowService;
 import main.vo.BorrowDetailVO;
 import main.vo.BorrowVO;

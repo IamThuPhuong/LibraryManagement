@@ -1,7 +1,7 @@
-package main.repositories;
+package main.repository;
 
-import main.info.BorrowCard;
-import main.info.BorrowDetail;
+import main.entity.BorrowCard;
+import main.entity.BorrowDetail;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import static main.repositories.ReaderRepository.removeEmptyLines;
+import static main.repository.ReaderRepository.removeEmptyLines;
 
 public class BorrowRepository {
     private final String CARD_FILE_PATH = "src/test/data/borrowCard.csv";
@@ -45,11 +45,8 @@ public class BorrowRepository {
     }
 
     public void save(BorrowCard borrowCard) {
-        // Thay thế bằng SQL khi chuyển sang Spring
-        // Ghi đè file book.csv với nội dung mới từ danh sách book
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/borrowCard.csv", true))) {
             writer.newLine();
-            // Nối các thuộc tính của Book cách nhau bằng dấu "|"
             String line = borrowCard.getBorrowId() + "|"
                     + borrowCard.getReaderId() + "|"
                     + borrowCard.getBorrowDate() + "|"

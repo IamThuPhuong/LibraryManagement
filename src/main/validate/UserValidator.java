@@ -2,8 +2,8 @@ package main.validate;
 
 import main.constants.ErrConstants;
 import main.constants.UserConstants;
-import main.info.User;
-import main.repositories.UserRepository;
+import main.entity.User;
+import main.repository.UserRepository;
 import main.vo.UserDetailVO;
 
 import java.time.LocalDate;
