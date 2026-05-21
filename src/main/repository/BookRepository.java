@@ -146,6 +146,20 @@ public class BookRepository {
                 )
                 .toList();
     }
+
+    public int updateTotalByIsbn(String isbn, int amount) throws IOException {
+        List<Book> books = new ArrayList<>(this.getAllBooks());
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getIsbn().equals(isbn)) {
+                int newTotal = books.get(i).getTotal() + amount;
+                books.get(i).setTotal(newTotal);
+                overwriteBooks(books);
+                return newTotal;
+            }
+        }
+        return -1; // Trả về -1 nếu không tìm thấy sách với ISBN đã cho
+    }
+
     private static void overwriteBooks(List<Book> books) throws IOException {
         Path path = Path.of("src/test/data/book.csv");
         StringBuilder sb = new StringBuilder();

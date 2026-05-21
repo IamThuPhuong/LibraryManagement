@@ -1,5 +1,8 @@
 package main.entity;
 
+import main.repository.BorrowDetailRepository;
+import main.repository.BorrowRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +48,23 @@ public class BorrowCard {
     }
 
     public List<BorrowDetail> getBorrowDetail() {
+        BorrowDetailRepository borrowDetailRepository = new BorrowDetailRepository();
+        this.borrowDetail = borrowDetailRepository.list(this.borrowId, false);
         return borrowDetail;
     }
 
     public void setBorrowDetail(List<BorrowDetail> borrowDetail) {
         this.borrowDetail = borrowDetail;
+    }
+
+    @Override
+    public String toString() {
+        return "BorrowCard{" +
+                "borrowId='" + borrowId + '\'' +
+                ", readerId='" + readerId + '\'' +
+                ", borrowDate=" + borrowDate +
+                ", dueDate=" + dueDate +
+                ", borrowDetail=" + borrowDetail.toString() +
+                '}';
     }
 }

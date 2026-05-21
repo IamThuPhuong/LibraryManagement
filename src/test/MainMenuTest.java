@@ -140,7 +140,8 @@ public class MainMenuTest {
                 borrowCardServiceTest.testCreateBorrowCard();
                 break;
             case "14":
-                System.out.println("Chức năng lập phiếu trả sách đang được phát triển...");
+                BorrowCardServiceTest borrowCardServiceTest1 = new BorrowCardServiceTest();
+                borrowCardServiceTest1.testCreateReturnedCard();
                 break;
             case "99":
                 boolean checkLogout = authenService.logout();

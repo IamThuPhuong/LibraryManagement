@@ -56,18 +56,25 @@ public class BorrowDetailRepository {
      */
     public List<BorrowDetail> list(String borrowId, boolean isReturn){
         // TODO: Dùng cho thống kê
-        List<BorrowDetail> detail = this.stream().toList();
-        if (borrowId != null){
-            detail = this.stream()
-                    .filter(borrowDetail -> borrowDetail.getBorrowId().equals(borrowId))
-                    .toList();
+        try {
+            List<BorrowDetail> detail = this.stream().toList();
+            if (borrowId != null) {
+                detail = this.stream()/*TODO: Fix trường hợp khi kết quả tìm kiếm == null ở đây*/
+                        .filter(borrowDetail -> borrowDetail.getBorrowId().equals(borrowId))
+                        .toList();
+            }
+            if (!isReturn) {
+                detail = this.stream()
+                        .filter(borrowDetail -> borrowDetail.getBorrowStatus().equals(BorrowStatus.RETURNED))
+                        .toList();
+            }
+
+            return detail;
+        } catch (NullPointerException e){
+            System.out.println("Không có data thỏa điều kiện");
+            return null;
         }
-        if (!isReturn){
-            detail = this.stream()
-                    .filter(borrowDetail -> borrowDetail.getBorrowStatus().equals(BorrowStatus.RETURNED))
-                    .toList();
-        }
-        return detail;
+
     }
 
     public void save(BorrowDetail borrowDetail) {
@@ -92,6 +99,13 @@ public class BorrowDetailRepository {
         return (int) this.stream()
                 .filter(detail -> detail.getIsbn().equals(isbn))
                 .count();
+    }
+
+    public BorrowDetail findByIsbn(String isbn){
+        return this.stream()
+                .filter(detail -> detail.getIsbn().equals(isbn))
+                .findFirst()
+                .orElse(null);
     }
 
 

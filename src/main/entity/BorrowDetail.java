@@ -51,4 +51,15 @@ public class BorrowDetail {
     public void setNote(String note) {
         this.note = note;
     }
+
+    @Override
+    public String toString() {
+        return "BorrowDetail{" +
+                "borrowId='" + borrowId + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", returnedDate=" + returnedDate +
+                ", borrowStatus=" + borrowStatus +
+                ", note='" + note + '\'' +
+                '}';
+    }
 }

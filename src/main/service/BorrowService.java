@@ -6,6 +6,7 @@ import main.enums.Permission;
 import main.entity.BorrowCard;
 import main.entity.BorrowDetail;
 import main.entity.User;
+import main.repository.BookRepository;
 import main.repository.BorrowRepository;
 import main.validate.AuthorValidator;
 import main.validate.BorrowValidator;
@@ -23,6 +24,7 @@ public class BorrowService {
     private final User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
     Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
     private final BorrowRepository borrowRepository = new BorrowRepository();
+    private final BookRepository bookRepository = new BookRepository();
     /** Quyền truy cập chức năng */
     private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
 
@@ -70,5 +72,46 @@ public class BorrowService {
         borrowRepository.save(borrowCard);
 
         return borrowCard;
+    }
+
+    /**
+     * 5. Lập phiếu trả sách
+     * @param vo
+     * @return
+     */
+    public BorrowCard setReturnedCard(BorrowVO vo){
+        authorValidator.validate(PERMISSION_OF_FUNCTION);
+        BorrowCard borrowCard = borrowRepository.findByBorrowId(vo.getBorrowId());
+        List<BorrowDetail>  borrowDetail = borrowCard.getBorrowDetail();
+
+        // set all status
+        for (int i = 0; i < borrowDetail.size(); i++){
+            if(vo.getListDetail().get(i).getBorrowStatus() == null) {
+                borrowDetail.get(i).setBorrowStatus(BorrowStatus.RETURNED);
+            } else {
+                borrowDetail.get(i).setBorrowStatus(vo.getListDetail().get(i).getBorrowStatus());
+            }
+
+            if (vo.getListDetail().get(i).getBorrowStatus() == BorrowStatus.LOST) {
+                borrowDetail.get(i).setReturnedDate(null);
+                try {
+                    bookRepository.updateTotalByIsbn(vo.getListDetail().get(i).getIsbn(), -1);
+                } catch (Exception e) {
+                    System.out.println("Cập nhật số lượng sách thất bại do lỗi: " + e.getMessage());
+                }
+            } else {
+                borrowDetail.get(i).setReturnedDate(vo.getListDetail().get(i).getReturnedDate());
+            }
+
+            borrowDetail.get(i).setNote(vo.getListDetail().get(i).getNote());
+        }
+
+        borrowCard.setBorrowDetail(borrowDetail);
+
+        return borrowCard;
+    }
+
+    public BorrowCard findByBorrowId(String borrowId){
+        return borrowRepository.findByBorrowId(borrowId);
     }
 }
