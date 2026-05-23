@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class BorrowDetailVO {
     private String isbn;
-    private String note;
+    private String note = Constants.INIT_STRING;
     private LocalDate returnedDate;
     private BorrowStatus borrowStatus;
 

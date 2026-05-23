@@ -8,7 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static main.repository.ReaderRepository.removeEmptyLines;
@@ -64,11 +67,57 @@ public class BorrowRepository {
         }
     }
 
+    public List<BorrowCard> getAll() {
+        return this.stream().toList();
+    }
+
     public BorrowCard findByBorrowId(String borrowId) {
         return this.stream()
                 .filter(borrowCard -> borrowCard.getBorrowId().equals(borrowId))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void update(BorrowCard updateBorrowCard) throws IOException {
+        try {
+            if (updateBorrowCard == null) {
+                throw new IllegalArgumentException("Check lại file borrowCard.csv!");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        List<BorrowCard> borrowCards = new ArrayList<>(this.getAll());
+        for (int i = 0; i < borrowCards.size(); i++) {
+            if (borrowCards.get(i).getBorrowId().equals(updateBorrowCard.getBorrowId())) {
+                borrowCards.set(i, updateBorrowCard);
+                break;
+            }
+        }
+        // update detail
+        for (BorrowDetail borrowDetail : updateBorrowCard.getBorrowDetail()){
+            borrowDetailRepository.update(borrowDetail);
+        }
+        overwrite(borrowCards);
+    }
+
+    private static void overwrite(List<BorrowCard> borrowCards) throws IOException {
+        Path path = Path.of("src/test/data/borrowCard.csv");
+        StringBuilder sb = new StringBuilder();
+        for (BorrowCard borrowCard : borrowCards) {
+            sb.append("\n").append(borrowCard.getBorrowId()).append("|")
+                    .append(borrowCard.getReaderId()).append("|")
+                    .append(borrowCard.getBorrowDate()).append("|")
+                    .append(borrowCard.getDueDate()).append("|")
+                    .append("\n");
+        }
+
+        try {
+            Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e){
+            throw new IOException("Lỗi khi ghi file");
+        }
+        removeEmptyLines("src/test/data/borrowCard.csv");
     }
 
 }

@@ -7,6 +7,7 @@ import main.entity.BorrowCard;
 import main.entity.BorrowDetail;
 import main.entity.User;
 import main.repository.BookRepository;
+import main.repository.BorrowDetailRepository;
 import main.repository.BorrowRepository;
 import main.validate.AuthorValidator;
 import main.validate.BorrowValidator;
@@ -24,6 +25,7 @@ public class BorrowService {
     private final User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
     Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
     private final BorrowRepository borrowRepository = new BorrowRepository();
+    private final BorrowDetailRepository borrowDetailRepository = new BorrowDetailRepository();
     private final BookRepository bookRepository = new BookRepository();
     /** Quyền truy cập chức năng */
     private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
@@ -84,6 +86,10 @@ public class BorrowService {
         BorrowCard borrowCard = borrowRepository.findByBorrowId(vo.getBorrowId());
         List<BorrowDetail>  borrowDetail = borrowCard.getBorrowDetail();
 
+        if(!borrowDetail.toString().contains(BorrowStatus.BORROWING.toString())) {
+            System.out.println("Thẻ mượn sách này đã được trả hết.");
+            return null;
+        }
         // set all status
         for (int i = 0; i < borrowDetail.size(); i++){
             if(vo.getListDetail().get(i).getBorrowStatus() == null) {
@@ -104,6 +110,12 @@ public class BorrowService {
             }
 
             borrowDetail.get(i).setNote(vo.getListDetail().get(i).getNote());
+
+            try {
+                borrowDetailRepository.update(borrowDetail.get(i));
+            } catch (Exception e) {
+                System.out.println("Cập nhật thẻ mượn sách thất bại do lỗi: " + e.getMessage());
+            }
         }
 
         borrowCard.setBorrowDetail(borrowDetail);

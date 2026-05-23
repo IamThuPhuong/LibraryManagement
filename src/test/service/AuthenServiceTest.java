@@ -37,7 +37,6 @@ public class AuthenServiceTest {
             System.out.println("Mật khẩu không được để trống! Vui lòng nhập lại:");
             newPassword = input.nextLine();
         }
-        // TODO: Làm tiếp phần đổi mật khẩu
         System.out.println("Xác nhận mật khẩu mới:");
         String comfirmPassword = input.nextLine();
         while (!comfirmPassword.equals(newPassword)) {

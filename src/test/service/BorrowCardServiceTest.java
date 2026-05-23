@@ -104,7 +104,11 @@ public class BorrowCardServiceTest {
         System.out.println("| Mã thẻ mượn sách: " + borrowCard.getBorrowId());
         System.out.println("| Mã độc giả: " + borrowCard.getReaderId());
         System.out.println("| Ngày mượn: " + borrowCard.getBorrowDate());
-        // TODO: Test hamf list ben repository
+        if(borrowCard.getBorrowDetail() == null || borrowCard.getBorrowDetail().isEmpty()) {
+            System.out.println("| Số lượng sách mượn: 0");
+            System.out.println("| Chi tiết sách mượn: Không có sách nào được mượn.");
+            return;
+        }
         System.out.println("| Số lượng sách mượn: " + borrowCard.getBorrowDetail().size());
         System.out.println("| Chi tiết sách mượn:");
         for (BorrowDetail detail : borrowCard.getBorrowDetail()) {
@@ -149,6 +153,7 @@ public class BorrowCardServiceTest {
                 System.out.println("Cập nhật trạng thái cho sách này:");
                 System.out.println("1. Trả muộn");
                 System.out.println("2. Mất sách");
+                System.out.println("3. Đã trả");
                 int statusChoice = input.nextInt();
                 input.nextLine();
                 if (statusChoice == 1) {
@@ -159,6 +164,17 @@ public class BorrowCardServiceTest {
                     detailVO.setNote(note.isEmpty() ? selectedDetail.getNote() : note);
                 } else if (statusChoice == 2) {
                     detailVO.setBorrowStatus(BorrowStatus.LOST);
+                } else if (statusChoice == 3) {
+                    // TODO: clean lại chỗ này
+                    detailVO.setBorrowStatus(BorrowStatus.RETURNED);
+                    System.out.println("Nhập ngày trả sách (dd/MM/yyyy) cho sách có mã ISBN: " + selectedDetail.getIsbn());
+                    System.out.println("(Ngày trả sẽ được mặc định là ngày hiện tại nếu để trống.)");
+                    String returnedDate = input.nextLine();
+                    detailVO.setReturnedDate(returnedDate);
+                    System.out.println("Nhập ghi chú (nếu có) cho sách có mã ISBN: " + selectedDetail.getIsbn());
+                    System.out.println("(Ghi chú sẽ giữ nguyên nếu để trống.)");
+                    String note = input.nextLine();
+                    detailVO.setNote(note.isEmpty() ? selectedDetail.getNote() : note);
                 } else {
                     System.out.println("Lựa chọn không hợp lệ! Vui lòng chọn lại.");
                     return;
@@ -170,7 +186,19 @@ public class BorrowCardServiceTest {
         BorrowVO vo = new BorrowVO();
         vo.setBorrowId(borrowId);
         vo.setListDetail(detailVOList);
-        borrowService.setReturnedCard(vo);
+        BorrowCard updatedCard = borrowService.setReturnedCard(vo);
+
+        System.out.println("==Kết thúc tiến trình lập thẻ trả sách==!");
+        System.out.println("____Thông tin thẻ trả sách vừa cập nhật:_________");
+        System.out.println("| Mã thẻ mượn sách: " + updatedCard.getBorrowId());
+        System.out.println("| Mã độc giả: " + updatedCard.getReaderId());
+        System.out.println("| Ngày mượn: " + updatedCard.getBorrowDate());
+        System.out.println("| Số lượng sách mượn: " + updatedCard.getBorrowDetail().size());
+        System.out.println("| Chi tiết sách mượn:");
+        for (BorrowDetail detail : updatedCard.getBorrowDetail()) {
+            System.out.println("- Mã ISBN: " + detail.getIsbn() + "\n- Ghi chú: " + detail.getNote() + "\n- Trạng thái: " + detail.getBorrowStatus() + "\n- Ngày trả: " + detail.getReturnedDate());
+        }
+        System.out.println("______________________________________________");
     }
 
 }

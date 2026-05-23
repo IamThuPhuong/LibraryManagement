@@ -1,14 +1,16 @@
 package main.repository;
 
-import main.enums.BorrowStatus;
 import main.entity.BorrowDetail;
+import main.enums.BorrowStatus;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,7 +23,7 @@ public class BorrowDetailRepository {
         Path path = Path.of(DETAIL_FILE_PATH);
         try {
             return Files.lines(path).map(line -> {
-                String[] parts = line.split("\\|");
+                String[] parts = line.split("\\|", -1);
                 try {
                     if (parts.length != 5) {
                         throw new RuntimeException("Định dạng không hợp lệ: " + line);
@@ -57,19 +59,24 @@ public class BorrowDetailRepository {
     public List<BorrowDetail> list(String borrowId, boolean isReturn){
         // TODO: Dùng cho thống kê
         try {
-            List<BorrowDetail> detail = this.stream().toList();
+            List<BorrowDetail> detail = new ArrayList<>();
             if (borrowId != null) {
-                detail = this.stream()/*TODO: Fix trường hợp khi kết quả tìm kiếm == null ở đây*/
+                detail = this.stream()
+                        .filter(borrowDetail -> borrowDetail != null)
                         .filter(borrowDetail -> borrowDetail.getBorrowId().equals(borrowId))
                         .toList();
             }
-            if (!isReturn) {
+            if (isReturn) {
                 detail = this.stream()
                         .filter(borrowDetail -> borrowDetail.getBorrowStatus().equals(BorrowStatus.RETURNED))
                         .toList();
             }
 
+            if(borrowId == null && !isReturn) {
+                detail = this.stream().toList();
+            }
             return detail;
+
         } catch (NullPointerException e){
             System.out.println("Không có data thỏa điều kiện");
             return null;
@@ -108,6 +115,46 @@ public class BorrowDetailRepository {
                 .orElse(null);
     }
 
+    public void update(BorrowDetail updateBorrowDetail) throws IOException {
+        try {
+            if (updateBorrowDetail == null) {
+                throw new IllegalArgumentException("Check lại file borrowDetail.csv!");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        List<BorrowDetail> borrowDetails = new ArrayList<>(this.list(null, false)/*get all*/);
+        for (int i = 0; i < borrowDetails.size(); i++) {
+            if (borrowDetails.get(i).getBorrowId().equals(updateBorrowDetail.getBorrowId())
+                    && borrowDetails.get(i).getIsbn().equals(updateBorrowDetail.getIsbn())) {
+                borrowDetails.set(i, updateBorrowDetail);
+                break;
+            }
+        }
+        overwrite(borrowDetails);
+    }
+
+    private static void overwrite(List<BorrowDetail> borrowDetails) throws IOException {
+        Path path = Path.of("src/test/data/borrowDetail.csv");
+        StringBuilder sb = new StringBuilder();
+        for (BorrowDetail borrowDetail : borrowDetails) {
+            sb.append("\n").append(borrowDetail.getBorrowId()).append("|")
+                    .append(borrowDetail.getIsbn()).append("|")
+                    .append(borrowDetail.getReturnedDate()).append("|")
+                    .append(borrowDetail.getBorrowStatus()).append("|")
+                    .append(borrowDetail.getNote())
+                    .append("\n");
+        }
+
+        try {
+            Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e){
+            throw new IOException("Lỗi khi ghi file");
+        }
+        removeEmptyLines("src/test/data/borrowDetail.csv");
+    }
 
 
 }

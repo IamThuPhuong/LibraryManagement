@@ -48,8 +48,6 @@ public class BorrowCard {
     }
 
     public List<BorrowDetail> getBorrowDetail() {
-        BorrowDetailRepository borrowDetailRepository = new BorrowDetailRepository();
-        this.borrowDetail = borrowDetailRepository.list(this.borrowId, false);
         return borrowDetail;
     }
 
