@@ -2,7 +2,9 @@ package main.service;
 
 import main.constants.AuthenConstants;
 import main.entity.User;
+import main.enums.Permission;
 import main.repository.UserRepository;
+import main.validate.AuthorValidator;
 import main.validate.UserChangePasswordDataValidator;
 import main.validate.Validator;
 import main.vo.UserChangePasswordVO;
@@ -11,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static test.MainMenuTest.userRepository;
 
 /**
  * Chức năng 1: Người dùng khi muốn sử dụng các chức năng của hệ thống phải thực hiện đăng
@@ -25,6 +29,10 @@ public class AuthenService {
     private final UserRepository userRepository = new UserRepository();
     public static String USER_ID = AuthenConstants.IS_NOT_LOGIN_FLAG;
     Scanner input = new Scanner(System.in);
+
+    private final AuthorService authorService = new AuthorService();
+    private final User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+    Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
 
     /** Validate check password hợp lệ khi cập nhật password */
     Validator<UserChangePasswordVO> passwordUpdateValidator = new UserChangePasswordDataValidator();
@@ -59,6 +67,7 @@ public class AuthenService {
     }
 
     public User findUser(String userNameInput)  {
+        authorValidator.validate(Permission.COMMON);
         User foundedUser;
         foundedUser = userRepository.findByUserName(userNameInput);
         if (foundedUser != null) {
@@ -77,6 +86,7 @@ public class AuthenService {
      * @return boolean
      */
     public boolean logout(){
+        authorValidator.validate(Permission.COMMON);
         System.out.println("Ban co chac muon dang xuat?:");
         System.out.println("\t1. Co");
         System.out.println("\t2. Khong.");
@@ -90,8 +100,14 @@ public class AuthenService {
         }
     }
 
-
+    /**
+     * 1.3 Đổi mật khẩu
+     * @param user
+     * @param changePasswordVO
+     * @return boolean
+     */
     public boolean changePassword(User user, UserChangePasswordVO changePasswordVO) throws IllegalArgumentException, IOException {
+        authorValidator.validate(Permission.COMMON);
         List<String> errorList = new ArrayList<>();
         errorList.addAll(passwordUpdateValidator.validate(changePasswordVO));
         if (!errorList.isEmpty()) {

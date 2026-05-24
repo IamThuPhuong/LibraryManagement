@@ -4,9 +4,7 @@ import main.enums.Permission;
 import main.enums.UserRole;
 import main.entity.User;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -18,12 +16,6 @@ import java.util.Set;
  * @since 2026-04-23
  */
 public class AuthorService {
-
-    public Map<UserRole, Set<Permission>> mapRolePermission(UserRole role, Set<Permission> permission) {
-        Map<UserRole, Set<Permission>> mapRolePermission = new HashMap<>();
-        mapRolePermission.put(role, permission);
-        return mapRolePermission;
-    }
 
     public boolean checkPermission(User user, Permission permission) throws NullPointerException {
         if (user == null)     {
@@ -39,18 +31,39 @@ public class AuthorService {
     private Set<Permission> getPermissionsByRole(UserRole userRole) {
         Set<Permission> permission = new HashSet<>();
 
-        permission.add(Permission.DELETE_BOOK);
-        permission.add(Permission.ADD_BOOK);
+        permission.add(Permission.COMMON);
+        permission.add(Permission.MANAGE_BOOK);
         permission.add(Permission.MANAGE_USER);
-        permission.add(Permission.READ_BOOK);
+        permission.add(Permission.DELETE_READER);
+        permission.add(Permission.AUTHORIZE_USER);
+        permission.add(Permission.STATISTIC);
 
+        //1.1, 1.2, 1.3, 1.4
+        //2.xxx
+        //3.xxx
+        //4.xxx
+        //5.xxx
+        //6.xxx
         if (userRole == UserRole.MANAGER) {
-            System.out.println("Manager có tất cả quyền");
+            System.out.println("Manager có tất cả quyền.");
+            // 1.6 Phân quyền người dùng (quản lý hoặc nhân viên)
+            permission.remove(Permission.AUTHORIZE_USER);
         }
 
+        //1.1, 1.2, 1.3, 1.4
+        //2.1, 2.2, 2.3, 2.5, 2.6
+        //3.5, 3.6
+        //4.xxx
+        //5.xxx
+        //6.5, 6.6
         if (userRole == UserRole.OFFICER) {
             System.out.println("Officer có quyền thêm và xóa sách");
-            permission.remove(Permission.MANAGE_USER);
+            // 2.4 Xóa thông tin độc giả
+            permission.remove(Permission.DELETE_READER);
+            // Các chức năng quản lý sách (thêm, sửa, xóa sách)
+            permission.remove(Permission.MANAGE_BOOK);
+            // Các chức năng thống kê (6.1, 6.2, 6.3, 6.4)
+            permission.remove(Permission.STATISTIC);
         }
         return permission;
     }

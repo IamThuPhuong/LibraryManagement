@@ -16,16 +16,7 @@ public interface Validator<T> {
 
     /**
      * Validate thông tin của đối tượng target.
-     *
-     * <p>Phương thức này sẽ kiểm tra các constraints và business rules
-     * của đối tượng được truyền vào. Nếu có lỗi, sẽ in ra console
-     * hoặc throw exception tùy theo implementation.
-     *
-     * <p><b>Lưu ý:</b> Hiện tại implementation chỉ in lỗi ra console.
-     *
      * @param target đối tượng cần validate (thường là VO hoặc DTO)
-     * @throws ClassCastException nếu target không phải kiểu mong đợi
-     * @throws NullPointerException nếu target là null và implementation không handle
      */
     public List<String> validate(T target);
 }

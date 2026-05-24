@@ -37,16 +37,9 @@ public class UserValidator implements Validator<UserVO> {
 
     /**
      * Validate thông tin người dùng từ {@link UserVO}.
-     * Kiểm tra từng field: username (độ dài, ký tự), password (độ dài), ngày sinh (không được tương lai).
-     *
-     * <p><b>Lưu ý:</b> Phương thức này chưa throw exception, chỉ in lỗi ra console.
-     * Khi chuyển sang Spring, nên cải thiện bằng cách collect lỗi vào list và return.
      *
      * @param target đối tượng {@link UserVO} cần validate
      * @throws ClassCastException nếu target không phải {@link UserVO}
-     * @see #isValidLength(String)
-     * @see #containsSpecialChar(String)
-     * @see #isBirthdayInFuture(LocalDate)
      */
     @Override
     public List<String> validate(UserVO target) {
@@ -75,6 +68,7 @@ public class UserValidator implements Validator<UserVO> {
                 resultCheck.add(ErrConstants.USERNAME_MUSTBE_EXACTLY_LENGTH);
             }
         }
+
         // Validate Password
         if (target.getPassword() == null) {
             System.out.println("Password không được null!");

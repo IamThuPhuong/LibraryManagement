@@ -8,7 +8,6 @@ import main.entity.ReaderCard;
 import main.entity.User;
 import main.repository.ReaderRepository;
 import main.validate.AuthorValidator;
-import main.validate.ReaderUpdateDataValidator;
 import main.validate.ReaderValidator;
 import main.validate.Validator;
 import main.vo.ReaderVO;
@@ -51,9 +50,6 @@ public class ReaderCardService {
      * Validate đầu vào chức năng độc giả
      */
     Validator<ReaderVO> readerValidator = new ReaderValidator();
-
-    /** Validate update thông tin độc giả */
-    Validator<ReaderVO> readerUpdateValidator = new ReaderUpdateDataValidator();
 
     /** Quyền truy cập class InfoUpdateService */
     private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
@@ -132,7 +128,7 @@ public class ReaderCardService {
      */
     public ReaderCard updateReader(ReaderCard reader, ReaderVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
-        List<String> errorList = new ArrayList<>(readerUpdateValidator.validate(vo));
+        List<String> errorList = new ArrayList<>(readerValidator.validate(vo));
         if (!errorList.isEmpty()){
             System.out.println("Không thể cập nhật độc giả do có lỗi sau:");
             for (String error : errorList) {
@@ -174,7 +170,8 @@ public class ReaderCardService {
      * @param deleteId
      * @return
      */
-    public String deleteReaderCard(String deleteId){
+    public String delete(String deleteId){
+        authorValidator.validate(Permission.DELETE_READER);
         readerRepository.delete(deleteId);
         return deleteId;
     }

@@ -55,11 +55,11 @@ public class ReaderValidator implements Validator<ReaderVO>{
         return errList;
     }
 
-    private boolean isBirthdayInFuture(LocalDate birthDay) {
+    public static boolean isBirthdayInFuture(LocalDate birthDay) {
         return birthDay.isAfter(LocalDate.now());
     }
 
-    private static boolean containsSpecialChar(String input) throws IllegalArgumentException{
+    public static boolean containsSpecialChar(String input) throws IllegalArgumentException{
         if (input == null){
             throw new NullPointerException("Nội dung nhập không được để trống!");
         }

@@ -1,8 +1,10 @@
 package main.enums;
 
 public enum Permission {
-    READ_BOOK,
-    ADD_BOOK,
-    DELETE_BOOK,
-    MANAGE_USER
+    COMMON,
+    MANAGE_USER,
+    MANAGE_BOOK,
+    DELETE_READER,
+    STATISTIC,
+    AUTHORIZE_USER
 }

@@ -44,7 +44,7 @@ public class BookService {
     Validator<BookVO> bookValidator = new BookValidator();
 
     /** Quyền truy cập chức năng */
-    private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
+    private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_BOOK;
 
     /**
      * 3.1 Xem danh sách các sách trong thư viện
@@ -179,6 +179,7 @@ public class BookService {
      * @return
      */
     public Book findByISBN(String isbn){
+        authorValidator.validate(Permission.COMMON);
         return bookRepository.findByISBN(isbn);
     }
 
@@ -188,6 +189,7 @@ public class BookService {
      * @return
      */
     public List<Book> findByName(String name){
+        authorValidator.validate(Permission.COMMON);
         return bookRepository.findByName(name);
     }
 }

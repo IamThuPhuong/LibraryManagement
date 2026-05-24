@@ -84,7 +84,7 @@ public class BorrowService {
     public BorrowCard setReturnedCard(BorrowVO vo){
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         BorrowCard borrowCard = borrowRepository.findByBorrowId(vo.getBorrowId());
-        List<BorrowDetail>  borrowDetail = borrowCard.getBorrowDetail();
+        List<BorrowDetail> borrowDetail = borrowCard.getBorrowDetail();
 
         if(!borrowDetail.toString().contains(BorrowStatus.BORROWING.toString())) {
             System.out.println("Thẻ mượn sách này đã được trả hết.");

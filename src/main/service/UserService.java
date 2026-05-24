@@ -55,12 +55,18 @@ public class UserService {
 
     /**
      * 1.4 Cập nhật thông tin cá nhân
+     * 1.6 Phân quyền người dùng (quản lý hoặc nhân viên)
      * @param user
      * @param vo
      * @return user
      */
     public User updateUser(User user, UserVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
-        authorValidator.validate(PERMISSION_OF_FUNCTION);
+        authorValidator.validate(Permission.COMMON);
+        // 1.6 Phân quyền người dùng (quản lý hoặc nhân viên)
+        if(!vo.getUserRole().equals(UserRole.OFFICER)){
+            authorValidator.validate(Permission.AUTHORIZE_USER);
+            user.setUserRole(vo.getUserRole());
+        }
         List<String> errorList = new ArrayList<>(userUpdateValidator.validate(vo));
         if (!errorList.isEmpty()){
             System.out.println("Không thể cập nhật người dùng do có lỗi sau:");
@@ -105,7 +111,6 @@ public class UserService {
             user.setStatus(Status.BLOCKED);
         }
 
-        // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
         userRepository.update(user);
 
         return user;
@@ -118,7 +123,12 @@ public class UserService {
      */
     public User createUser(UserVO vo) throws ExceptionInInitializerError {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
-
+        // 1.6 Phân quyền người dùng (quản lý hoặc nhân viên)
+        User newUser = new User();
+        if(!vo.getUserRole().equals(UserRole.OFFICER)){
+            authorValidator.validate(Permission.AUTHORIZE_USER);
+            newUser.setUserRole(vo.getUserRole());
+        }
         List<String> errorList = new ArrayList<>();
         errorList.addAll(userCreateValidator.validate(vo));
 
@@ -140,9 +150,7 @@ public class UserService {
             authorValidator.validate(PERMISSION_OF_FUNCTION);
         }
 
-        // Create new user
-        // new UserID: Sử dụng UUID (không cần kiểm tra trùng lặp vì xác suất trùng gần như 0)
-        User newUser = new User();
+        // new UserID: Sử dụng UUID
         String userId = UUID.randomUUID().toString(); // Format: 550e8400-e29b-41d4-a716-446655440000
         newUser.setUserId(userId);
 
