@@ -57,11 +57,11 @@ public class BookRepository {
         }
     }
 
-    public List<Book> getAllBooks() {
+    public List<Book> getAll() {
         return this.list(null, null);
     }
 
-    public void saveBookToFile(Book book) {
+    public void save(Book book) {
         // Thay thế bằng SQL khi chuyển sang Spring
         // Ghi đè file book.csv với nội dung mới từ danh sách book
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/book.csv", true))) {
@@ -93,7 +93,7 @@ public class BookRepository {
             return;
         }
 
-        List<Book> books = new ArrayList<>(this.getAllBooks());
+        List<Book> books = new ArrayList<>(this.getAll());
 
         for (int i = 0; i < books.size(); i++) {
             // So sánh mã ISBN để tìm sách cần cập nhật
@@ -103,7 +103,7 @@ public class BookRepository {
             }
         }
 
-        overwriteBooks(books);
+        overwrite(books);
     }
 
     public void delete(String deleteIsbn) {
@@ -115,7 +115,7 @@ public class BookRepository {
             System.out.println(e.getMessage());
             return;
         }
-        List<Book> books = new ArrayList<>(this.getAllBooks());
+        List<Book> books = new ArrayList<>(this.getAll());
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).getIsbn().equals(deleteIsbn)) {
                 books.remove(books.get(i));
@@ -123,9 +123,40 @@ public class BookRepository {
             }
         }
         try {
-            overwriteBooks(books);
+            overwrite(books);
         } catch (IOException e) {
             System.out.println("Ghi file thất bại! Lỗi: " + e);
+        }
+    }
+
+    /**
+     * 6.2 Thống kê số lượng sách
+     * @param name
+     * @param genre
+     * @return List
+     */
+    public List<Book> list(String name, Genre genre){
+        // TODO: sửa List
+        try {
+            Stream<Book> stream = this.stream();
+
+            if (name != null) {
+                String nameLowerCase = name.toLowerCase().trim();
+                stream = stream.filter(java.util.Objects::nonNull)
+                        .filter(book -> book.getName() != null)
+                        .filter(book ->
+                                book.getName().toLowerCase().trim().contains(nameLowerCase)
+                                        || removeAccent(book.getName()).toLowerCase().trim().contains(nameLowerCase)
+                        );
+            }
+            if (genre != null) {
+                stream = stream.filter(book -> book.getGenre().equals(genre));
+            }
+
+            return stream.toList();
+        } catch (NullPointerException e){
+            System.out.println("Không có data thỏa điều kiện");
+            return List.of();
         }
     }
 
@@ -135,24 +166,25 @@ public class BookRepository {
                 .findFirst()
                 .orElse(null);
     }
+
     public List<Book> findByName(String name){
         return list(name, null);
     }
 
     public int updateTotalByIsbn(String isbn, int amount) throws IOException {
-        List<Book> books = new ArrayList<>(this.getAllBooks());
+        List<Book> books = new ArrayList<>(this.getAll());
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).getIsbn().equals(isbn)) {
                 int newTotal = books.get(i).getTotal() + amount;
                 books.get(i).setTotal(newTotal);
-                overwriteBooks(books);
+                overwrite(books);
                 return newTotal;
             }
         }
         return -1; // Trả về -1 nếu không tìm thấy sách với ISBN đã cho
     }
 
-    private static void overwriteBooks(List<Book> books) throws IOException {
+    private static void overwrite(List<Book> books) throws IOException {
         Path path = Path.of("src/test/data/book.csv");
         StringBuilder sb = new StringBuilder();
 
@@ -217,34 +249,4 @@ public class BookRepository {
         return sb.toString();
     }
 
-    /**
-     * 6.2 Thống kê số lượng sách
-     * @param name
-     * @param genre
-     * @return List
-     */
-    public List<Book> list(String name, Genre genre){
-        // TODO: sửa List
-        try {
-            Stream<Book> stream = this.stream();
-
-            if (name != null) {
-                String nameLowerCase = name.toLowerCase().trim();
-                stream = stream.filter(java.util.Objects::nonNull)
-                        .filter(book -> book.getName() != null)
-                        .filter(book ->
-                                book.getName().toLowerCase().trim().contains(nameLowerCase)
-                                        || removeAccent(book.getName()).toLowerCase().trim().contains(nameLowerCase)
-                        );
-            }
-            if (genre != null) {
-                stream = stream.filter(book -> book.getGenre().equals(genre));
-            }
-
-            return stream.toList();
-        } catch (NullPointerException e){
-            System.out.println("Không có data thỏa điều kiện");
-            return List.of();
-        }
-    }
 }

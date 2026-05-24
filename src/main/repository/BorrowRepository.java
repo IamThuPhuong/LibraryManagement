@@ -47,6 +47,10 @@ public class BorrowRepository {
         }
     }
 
+    public List<BorrowCard> getAll() {
+        return this.stream().toList();
+    }
+
     public void save(BorrowCard borrowCard) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/borrowCard.csv", true))) {
             writer.newLine();
@@ -65,17 +69,6 @@ public class BorrowRepository {
         for (BorrowDetail borrowDetail : borrowCard.getBorrowDetail()){
             borrowDetailRepository.save(borrowDetail);
         }
-    }
-
-    public List<BorrowCard> getAll() {
-        return this.stream().toList();
-    }
-
-    public BorrowCard findByBorrowId(String borrowId) {
-        return this.stream()
-                .filter(borrowCard -> borrowCard.getBorrowId().equals(borrowId))
-                .findFirst()
-                .orElse(null);
     }
 
     public void update(BorrowCard updateBorrowCard) throws IOException {
@@ -99,6 +92,13 @@ public class BorrowRepository {
             borrowDetailRepository.update(borrowDetail);
         }
         overwrite(borrowCards);
+    }
+
+    public BorrowCard findByBorrowId(String borrowId) {
+        return this.stream()
+                .filter(borrowCard -> borrowCard.getBorrowId().equals(borrowId))
+                .findFirst()
+                .orElse(null);
     }
 
     private static void overwrite(List<BorrowCard> borrowCards) throws IOException {

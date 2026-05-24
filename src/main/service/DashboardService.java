@@ -17,9 +17,9 @@ public class DashboardService {
      */
     public int bookStats() {
         int sum = 0;
-        for (int i = 0; i < bookRepository.getAllBooks().size(); i++) {
-            System.out.println("Sách thứ " + (i + 1) + ": " + bookRepository.getAllBooks().get(i).getName() + " - số lượng" + bookRepository.getAllBooks().get(i).getTotal());
-            sum += bookRepository.getAllBooks().get(i).getTotal();
+        for (int i = 0; i < bookRepository.getAll().size(); i++) {
+            System.out.println("Sách thứ " + (i + 1) + ": " + bookRepository.getAll().get(i).getName() + " - số lượng" + bookRepository.getAll().get(i).getTotal());
+            sum += bookRepository.getAll().get(i).getTotal();
         }
         return sum;
     }
@@ -32,7 +32,7 @@ public class DashboardService {
     public int bookStatsByGenre(Genre genre) {
         int sum = 0;
         for (int i = 0; i < bookRepository.list(null, genre).size(); i++){
-            System.out.println("Sách thứ " + (i + 1) + ": " + bookRepository.getAllBooks().get(i).getName() + " - số lượng" + bookRepository.getAllBooks().get(i).getTotal());
+            System.out.println("Sách thứ " + (i + 1) + ": " + bookRepository.getAll().get(i).getName() + " - số lượng" + bookRepository.getAll().get(i).getTotal());
             sum += bookRepository.list(null, genre).get(i).getTotal();
         }
         return sum;
@@ -43,7 +43,7 @@ public class DashboardService {
      * @return
      */
     public int readerStats(){
-        return readerRepository.getAllReaders().size();
+        return readerRepository.getAll().size();
     }
 
     /**

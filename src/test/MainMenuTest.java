@@ -83,7 +83,7 @@ public class MainMenuTest {
                 userServiceTest.createUser();
                 break;
             case "2":
-                userRepository.getAllUsers().forEach(user -> System.out.println("Username: " + user.getUserName() + " - FullName: " + user.getFullName()));
+                userRepository.getAll().forEach(user -> System.out.println("Username: " + user.getUserName() + " - FullName: " + user.getFullName()));
                 System.out.println("Nhập username của người dùng muốn cập nhật:");
                 String username = input.nextLine();
                 User userToUpdate = authenService.findUser(username);

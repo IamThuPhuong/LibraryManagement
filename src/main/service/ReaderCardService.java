@@ -60,7 +60,7 @@ public class ReaderCardService {
 
     public List<ReaderCard> showReaderList() {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
-        return readerRepository.getAllReaders();
+        return readerRepository.getAll();
     }
 
 
@@ -118,7 +118,7 @@ public class ReaderCardService {
                 )
         );
 
-        readerRepository.saveReaderCartToFile(readerCard);
+        readerRepository.save(readerCard);
 
         return readerCard;
 
@@ -164,7 +164,7 @@ public class ReaderCardService {
             reader.setEndDate(vo.getStartDate().plusMonths(ReaderConstants.PLUS_48_MONTHS));
         }
 
-        readerRepository.updateReaderCard(reader);
+        readerRepository.update(reader);
 
         return reader;
     }

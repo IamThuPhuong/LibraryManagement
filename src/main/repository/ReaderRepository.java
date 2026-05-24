@@ -57,26 +57,11 @@ public class ReaderRepository {
 
     }
 
-    public List<ReaderCard> getAllReaders(){
+    public List<ReaderCard> getAll(){
         return this.list(null, null);
     }
 
-    public ReaderCard findByIdCardNo(String idCardNo) {
-        return this.stream()
-                .filter(readerCard -> readerCard.getIdCard().equals(idCardNo))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public List<ReaderCard> findByName(String name){
-        return this.list(name, null);
-    }
-
-    public int countAllReader(){
-        return Math.toIntExact(this.stream().count());
-    }
-
-    public void saveReaderCartToFile(ReaderCard readerCard)  {
+    public void save(ReaderCard readerCard)  {
         // Thay thế bằng SQL khi chuyển sang Spring
         // Ghi đè file readerCard.csv với nội dung mới từ readerList
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/readerCard.csv", true))){
@@ -98,7 +83,7 @@ public class ReaderRepository {
         removeEmptyLines("src/test/data/readerCard.csv");
     }
 
-    public void updateReaderCard(ReaderCard readerCard) throws IOException {
+    public void update(ReaderCard readerCard) throws IOException {
         try {
             if (readerCard == null) {
                 throw new IllegalArgumentException("Check lại file readerCard.csv!");
@@ -107,14 +92,14 @@ public class ReaderRepository {
             System.out.println(e.getMessage());
             return;
         }
-        List<ReaderCard> readerCards = new ArrayList<>(this.getAllReaders());
+        List<ReaderCard> readerCards = new ArrayList<>(this.getAll());
         for (int i = 0; i < readerCards.size(); i++) {
             if (readerCards.get(i).getReaderId().equals(readerCard.getReaderId())) {
                 readerCards.set(i, readerCard);
                 break;
             }
         }
-        overwriteReaderCards(readerCards);
+        overwrite(readerCards);
     }
 
     public void delete(String deleteReaderId){
@@ -126,7 +111,7 @@ public class ReaderRepository {
             System.out.println(e.getMessage());
             return;
         }
-        List<ReaderCard> readerCards = new ArrayList<>(this.getAllReaders());
+        List<ReaderCard> readerCards = new ArrayList<>(this.getAll());
         for (int i = 0; i < readerCards.size(); i++){
             if(readerCards.get(i).getReaderId().equals(deleteReaderId)){
                 readerCards.remove(readerCards.get(i));
@@ -134,13 +119,48 @@ public class ReaderRepository {
             }
         }
         try {
-            overwriteReaderCards(readerCards);
+            overwrite(readerCards);
         } catch (IOException e){
             System.out.println("Ghi file thất bại! Lỗi: " + e);
         }
     }
 
-    private static void overwriteReaderCards(List<ReaderCard> readerCards) throws IOException {
+    public List<ReaderCard> list(String name, Gender gender){
+        Stream<ReaderCard> stream = this.stream();
+        try {
+            // TODO: làm phần tìm kiếm có dấu và lowercase
+            if (name != null) {
+                stream = stream.filter(readerCard -> readerCard.getFullName().contains(name));
+            }
+
+            if (gender != null) {
+                stream = stream.filter(readerCard -> readerCard.getGender() == gender);
+            }
+
+            return stream.toList();
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tìm kiếm reader: " + e.getMessage());
+            return List.of();
+        }
+    }
+
+
+    public ReaderCard findByIdCardNo(String idCardNo) {
+        return this.stream()
+                .filter(readerCard -> readerCard.getIdCard().equals(idCardNo))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<ReaderCard> findByName(String name){
+        return this.list(name, null);
+    }
+
+    public int countAllReader(){
+        return Math.toIntExact(this.stream().count());
+    }
+
+    private static void overwrite(List<ReaderCard> readerCards) throws IOException {
         // Ghi đè file readerCard.csv với nội dung mới từ readerList sau khi đã cập nhật readerCard
         Path path = Path.of("src/test/data/readerCard.csv");
         StringBuilder sb = new StringBuilder();
@@ -184,25 +204,6 @@ public class ReaderRepository {
 
         } catch (IOException e) {
             System.err.println("Lỗi khi xử lý file: " + e.getMessage());
-        }
-    }
-
-    public List<ReaderCard> list(String name, Gender gender){
-        Stream<ReaderCard> stream = this.stream();
-        try {
-            // TODO: làm phần tìm kiếm có dấu và lowercase
-            if (name != null) {
-                stream = stream.filter(readerCard -> readerCard.getFullName().contains(name));
-            }
-
-            if (gender != null) {
-                stream = stream.filter(readerCard -> readerCard.getGender() == gender);
-            }
-
-            return stream.toList();
-        } catch (Exception e) {
-            System.out.println("Lỗi khi tìm kiếm reader: " + e.getMessage());
-            return List.of();
         }
     }
 }

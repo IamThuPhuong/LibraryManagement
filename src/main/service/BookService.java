@@ -51,7 +51,7 @@ public class BookService {
      */
     public List<Book> showBookList() {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
-        return bookRepository.getAllBooks();
+        return bookRepository.getAll();
     }
 
 
@@ -107,7 +107,7 @@ public class BookService {
             book.setTotal(vo.getTotal());
         }
 
-        bookRepository.saveBookToFile(book);
+        bookRepository.save(book);
 
         return book;
 

@@ -52,8 +52,59 @@ public class UserRepository {
         }
 
     }
-    public List<User> getAllUsers() {
+
+    public List<User> getAll() {
         return this.stream().toList();
+    }
+
+    public void save(User user)  {
+        // Thay thế bằng SQL khi chuyển sang Spring
+        // Ghi đè file data.csv với nội dung mới từ userList
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
+            String line = user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
+                    user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
+                    user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole() + "|" + user.getStatus();
+            writer.newLine();
+            writer.write(line);
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi file: " + e.getMessage());
+        }
+    }
+
+    public void update(User user) throws IOException {
+        try {
+            if (user == null) {
+                throw new IllegalArgumentException("Check lại file data.csv!");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        List<User> users = new ArrayList<>(this.getAll());
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUserId().equals(user.getUserId())) {
+                users.set(i, user);
+                break;
+            }
+        }
+        // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
+        Path path = Path.of("src/test/data/user.csv");
+        StringBuilder sb = new StringBuilder();
+        for (User u : users) {
+            sb.append(u.getUserId()).append("|")
+                    .append(u.getUserName()).append("|")
+                    .append(u.getPassword()).append("|")
+                    .append(u.getFullName()).append("|")
+                    .append(u.getBirthDay()).append("|")
+                    .append(u.getIdCard()).append("|")
+                    .append(u.getAddress()).append("|")
+                    .append(u.getGender() != null ? u.getGender().name() : "null").append("|")
+                    .append(u.getUserRole() != null ? u.getUserRole().name() : "null").append("|")
+                    .append(u.getStatus() != null ? u.getStatus().name() : "null")
+                    .append("\n");
+        }
+
+        Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
     }
 
     public User findByUserId(String userId) throws NullPointerException {
@@ -87,53 +138,4 @@ public class UserRepository {
                 .toList();
     }
 
-    public void saveUserListToFile(User user)  {
-        // Thay thế bằng SQL khi chuyển sang Spring
-        // Ghi đè file data.csv với nội dung mới từ userList
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
-            String line = user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
-                    user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
-                    user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole() + "|" + user.getStatus();
-            writer.newLine();
-            writer.write(line);
-        } catch (IOException e) {
-            System.out.println("Lỗi khi ghi file: " + e.getMessage());
-        }
-    }
-
-    public void updateUser(User user) throws IOException {
-        try {
-            if (user == null) {
-                throw new IllegalArgumentException("Check lại file data.csv!");
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-        List<User> users = new ArrayList<>(this.getAllUsers());
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUserId().equals(user.getUserId())) {
-                users.set(i, user);
-                break;
-            }
-        }
-        // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
-        Path path = Path.of("src/test/data/user.csv");
-        StringBuilder sb = new StringBuilder();
-        for (User u : users) {
-            sb.append(u.getUserId()).append("|")
-                    .append(u.getUserName()).append("|")
-                    .append(u.getPassword()).append("|")
-                    .append(u.getFullName()).append("|")
-                    .append(u.getBirthDay()).append("|")
-                    .append(u.getIdCard()).append("|")
-                    .append(u.getAddress()).append("|")
-                    .append(u.getGender() != null ? u.getGender().name() : "null").append("|")
-                    .append(u.getUserRole() != null ? u.getUserRole().name() : "null").append("|")
-                    .append(u.getStatus() != null ? u.getStatus().name() : "null")
-                    .append("\n");
-        }
-
-        Files.writeString(path, sb.toString(), StandardOpenOption.TRUNCATE_EXISTING);
-    }
 }

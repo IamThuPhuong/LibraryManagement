@@ -50,6 +50,45 @@ public class BorrowDetailRepository {
         }
     }
 
+    public void save(BorrowDetail borrowDetail) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/borrowDetail.csv", true))) {
+            writer.newLine();
+            // Nối các thuộc tính của Book cách nhau bằng dấu "|"
+            String line = borrowDetail.getBorrowId() + "|"
+                    + borrowDetail.getIsbn() + "|"
+                    + borrowDetail.getReturnedDate() + "|"
+                    + borrowDetail.getBorrowStatus() + "|"
+                    + borrowDetail.getNote();
+
+            writer.newLine();
+            writer.write(line);
+        } catch (IOException e) {
+            System.out.println("Lỗi khi ghi phiếu mượn chi tiết: " + e.getMessage());
+        }
+        removeEmptyLines("src/test/data/borrowDetail.csv");
+    }
+
+    public void update(BorrowDetail updateBorrowDetail) throws IOException {
+        try {
+            if (updateBorrowDetail == null) {
+                throw new IllegalArgumentException("Check lại file borrowDetail.csv!");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        List<BorrowDetail> borrowDetails = new ArrayList<>(this.list(null, null, null)/*get all*/);
+        for (int i = 0; i < borrowDetails.size(); i++) {
+            if (borrowDetails.get(i).getBorrowId().equals(updateBorrowDetail.getBorrowId())
+                    && borrowDetails.get(i).getIsbn().equals(updateBorrowDetail.getIsbn())) {
+                borrowDetails.set(i, updateBorrowDetail);
+                break;
+            }
+        }
+        overwrite(borrowDetails);
+    }
+
     /**
      * Lọc theo param
      * @param borrowId
@@ -96,24 +135,6 @@ public class BorrowDetailRepository {
 
     }
 
-    public void save(BorrowDetail borrowDetail) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/borrowDetail.csv", true))) {
-            writer.newLine();
-            // Nối các thuộc tính của Book cách nhau bằng dấu "|"
-            String line = borrowDetail.getBorrowId() + "|"
-                    + borrowDetail.getIsbn() + "|"
-                    + borrowDetail.getReturnedDate() + "|"
-                    + borrowDetail.getBorrowStatus() + "|"
-                    + borrowDetail.getNote();
-
-            writer.newLine();
-            writer.write(line);
-        } catch (IOException e) {
-            System.out.println("Lỗi khi ghi phiếu mượn chi tiết: " + e.getMessage());
-        }
-        removeEmptyLines("src/test/data/borrowDetail.csv");
-    }
-
     public int countByIsbn(String isbn) {
         return (int) this.stream()
                 .filter(detail -> detail.getIsbn().equals(isbn))
@@ -125,27 +146,6 @@ public class BorrowDetailRepository {
                 .filter(detail -> detail.getIsbn().equals(isbn))
                 .findFirst()
                 .orElse(null);
-    }
-
-    public void update(BorrowDetail updateBorrowDetail) throws IOException {
-        try {
-            if (updateBorrowDetail == null) {
-                throw new IllegalArgumentException("Check lại file borrowDetail.csv!");
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        List<BorrowDetail> borrowDetails = new ArrayList<>(this.list(null, null, null)/*get all*/);
-        for (int i = 0; i < borrowDetails.size(); i++) {
-            if (borrowDetails.get(i).getBorrowId().equals(updateBorrowDetail.getBorrowId())
-                    && borrowDetails.get(i).getIsbn().equals(updateBorrowDetail.getIsbn())) {
-                borrowDetails.set(i, updateBorrowDetail);
-                break;
-            }
-        }
-        overwrite(borrowDetails);
     }
 
     private static void overwrite(List<BorrowDetail> borrowDetails) throws IOException {

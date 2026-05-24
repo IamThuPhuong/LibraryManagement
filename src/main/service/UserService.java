@@ -106,7 +106,7 @@ public class UserService {
         }
 
         // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
-        userRepository.updateUser(user);
+        userRepository.update(user);
 
         return user;
     }
@@ -196,7 +196,7 @@ public class UserService {
 
 
         // add vao data.csv sau khi chuyển sang Spring sẽ add vào DB
-        userRepository.saveUserListToFile(newUser);
+        userRepository.save(newUser);
 
         return newUser;
     }

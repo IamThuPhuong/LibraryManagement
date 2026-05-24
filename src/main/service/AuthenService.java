@@ -108,7 +108,7 @@ public class AuthenService {
             return false;
         }
         user.setPassword(newPass);
-        userRepository.updateUser(user);
+        userRepository.update(user);
         System.out.println("Đổi mật khẩu thành công!");
         return true;
     }
