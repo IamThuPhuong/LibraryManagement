@@ -33,6 +33,8 @@ public class BookValidator implements Validator<BookVO>{
             errList.add(ErrConstants.PUBLISHYEAR_CAN_NOT_NULL);
         }
 
+        // TODO: Check existed cho isbn
+
         if(target.getPrice() == null || target.getPrice() < Constants.INT_0){
             errList.add(ErrConstants.PRICE_INVALID);
         }
