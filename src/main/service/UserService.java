@@ -3,6 +3,7 @@ package main.service;
 import main.constants.Constants;
 import main.enums.Gender;
 import main.enums.Permission;
+import main.enums.Status;
 import main.enums.UserRole;
 import main.entity.User;
 import main.repository.UserRepository;
@@ -100,7 +101,9 @@ public class UserService {
         if (!vo.getGender().equals(Gender.OTHER)){
             user.setGender(vo.getGender());
         }
-        // status khong duoc sua
+        if(!vo.getStatus().equals(Status.ACTIVATED)){
+            user.setStatus(Status.BLOCKED);
+        }
 
         // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
         userRepository.updateUser(user);

@@ -126,6 +126,8 @@ public class UserServiceTest {
             System.out.println("5. IdCard: " + user.getIdCard());
             System.out.println("6. Address: " + user.getAddress());
             System.out.println("7. Gender: " + user.getGender());
+            System.out.println("8. Status: " + user.getStatus());
+            System.out.println("========================================");
             System.out.println("Chọn thông tin muốn cập nhật (1-7), hoặc 0 để thoát:");
 
             chosenInfo = input.nextLine();
@@ -192,6 +194,7 @@ public class UserServiceTest {
         System.out.println("IdCard: " + user.getIdCard());
         System.out.println("Address: " + user.getAddress());
         System.out.println("Gender: " + user.getGender());
+        System.out.println("Status: " + user.getStatus());
 
     }
 }

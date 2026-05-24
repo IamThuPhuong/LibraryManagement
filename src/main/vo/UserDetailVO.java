@@ -2,6 +2,7 @@ package main.vo;
 
 import main.constants.Constants;
 import main.enums.Gender;
+import main.enums.Status;
 import main.enums.UserRole;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class UserDetailVO {
     private String address = Constants.INIT_STRING;
     private Gender gender = Gender.OTHER;
     private UserRole userRole = UserRole.OFFICER;
+    private Status status = Status.ACTIVATED;
 
     public UserDetailVO() {
     }
@@ -101,5 +103,13 @@ public class UserDetailVO {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

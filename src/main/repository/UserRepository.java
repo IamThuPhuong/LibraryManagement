@@ -1,6 +1,7 @@
 package main.repository;
 
 import main.enums.Gender;
+import main.enums.Status;
 import main.enums.UserRole;
 import main.entity.User;
 
@@ -20,7 +21,7 @@ public class UserRepository {
             return Files.lines(path).map(line -> {
                 String[] parts = line.split("\\|");
                 try{
-                    if (parts.length != 9) {
+                    if (parts.length != 10) {
                         throw new RuntimeException("Invalid user data format:" + line);
                     }
                 } catch (RuntimeException e) {
@@ -40,6 +41,9 @@ public class UserRepository {
                 }
                 if (parts[8] != null && !parts[8].isEmpty() && !parts[8].equals("null")) {
                     user.setUserRole(UserRole.valueOf(parts[8]));
+                }
+                if (parts[9] != null && !parts[9].isEmpty() && !parts[9].equals("null")) {
+                    user.setStatus(Status.valueOf(parts[9]));
                 }
                 return user;
             });
@@ -89,7 +93,7 @@ public class UserRepository {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
             String line = user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
                     user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
-                    user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole();
+                    user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole() + "|" + user.getStatus();
             writer.newLine();
             writer.write(line);
         } catch (IOException e) {
@@ -125,7 +129,8 @@ public class UserRepository {
                     .append(u.getIdCard()).append("|")
                     .append(u.getAddress()).append("|")
                     .append(u.getGender() != null ? u.getGender().name() : "null").append("|")
-                    .append(u.getUserRole() != null ? u.getUserRole().name() : "null")
+                    .append(u.getUserRole() != null ? u.getUserRole().name() : "null").append("|")
+                    .append(u.getStatus() != null ? u.getStatus().name() : "null")
                     .append("\n");
         }
 
