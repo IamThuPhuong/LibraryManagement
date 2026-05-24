@@ -35,6 +35,10 @@ public class AuthorValidator implements Validator<Permission> {
         this.authorService = authorService;
     }
 
+    public AuthorValidator() {
+
+    }
+
     /**
      * Validate quyền của người dùng hiện tại.
      *

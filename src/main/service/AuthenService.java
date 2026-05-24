@@ -31,8 +31,8 @@ public class AuthenService {
     Scanner input = new Scanner(System.in);
 
     private final AuthorService authorService = new AuthorService();
-    private final User currentUser = userRepository.findByUserId(AuthenService.USER_ID);
-    Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
+    private User currentUser = null;
+    Validator<Permission> authorValidator = new AuthorValidator();
 
     /** Validate check password hợp lệ khi cập nhật password */
     Validator<UserChangePasswordVO> passwordUpdateValidator = new UserChangePasswordDataValidator();
@@ -55,6 +55,8 @@ public class AuthenService {
         if(foundedUser != null){
             if(foundedUser.getPassword().equals(password)){
                 USER_ID = foundedUser.getUserId();
+                currentUser = userRepository.findByUserId(AuthenService.USER_ID);
+                authorValidator = new AuthorValidator(currentUser, authorService);
                 return true;
             } else {
                 System.out.println("Đăng nhập thất bại!");
