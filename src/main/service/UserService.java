@@ -61,6 +61,7 @@ public class UserService {
      * @return user
      */
     public User updateUser(User user, UserVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+        // TODO: Fix bug chỉ sửa được thông tin trong 1 luồng
         authorValidator.validate(Permission.COMMON);
         // 1.6 Phân quyền người dùng (quản lý hoặc nhân viên)
         if(!vo.getUserRole().equals(UserRole.OFFICER)){

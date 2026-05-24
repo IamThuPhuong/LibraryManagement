@@ -127,6 +127,7 @@ public class ReaderCardService {
      * @return readerCard
      */
     public ReaderCard updateReader(ReaderCard reader, ReaderVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+        // TODO: check bug khong update duoc
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>(readerValidator.validate(vo));
         if (!errorList.isEmpty()){

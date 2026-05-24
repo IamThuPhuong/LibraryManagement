@@ -23,6 +23,7 @@ public class DashboardServiceTest {
         System.out.println("Tổng số lượng sách đang được mượn: " + totalBorrowedBooks);
         System.out.println("6.6 Thống kê số sách quá hạn");
         int totalLateBooks = dashboardService.lateReturnStats();
+        // TODO: sửa lại thống kê số lượng sách quá hạn không count đúng OVERDUE do count bằng ngày trả
         System.out.println("Tổng số lượng sách quá hạn: " + totalLateBooks);
 
     }

@@ -1,6 +1,7 @@
 package test.service;
 
 import main.enums.Gender;
+import main.enums.Status;
 import main.enums.UserRole;
 import main.entity.User;
 import main.repository.UserRepository;
@@ -128,7 +129,7 @@ public class UserServiceTest {
             System.out.println("7. Gender: " + user.getGender());
             System.out.println("8. Status: " + user.getStatus());
             System.out.println("========================================");
-            System.out.println("Chọn thông tin muốn cập nhật (1-7), hoặc 0 để thoát:");
+            System.out.println("Chọn thông tin muốn cập nhật (1-8), hoặc 0 để thoát:");
 
             chosenInfo = input.nextLine();
 
@@ -176,6 +177,19 @@ public class UserServiceTest {
                             user.setGender(Gender.OTHER);
                     }
                     vo.setGender(user.getGender());
+                    break;
+                case "8":
+                    System.out.println("Chọn trạng thái mới (1.Activated /2.Blocked):");
+                    String newStatus = input.nextLine();
+                    switch (newStatus) {
+                        case "1":
+                            user.setStatus(Status.ACTIVATED);
+                            break;
+                        case "2":
+                            user.setStatus(Status.BLOCKED);
+                            break;
+                    }
+                    vo.setStatus(user.getStatus());
                     break;
             }
 

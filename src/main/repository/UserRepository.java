@@ -12,9 +12,13 @@ import java.nio.file.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
+import static main.repository.ReaderRepository.removeEmptyLines;
+
 public class UserRepository {
+    private final String FILE_PATH = "src/test/data/user.csv";
     public Stream<User> stream() {
         Path path = Path.of("src/test/data/user.csv");
         try {
@@ -46,7 +50,7 @@ public class UserRepository {
                     user.setStatus(Status.valueOf(parts[9]));
                 }
                 return user;
-            });
+            }).filter(Objects::nonNull);
         } catch (IOException e) {
             throw new RuntimeException("Failed to read user data: " + e.getMessage(), e);
         }
@@ -60,7 +64,7 @@ public class UserRepository {
     public void save(User user)  {
         // Thay thế bằng SQL khi chuyển sang Spring
         // Ghi đè file data.csv với nội dung mới từ userList
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/test/data/user.txt", true))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))){
             String line = user.getUserId() + "|" + user.getUserName() + "|" + user.getPassword() + "|" +
                     user.getFullName() + "|" + user.getBirthDay() + "|" + user.getIdCard() + "|" +
                     user.getAddress() + "|" + user.getGender() + "|" + user.getUserRole() + "|" + user.getStatus();
@@ -69,6 +73,7 @@ public class UserRepository {
         } catch (IOException e) {
             System.out.println("Lỗi khi ghi file: " + e.getMessage());
         }
+        removeEmptyLines(FILE_PATH);
     }
 
     public void update(User user) throws IOException {
@@ -87,7 +92,7 @@ public class UserRepository {
                 break;
             }
         }
-        // Ghi đè file data.txt với nội dung mới từ userList sau khi đã cập nhật user
+        // Ghi đè file data.csv với nội dung mới từ userList sau khi đã cập nhật user
         Path path = Path.of("src/test/data/user.csv");
         StringBuilder sb = new StringBuilder();
         for (User u : users) {

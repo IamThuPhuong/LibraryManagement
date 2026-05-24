@@ -103,7 +103,6 @@ public class ReaderCardServiceTest {
                 System.out.println("5. Email: " + readerCard.getEmail());
                 System.out.println("6. Địa chỉ: " + readerCard.getAddress());
                 System.out.println("7. Ngày bắt đầu đăng ký" + readerCard.getStartDate());
-
                 System.out.println("Chọn thông tin muốn cập nhật (1-7), 0 để hoàn tất update, 9 để quay lại, 99 để thoát hẳn:");
 
                 chosenInfo = input.nextLine();
