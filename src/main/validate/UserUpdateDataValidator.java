@@ -1,15 +1,15 @@
 package main.validate;
 
 import main.constants.ErrConstants;
-import main.vo.UserDetailVO;
+import main.vo.UserVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserUpdateDataValidator implements Validator<UserDetailVO> {
+public class UserUpdateDataValidator implements Validator<UserVO> {
 
     @Override
-    public List<String> validate (UserDetailVO target){
+    public List<String> validate (UserVO target){
 
         List<String> resultCheck = new ArrayList<>();
         if (target.getUserName() != null) {

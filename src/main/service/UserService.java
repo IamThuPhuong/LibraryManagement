@@ -12,7 +12,7 @@ import main.validate.UserCreateDataValidator;
 import main.validate.UserValidator;
 import main.validate.Validator;
 import main.validate.UserUpdateDataValidator;
-import main.vo.UserDetailVO;
+import main.vo.UserVO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,16 +42,16 @@ public class UserService {
     private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
 
     /** Validate check thông tin user hợp lệ */
-    Validator<UserDetailVO> userValidator = new UserValidator();
+    Validator<UserVO> userValidator = new UserValidator();
 
     /** Validate check quyền truy cập chức năng */
     Validator<Permission> authorValidator = new AuthorValidator(currentUser, authorService);
 
     /** Validate check thông tin user hợp lệ khi tạo mới user */
-    Validator<UserDetailVO> userCreateValidator = new UserCreateDataValidator();
+    Validator<UserVO> userCreateValidator = new UserCreateDataValidator();
 
     /** Validate check thông tin user hợp lệ khi cập nhật user */
-    Validator<UserDetailVO> userUpdateValidator = new UserUpdateDataValidator();
+    Validator<UserVO> userUpdateValidator = new UserUpdateDataValidator();
 
     /**
      * 1.4 Cập nhật thông tin cá nhân
@@ -59,7 +59,7 @@ public class UserService {
      * @param vo
      * @return user
      */
-    public User updateUser(User user, UserDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+    public User updateUser(User user, UserVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>(userUpdateValidator.validate(vo));
         if (!errorList.isEmpty()){
@@ -116,7 +116,7 @@ public class UserService {
      * @param vo
      * @return User
      */
-    public User createUser(UserDetailVO vo) throws ExceptionInInitializerError {
+    public User createUser(UserVO vo) throws ExceptionInInitializerError {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
 
         List<String> errorList = new ArrayList<>();

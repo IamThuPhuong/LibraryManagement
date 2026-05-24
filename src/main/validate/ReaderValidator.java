@@ -4,18 +4,18 @@ import main.constants.ErrConstants;
 import main.constants.ReaderConstants;
 import main.constants.UserConstants;
 import main.repository.ReaderRepository;
-import main.vo.ReaderDetailVO;
+import main.vo.ReaderVO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class ReaderValidator implements Validator<ReaderDetailVO>{
+public class ReaderValidator implements Validator<ReaderVO>{
     ReaderRepository readerRepository = new ReaderRepository();
 
     @Override
-    public List<String> validate(ReaderDetailVO target) {
+    public List<String> validate(ReaderVO target) {
         List<String> errList = new ArrayList<>();
 
         if (target.getFullName() == null || target.getFullName().isEmpty()) {

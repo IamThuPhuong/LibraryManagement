@@ -5,7 +5,7 @@ import main.enums.Gender;
 
 import java.time.LocalDate;
 
-public class ReaderDetailVO {
+public class ReaderVO {
     private String fullName = Constants.INIT_STRING;
     private String idCard = Constants.INIT_STRING;
     private LocalDate birthDate = Constants.INIT_DATE;

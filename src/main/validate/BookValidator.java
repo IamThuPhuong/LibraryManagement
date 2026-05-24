@@ -2,16 +2,16 @@ package main.validate;
 
 import main.constants.Constants;
 import main.constants.ErrConstants;
-import main.vo.BookDetailVO;
+import main.vo.BookVO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookValidator implements Validator<BookDetailVO>{
+public class BookValidator implements Validator<BookVO>{
 
     @Override
-    public List<String> validate(BookDetailVO target) {
+    public List<String> validate(BookVO target) {
         List<String> errList = new ArrayList<>();
         if (target.getIsbn() == null || target.getIsbn().isEmpty()) {
             errList.add(ErrConstants.ISBN_CAN_NOT_NULL);

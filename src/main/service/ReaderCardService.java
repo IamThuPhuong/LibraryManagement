@@ -11,7 +11,7 @@ import main.validate.AuthorValidator;
 import main.validate.ReaderUpdateDataValidator;
 import main.validate.ReaderValidator;
 import main.validate.Validator;
-import main.vo.ReaderDetailVO;
+import main.vo.ReaderVO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,10 +50,10 @@ public class ReaderCardService {
     /**
      * Validate đầu vào chức năng độc giả
      */
-    Validator<ReaderDetailVO> readerValidator = new ReaderValidator();
+    Validator<ReaderVO> readerValidator = new ReaderValidator();
 
     /** Validate update thông tin độc giả */
-    Validator<ReaderDetailVO> readerUpdateValidator = new ReaderUpdateDataValidator();
+    Validator<ReaderVO> readerUpdateValidator = new ReaderUpdateDataValidator();
 
     /** Quyền truy cập class InfoUpdateService */
     private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
@@ -70,7 +70,7 @@ public class ReaderCardService {
      * @param vo
      * @return readerCard
      */
-    public ReaderCard createReader(ReaderDetailVO vo) {
+    public ReaderCard createReader(ReaderVO vo) {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>();
         errorList.addAll(readerValidator.validate(vo));
@@ -130,7 +130,7 @@ public class ReaderCardService {
      * @param vo
      * @return readerCard
      */
-    public ReaderCard updateReader(ReaderCard reader, ReaderDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+    public ReaderCard updateReader(ReaderCard reader, ReaderVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>(readerUpdateValidator.validate(vo));
         if (!errorList.isEmpty()){

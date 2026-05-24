@@ -6,7 +6,7 @@ import main.entity.User;
 import main.repository.UserRepository;
 import main.service.AuthenService;
 import main.service.UserService;
-import main.vo.UserDetailVO;
+import main.vo.UserVO;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class UserServiceTest {
 //        }
         UserService userService = new UserService();
         // Thay thế màn hình=> form nhập thông tin người dùng
-        UserDetailVO userDetailVO = new UserDetailVO();
+        UserVO userVO = new UserVO();
         System.out.println("Form nhập thông tin người dùng:");
         System.out.print("1. Username (*):");
         String username = input.nextLine();
@@ -65,15 +65,15 @@ public class UserServiceTest {
                 System.out.println("\n8. User Role (Chose: 1.Manager /2.Officer):");
                 switch (input.nextLine()) {
                     case "1":
-                        userDetailVO.setUserRole(UserRole.MANAGER);
+                        userVO.setUserRole(UserRole.MANAGER);
                         break;
                     case "2":
-                        userDetailVO.setUserRole(UserRole.OFFICER);
+                        userVO.setUserRole(UserRole.OFFICER);
                         break;
                 }
             } else //if (currentUser.getUserRole() == UserRole.MANAGER) {
             {
-                userDetailVO.setUserRole(UserRole.OFFICER);
+                userVO.setUserRole(UserRole.OFFICER);
 //            } else {
 //                System.out.println("Bạn không có quyền tạo người dùng mới!");
 //                return;
@@ -83,16 +83,16 @@ public class UserServiceTest {
         }
 
         // Set thông tin người dùng từ form vào UserDetailVO
-        userDetailVO.setUserName(username);
-        userDetailVO.setPassword(password);
-        userDetailVO.setFullName(fullName);
-        userDetailVO.setBirthDay(birthDay);
-        userDetailVO.setIdCard(idCard);
-        userDetailVO.setAddress(address);
-        userDetailVO.setGender(genderEnum);
+        userVO.setUserName(username);
+        userVO.setPassword(password);
+        userVO.setFullName(fullName);
+        userVO.setBirthDay(birthDay);
+        userVO.setIdCard(idCard);
+        userVO.setAddress(address);
+        userVO.setGender(genderEnum);
 
         // Service
-        User newUser = userService.createUser(userDetailVO);
+        User newUser = userService.createUser(userVO);
         System.out.println("Kết thúc chức năng tạo người dùng");
 
         if(newUser != null) {
@@ -115,7 +115,7 @@ public class UserServiceTest {
     public void updateUser(User user) throws IOException {
 
         //====[START] MAN HINH
-        UserDetailVO vo = new UserDetailVO();
+        UserVO vo = new UserVO();
         String chosenInfo;
         do {
             System.out.println("=========THÔNG TIN NGƯỜI DÙNG===========");

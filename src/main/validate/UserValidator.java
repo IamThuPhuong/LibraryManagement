@@ -4,7 +4,7 @@ import main.constants.ErrConstants;
 import main.constants.UserConstants;
 import main.entity.User;
 import main.repository.UserRepository;
-import main.vo.UserDetailVO;
+import main.vo.UserVO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ import java.util.List;
  * @author Thu Phương
  * @version 1.0
  * @since 2026-04-19
- * @see UserDetailVO
+ * @see UserVO
  * @see User
  */
-public class UserValidator implements Validator<UserDetailVO> {
+public class UserValidator implements Validator<UserVO> {
     private final UserRepository userRepository = new UserRepository();
 
     /**
@@ -36,20 +36,20 @@ public class UserValidator implements Validator<UserDetailVO> {
     public UserValidator() {}
 
     /**
-     * Validate thông tin người dùng từ {@link UserDetailVO}.
+     * Validate thông tin người dùng từ {@link UserVO}.
      * Kiểm tra từng field: username (độ dài, ký tự), password (độ dài), ngày sinh (không được tương lai).
      *
      * <p><b>Lưu ý:</b> Phương thức này chưa throw exception, chỉ in lỗi ra console.
      * Khi chuyển sang Spring, nên cải thiện bằng cách collect lỗi vào list và return.
      *
-     * @param target đối tượng {@link UserDetailVO} cần validate
-     * @throws ClassCastException nếu target không phải {@link UserDetailVO}
+     * @param target đối tượng {@link UserVO} cần validate
+     * @throws ClassCastException nếu target không phải {@link UserVO}
      * @see #isValidLength(String)
      * @see #containsSpecialChar(String)
      * @see #isBirthdayInFuture(LocalDate)
      */
     @Override
-    public List<String> validate(UserDetailVO target) {
+    public List<String> validate(UserVO target) {
         // UserDetailVO obj = (UserDetailVO) target; ==> dùng cách này cast Object thì khi compile không lỗi nhưng khi người dùng chạy sẽ lỗi
         // Dùng generic để đảm bảo type safety, tránh lỗi ClassCastException khi cast Object.
         // Có gì báo lỗi trên compiler luôn

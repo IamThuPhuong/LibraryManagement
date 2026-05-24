@@ -7,7 +7,7 @@ import main.enums.UserRole;
 
 import java.time.LocalDate;
 
-public class UserDetailVO {
+public class UserVO {
     private String userName;
     private String password;
     private String fullName = Constants.INIT_STRING;
@@ -18,7 +18,7 @@ public class UserDetailVO {
     private UserRole userRole = UserRole.OFFICER;
     private Status status = Status.ACTIVATED;
 
-    public UserDetailVO() {
+    public UserVO() {
     }
 
     public String getUserName() {

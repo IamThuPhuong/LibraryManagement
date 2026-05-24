@@ -4,7 +4,7 @@ import main.constants.BookConstants;
 import main.constants.Constants;
 import main.enums.Genre;
 
-public class BookDetailVO {
+public class BookVO {
     private String isbn = Constants.INIT_STRING;
     private String name = Constants.INIT_STRING;
     private String author = Constants.INIT_STRING;

@@ -9,7 +9,7 @@ import main.entity.ReaderCard;
 import main.entity.User;
 import main.repository.BookRepository;
 import main.validate.*;
-import main.vo.BookDetailVO;
+import main.vo.BookVO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class BookService {
     /**
      * Validate đầu vào chức năng quản lý sách
      */
-    Validator<BookDetailVO> bookValidator = new BookValidator();
+    Validator<BookVO> bookValidator = new BookValidator();
 
     /** Quyền truy cập chức năng */
     private static final Permission PERMISSION_OF_FUNCTION = Permission.MANAGE_USER;
@@ -60,7 +60,7 @@ public class BookService {
      * @param vo
      * @return
      */
-    public Book create(BookDetailVO vo) {
+    public Book create(BookVO vo) {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>();
         errorList.addAll(bookValidator.validate(vo));
@@ -119,7 +119,7 @@ public class BookService {
      * @param vo
      * @return
      */
-    public Book update(Book book, BookDetailVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
+    public Book update(Book book, BookVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>(bookValidator.validate(vo));
         if (!errorList.isEmpty()){

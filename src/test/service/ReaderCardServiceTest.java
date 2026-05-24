@@ -4,7 +4,7 @@ import main.constants.Constants;
 import main.enums.Gender;
 import main.entity.ReaderCard;
 import main.service.ReaderCardService;
-import main.vo.ReaderDetailVO;
+import main.vo.ReaderVO;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ReaderCardServiceTest {
     public void addReader() {
 
         // Form nhập thông tin độc giả
-        ReaderDetailVO readerDetailVO = new ReaderDetailVO();
+        ReaderVO readerVO = new ReaderVO();
         System.out.println("Form nhập thông tin độc giả:");
         System.out.print("1. Họ và tên (*):");
         String fullName = input.nextLine();
@@ -55,17 +55,17 @@ public class ReaderCardServiceTest {
 
 
         // Set thông tin độc giả từ form vào ReaderDetailVO
-        readerDetailVO.setFullName(fullName);
-        readerDetailVO.setIdCard(idCard);
-        readerDetailVO.setBirthDay(birthDay);
-        readerDetailVO.setAddress(address);
-        readerDetailVO.setGender(genderEnum);
-        readerDetailVO.setEmail(email);
-        readerDetailVO.setAddress(address);
-        readerDetailVO.setStartDate(startDate);
+        readerVO.setFullName(fullName);
+        readerVO.setIdCard(idCard);
+        readerVO.setBirthDay(birthDay);
+        readerVO.setAddress(address);
+        readerVO.setGender(genderEnum);
+        readerVO.setEmail(email);
+        readerVO.setAddress(address);
+        readerVO.setStartDate(startDate);
 
         // Service
-        readerCardService.createReader(readerDetailVO);
+        readerCardService.createReader(readerVO);
         System.out.println("==Kết thúc tiến trình tạo độc giả==!");
     }
 
@@ -92,7 +92,7 @@ public class ReaderCardServiceTest {
             input.nextLine();
             ReaderCard readerCard = readerList.get(readerNo - 1);
 
-            ReaderDetailVO vo = new ReaderDetailVO();
+            ReaderVO vo = new ReaderVO();
             String chosenInfo;
             do {
                 System.out.println("=========THÔNG TIN ĐỘC GIẢ===========");

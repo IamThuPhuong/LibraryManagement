@@ -4,7 +4,7 @@ import main.constants.Constants;
 import main.enums.Genre;
 import main.entity.Book;
 import main.service.BookService;
-import main.vo.BookDetailVO;
+import main.vo.BookVO;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +22,7 @@ public class BookServiceTest {
 
     public void addBook() {
         // Form nhập thông tin sách
-        BookDetailVO bookDetailVO = new BookDetailVO();
+        BookVO bookVO = new BookVO();
         System.out.println("Form nhập thông tin sách:");
 
         System.out.print("1. Mã ISBN (*):");
@@ -58,17 +58,17 @@ public class BookServiceTest {
         String total = input.nextLine();
 
         // Set thông tin sách từ form vào BookDetailVO
-        bookDetailVO.setIsbn(isbn);
-        bookDetailVO.setName(name);
-        bookDetailVO.setAuthor(author);
-        bookDetailVO.setPublisher(publisher);
-        bookDetailVO.setPublishYear(publishYear);
-        bookDetailVO.setGenre(genreEnum);
-        bookDetailVO.setPrice(price);
-        bookDetailVO.setTotal(total);
+        bookVO.setIsbn(isbn);
+        bookVO.setName(name);
+        bookVO.setAuthor(author);
+        bookVO.setPublisher(publisher);
+        bookVO.setPublishYear(publishYear);
+        bookVO.setGenre(genreEnum);
+        bookVO.setPrice(price);
+        bookVO.setTotal(total);
 
         // Service
-        bookService.create(bookDetailVO);
+        bookService.create(bookVO);
         System.out.println("==Kết thúc tiến trình thêm sách mới==!");
     }
 
@@ -93,7 +93,7 @@ public class BookServiceTest {
 
             input.nextLine();
             Book book = bookList.get(bookNo - 1);
-            BookDetailVO vo = new BookDetailVO();
+            BookVO vo = new BookVO();
             String chosenInfo;
 
             do {
