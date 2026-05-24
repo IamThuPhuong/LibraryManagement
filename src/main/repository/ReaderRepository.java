@@ -58,7 +58,7 @@ public class ReaderRepository {
     }
 
     public List<ReaderCard> getAllReaders(){
-        return this.stream().toList();
+        return this.list(null, null);
     }
 
     public ReaderCard findByIdCardNo(String idCardNo) {
@@ -69,10 +69,7 @@ public class ReaderRepository {
     }
 
     public List<ReaderCard> findByName(String name){
-        // TODO: làm phần tìm kiếm có dấu và lowercase
-        return this.stream()
-                .filter(readerCard -> readerCard.getFullName().contains(name))
-                .toList();
+        return this.list(name, null);
     }
 
     public int countAllReader(){
@@ -187,6 +184,25 @@ public class ReaderRepository {
 
         } catch (IOException e) {
             System.err.println("Lỗi khi xử lý file: " + e.getMessage());
+        }
+    }
+
+    public List<ReaderCard> list(String name, Gender gender){
+        Stream<ReaderCard> stream = this.stream();
+        try {
+            // TODO: làm phần tìm kiếm có dấu và lowercase
+            if (name != null) {
+                stream = stream.filter(readerCard -> readerCard.getFullName().contains(name));
+            }
+
+            if (gender != null) {
+                stream = stream.filter(readerCard -> readerCard.getGender() == gender);
+            }
+
+            return stream.toList();
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tìm kiếm reader: " + e.getMessage());
+            return List.of();
         }
     }
 }

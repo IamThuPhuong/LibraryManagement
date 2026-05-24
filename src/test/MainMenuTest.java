@@ -70,6 +70,8 @@ public class MainMenuTest {
         System.out.println("Quản lý mượn trả: ");
         System.out.println("13. Lập phiếu mượn sách");
         System.out.println("14. Lập phiếu trả sách");
+        System.out.println("Thống kê:");
+        System.out.println("15. Thống kê cơ bản");
         System.out.println("99. Đăng xuất");
 
         chosenService = input.nextLine();
@@ -142,6 +144,10 @@ public class MainMenuTest {
             case "14":
                 BorrowCardServiceTest borrowCardServiceTest1 = new BorrowCardServiceTest();
                 borrowCardServiceTest1.testCreateReturnedCard();
+                break;
+            case "15":
+                DashboardServiceTest dashboardServiceTest = new DashboardServiceTest();
+                dashboardServiceTest.testShowDashboard();
                 break;
             case "99":
                 boolean checkLogout = authenService.logout();

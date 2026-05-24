@@ -56,30 +56,42 @@ public class BorrowDetailRepository {
      * @param isReturn
      * @return
      */
-    public List<BorrowDetail> list(String borrowId, boolean isReturn){
-        // TODO: Dùng cho thống kê
+    public List<BorrowDetail> list(String borrowId, Boolean isReturn, Boolean isLate){
         try {
-            List<BorrowDetail> detail = new ArrayList<>();
+            Stream<BorrowDetail> stream = this.stream();
+
             if (borrowId != null) {
-                detail = this.stream()
+                stream = stream
                         .filter(borrowDetail -> borrowDetail != null)
-                        .filter(borrowDetail -> borrowDetail.getBorrowId().equals(borrowId))
-                        .toList();
+                        .filter(borrowDetail -> borrowDetail.getBorrowId().equals(borrowId));
+
             }
-            if (isReturn) {
-                detail = this.stream()
-                        .filter(borrowDetail -> borrowDetail.getBorrowStatus().equals(BorrowStatus.RETURNED))
-                        .toList();
+            if (isReturn != null) {
+                if (isReturn) {
+                    stream = stream
+                            .filter(borrowDetail -> borrowDetail.getReturnedDate() != null);
+                } else {
+                    stream = stream
+                            .filter(borrowDetail -> borrowDetail.getReturnedDate() == null);
+                }
+
             }
 
-            if(borrowId == null && !isReturn) {
-                detail = this.stream().toList();
+            if (isLate != null) {
+                if (isLate) {
+                    stream = stream
+                            .filter(borrowDetail -> borrowDetail.getReturnedDate().isAfter(LocalDate.now()));
+                } else {
+                    stream = stream
+                            .filter(borrowDetail -> !borrowDetail.getReturnedDate().isAfter(LocalDate.now()));
+                }
             }
-            return detail;
+
+            return stream.toList();
 
         } catch (NullPointerException e){
             System.out.println("Không có data thỏa điều kiện");
-            return null;
+            return List.of();
         }
 
     }
@@ -125,7 +137,7 @@ public class BorrowDetailRepository {
             return;
         }
 
-        List<BorrowDetail> borrowDetails = new ArrayList<>(this.list(null, false)/*get all*/);
+        List<BorrowDetail> borrowDetails = new ArrayList<>(this.list(null, null, null)/*get all*/);
         for (int i = 0; i < borrowDetails.size(); i++) {
             if (borrowDetails.get(i).getBorrowId().equals(updateBorrowDetail.getBorrowId())
                     && borrowDetails.get(i).getIsbn().equals(updateBorrowDetail.getIsbn())) {
@@ -155,6 +167,5 @@ public class BorrowDetailRepository {
         }
         removeEmptyLines("src/test/data/borrowDetail.csv");
     }
-
 
 }

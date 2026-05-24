@@ -1,8 +1,5 @@
 package main.entity;
 
-import main.repository.BorrowDetailRepository;
-import main.repository.BorrowRepository;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

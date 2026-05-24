@@ -3,7 +3,7 @@ package main.enums;
 public enum BorrowStatus {
     BORROWING("Đang mượn"),
     RETURNED("Đã trả"),
-    OVERDUE("Quá hạn"),
+    OVERDUE("Quá hạn"), /*TODO: UPCOMING... dùng Cron Job update định kỳ    */
     LOST("Mất");
 
     private final String displayName;

@@ -58,7 +58,7 @@ public class BookRepository {
     }
 
     public List<Book> getAllBooks() {
-        return this.stream().toList();
+        return this.list(null, null);
     }
 
     public void saveBookToFile(Book book) {
@@ -136,15 +136,7 @@ public class BookRepository {
                 .orElse(null);
     }
     public List<Book> findByName(String name){
-        String nameLowerCase = name.toLowerCase().trim();
-        return this.stream()
-                .filter(java.util.Objects::nonNull)
-                .filter(book -> book.getName() != null)
-                .filter(book ->
-                        book.getName().toLowerCase().trim().contains(nameLowerCase)
-                        || removeAccent(book.getName()).toLowerCase().trim().contains(nameLowerCase)
-                )
-                .toList();
+        return list(name, null);
     }
 
     public int updateTotalByIsbn(String isbn, int amount) throws IOException {
@@ -225,5 +217,34 @@ public class BookRepository {
         return sb.toString();
     }
 
+    /**
+     * 6.2 Thống kê số lượng sách
+     * @param name
+     * @param genre
+     * @return List
+     */
+    public List<Book> list(String name, Genre genre){
+        // TODO: sửa List
+        try {
+            Stream<Book> stream = this.stream();
 
+            if (name != null) {
+                String nameLowerCase = name.toLowerCase().trim();
+                stream = stream.filter(java.util.Objects::nonNull)
+                        .filter(book -> book.getName() != null)
+                        .filter(book ->
+                                book.getName().toLowerCase().trim().contains(nameLowerCase)
+                                        || removeAccent(book.getName()).toLowerCase().trim().contains(nameLowerCase)
+                        );
+            }
+            if (genre != null) {
+                stream = stream.filter(book -> book.getGenre().equals(genre));
+            }
+
+            return stream.toList();
+        } catch (NullPointerException e){
+            System.out.println("Không có data thỏa điều kiện");
+            return List.of();
+        }
+    }
 }

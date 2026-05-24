@@ -39,7 +39,7 @@ public class BorrowRepository {
                 card.setReaderId(parts[1]);
                 card.setBorrowDate(LocalDate.parse(parts[2]));
                 card.setDueDate(LocalDate.parse(parts[3]));
-                card.setBorrowDetail(borrowDetailRepository.list(parts[0], false));
+                card.setBorrowDetail(borrowDetailRepository.list(parts[0], null, null));
                 return card;
             });
         } catch (IOException e) {
