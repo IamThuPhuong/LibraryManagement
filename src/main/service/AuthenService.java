@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static test.MainMenuTest.userRepository;
-
 /**
  * Chức năng 1: Người dùng khi muốn sử dụng các chức năng của hệ thống phải thực hiện đăng
  * nhập.

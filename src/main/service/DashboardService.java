@@ -7,12 +7,12 @@ import main.enums.Permission;
 import main.repository.BookRepository;
 import main.repository.BorrowDetailRepository;
 import main.repository.ReaderRepository;
+import main.repository.UserRepository;
 import main.validate.AuthorValidator;
 import main.validate.Validator;
 
-import static test.MainMenuTest.userRepository;
-
 public class DashboardService {
+    private final UserRepository userRepository = new UserRepository();
     private final BookRepository bookRepository = new BookRepository();
     private final ReaderRepository readerRepository = new ReaderRepository();
     private final BorrowDetailRepository borrowDetailRepository = new BorrowDetailRepository();

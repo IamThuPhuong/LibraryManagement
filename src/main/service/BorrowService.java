@@ -9,6 +9,7 @@ import main.entity.User;
 import main.repository.BookRepository;
 import main.repository.BorrowDetailRepository;
 import main.repository.BorrowRepository;
+import main.repository.UserRepository;
 import main.validate.AuthorValidator;
 import main.validate.BorrowValidator;
 import main.validate.Validator;
@@ -17,9 +18,8 @@ import main.vo.BorrowVO;
 import java.util.ArrayList;
 import java.util.List;
 
-import static test.MainMenuTest.userRepository;
-
 public class BorrowService {
+    private final UserRepository userRepository = new UserRepository();
     private final Validator<BorrowVO> borrowValidator = new BorrowValidator();
     private final AuthorService authorService = new AuthorService();
     private final User currentUser = userRepository.findByUserId(AuthenService.USER_ID);

@@ -8,6 +8,7 @@ import main.entity.Book;
 import main.entity.ReaderCard;
 import main.entity.User;
 import main.repository.BookRepository;
+import main.repository.UserRepository;
 import main.validate.*;
 import main.vo.BookVO;
 
@@ -15,12 +16,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static test.MainMenuTest.userRepository;
-
 public class BookService {
-    /**
-     * Repository để thao tác với dữ liệu sách
-     */
+    /** Repository để thao tác với dữ liệu người dùng */
+    UserRepository userRepository = new UserRepository();
+
+    /** Repository để thao tác với dữ liệu sách */
     BookRepository bookRepository = new BookRepository();
 
     /**

@@ -6,7 +6,9 @@ import main.enums.Gender;
 import main.enums.Permission;
 import main.entity.ReaderCard;
 import main.entity.User;
+import main.repository.BookRepository;
 import main.repository.ReaderRepository;
+import main.repository.UserRepository;
 import main.validate.AuthorValidator;
 import main.validate.ReaderValidator;
 import main.validate.Validator;
@@ -16,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static test.MainMenuTest.userRepository;
-
 /**
  * Chức năng 2: Quản lý độc giả
  *
@@ -26,9 +26,10 @@ import static test.MainMenuTest.userRepository;
  * @since 2026-05-10
  */
 public class ReaderCardService {
-    /**
-     * Repository để thao tác với dữ liệu độc giả
-     */
+    /** Repository để thao tác với dữ liệu người dùng */
+    UserRepository userRepository = new UserRepository();
+
+    /** Repository để thao tác với dữ liệu độc giả */
     ReaderRepository readerRepository = new ReaderRepository();
 
     /**
@@ -127,7 +128,7 @@ public class ReaderCardService {
      * @return readerCard
      */
     public ReaderCard updateReader(ReaderCard reader, ReaderVO vo) throws IllegalArgumentException, ExceptionInInitializerError, IOException {
-        // TODO: check bug khong update duoc
+        // DONE: check bug khong update duoc (test lai thay update duoc roi)
         authorValidator.validate(PERMISSION_OF_FUNCTION);
         List<String> errorList = new ArrayList<>(readerValidator.validate(vo));
         if (!errorList.isEmpty()){
