@@ -101,7 +101,6 @@ public class BorrowService {
             if (vo.getListDetail().get(i).getBorrowStatus() == BorrowStatus.LOST) {
                 borrowDetail.get(i).setReturnedDate(null);
                 try {
-                    // TODO: Check bug không trừ tổng số sách
                     bookRepository.updateTotalByIsbn(vo.getListDetail().get(i).getIsbn(), -1);
                 } catch (Exception e) {
                     System.out.println("Cập nhật số lượng sách thất bại do lỗi: " + e.getMessage());

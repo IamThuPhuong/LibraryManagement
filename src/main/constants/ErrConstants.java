@@ -10,6 +10,10 @@ package main.constants;
  */
 public class ErrConstants {
 
+    // ==================== COMMON ERRORS ====================
+        /** Trường dữ liệu không được để trống. */
+    public static final String THIS_FIELD_CAN_NOT_NULL = "THIS_FIELD_CAN_NOT_NULL";
+
     // ==================== USERNAME ERRORS ====================
 
     /** Username là trường không thể thay đổi sau khi tạo tài khoản để đảm bảo tính toàn vẹn dữ liệu. */

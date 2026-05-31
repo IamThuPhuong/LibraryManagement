@@ -150,6 +150,7 @@ public class BorrowCardServiceTest {
                 }
                 BorrowDetail selectedDetail = borrowCard.getBorrowDetail().get(bookNo - 1);
                 System.out.println("Bạn đã chọn sách có mã ISBN: " + selectedDetail.getIsbn());
+                detailVO.setIsbn(selectedDetail.getIsbn());
                 System.out.println("Cập nhật trạng thái cho sách này:");
                 System.out.println("1. Trả muộn");
                 System.out.println("2. Mất sách");
@@ -189,16 +190,21 @@ public class BorrowCardServiceTest {
         BorrowCard updatedCard = borrowService.setReturnedCard(vo);
 
         System.out.println("==Kết thúc tiến trình lập thẻ trả sách==!");
-        System.out.println("____Thông tin thẻ trả sách vừa cập nhật:_________");
-        System.out.println("| Mã thẻ mượn sách: " + updatedCard.getBorrowId());
-        System.out.println("| Mã độc giả: " + updatedCard.getReaderId());
-        System.out.println("| Ngày mượn: " + updatedCard.getBorrowDate());
-        System.out.println("| Số lượng sách mượn: " + updatedCard.getBorrowDetail().size());
-        System.out.println("| Chi tiết sách mượn:");
-        for (BorrowDetail detail : updatedCard.getBorrowDetail()) {
-            System.out.println("- Mã ISBN: " + detail.getIsbn() + "\n- Ghi chú: " + detail.getNote() + "\n- Trạng thái: " + detail.getBorrowStatus() + "\n- Ngày trả: " + detail.getReturnedDate());
+        if(updatedCard == null) {
+            System.out.println("Lập thẻ trả sách thất bại do lỗi dữ liệu. Vui lòng kiểm tra lại thông tin đã nhập.");
+            return;
+        } else {
+            System.out.println("____Thông tin thẻ trả sách vừa cập nhật:_________");
+            System.out.println("| Mã thẻ mượn sách: " + updatedCard.getBorrowId());
+            System.out.println("| Mã độc giả: " + updatedCard.getReaderId());
+            System.out.println("| Ngày mượn: " + updatedCard.getBorrowDate());
+            System.out.println("| Số lượng sách mượn: " + updatedCard.getBorrowDetail().size());
+            System.out.println("| Chi tiết sách mượn:");
+            for (BorrowDetail detail : updatedCard.getBorrowDetail()) {
+                System.out.println("- Mã ISBN: " + detail.getIsbn() + "\n- Ghi chú: " + detail.getNote() + "\n- Trạng thái: " + detail.getBorrowStatus() + "\n- Ngày trả: " + detail.getReturnedDate());
+            }
+            System.out.println("______________________________________________");
         }
-        System.out.println("______________________________________________");
     }
 
 }

@@ -129,7 +129,7 @@ public class UserServiceTest {
             System.out.println("7. Gender: " + user.getGender());
             System.out.println("8. Status: " + user.getStatus());
             System.out.println("========================================");
-            System.out.println("Chọn thông tin muốn cập nhật (1-8), hoặc 0 để thoát:");
+            System.out.println("Chọn thông tin muốn cập nhật (1-8), 0 để hoàn tất:");
 
             chosenInfo = input.nextLine();
 

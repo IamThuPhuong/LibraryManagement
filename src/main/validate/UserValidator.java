@@ -87,6 +87,11 @@ public class UserValidator implements Validator<UserVO> {
         }
 
         // Validate BirthDay
+        if(target.getBirthDay() == null) {
+            System.out.println("Ngày sinh không được null!");
+            resultCheck.add(ErrConstants.THIS_FIELD_CAN_NOT_NULL);
+        }
+
         if (isBirthdayInFuture(target.getBirthDay())) {
             System.out.println("Ngày sinh không được lớn hơn ngày hôm nay!");
             resultCheck.add(ErrConstants.BIRTHDAY_AFTER_TODAY);
